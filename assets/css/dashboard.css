@@ -1,0 +1,181 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    background-color: #000;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.navbar h1 {
+    margin: 0;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    display: inline;
+    margin-right: 15px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.content {
+    padding: 20px;
+}
+
+
+ 
+.btn-floating {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    height: 5em;
+  
+} 
+.btn-53 {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    border: 5px solid;
+    border-radius: 50%; /* Hacer el botón circular */
+    box-sizing: border-box;
+    display: block;
+    font-weight: 900;
+    overflow: hidden;
+    position: relative;
+    text-transform: uppercase;
+    width: 100px; /* Ajustar el ancho para hacer el botón circular */
+    height: 100px; /* Ajustar la altura para hacer el botón circular */
+    font-size: 1.5rem; /* Ajustar el tamaño del texto para hacer el botón más grande */
+    padding: 0; /* Eliminar el padding fijo */
+  }
+  
+  .btn-53 .original {
+    background: #fff;
+    color: #000;
+    display: grid;
+    inset: 0;
+    place-content: center;
+    position: absolute;
+    transition: transform 0.2s cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  
+  .btn-53:hover .original {
+    transform: translateY(100%);
+  }
+  
+  .btn-53 .letters {
+    display: inline-flex;
+  }
+  
+  .btn-53 span {
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: transform 0.2s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.2s;
+  }
+  
+  .btn-53 span:nth-child(2n) {
+    transform: translateY(15px);
+  }
+  
+  .btn-53:hover span {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .btn-53:hover span:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  
+  .btn-53:hover span:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  
+  .btn-53:hover span:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+  
+  .btn-53:hover span:nth-child(5) {
+    transition-delay: 0.4s;
+  }
+  
+  .btn-53:hover span:nth-child(6) {
+    transition-delay: 0.5s;
+  }
+
+
+/*   form {
+    max-width: 400px;
+    margin: 0 auto;
+} */
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    display: block; /* Acomodar como bloque */
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
+
+#enviar {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 2%;
+}
+
+#enviar:hover {
+    background-color: #45a049;
+}
+
+
+#contenedor {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#contenedor > div {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%; /* Ocupar todo el ancho disponible */
+}
+
+.container > div {
+  flex: 1; /* Distribuir el espacio disponible entre los elementos internos */
+  margin: 5px; /* Agregar margen entre los elementos */
+  border: 1px solid #ccc; /* Agregar un borde para visualización */
+}
+
