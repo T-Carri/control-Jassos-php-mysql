@@ -62,8 +62,6 @@ class RegionModel {
         $stmt->bind_param("s", $region);
         return $stmt->execute();
 
-    // Puedes agregar más funciones relacionadas con la gestión de usuarios aquí
+    
 }
-}
-?>
- 
+}?>

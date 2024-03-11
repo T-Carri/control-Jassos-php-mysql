@@ -40,6 +40,24 @@ VALUES (12345, 'Trabajo de ejemplo', 1, '2024-01-19', true, 'En proceso', false)
     }
 
 
+
+    public function getSeguroSt($id) {
+        $sql = "SELECT * FROM st WHERE id =?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+
+
+
+
     public function getSts() {
         $sql = "SELECT * FROM st";
         $result = $this->conn->query($sql);
@@ -60,16 +78,16 @@ public function getSts0To10Days() {
     st.*, 
     tienda.nombre AS nombre_tienda, 
     tienda.foraneo AS foraneo_tienda
+    
 FROM 
     st
 INNER JOIN 
     tienda ON st.id_tienda = tienda.id
 WHERE 
-    (
-        (st.fecha BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY))
-        OR (st.fecha < CURDATE() AND DATEDIFF(CURDATE(), st.fecha) <= 10)
-    )
-    AND tienda.foraneo = 0";
+    st.fecha < CURDATE()
+    AND tienda.foraneo = 0
+    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)
+";
 
     $result = $this->conn->query($sql);
     $sts = [];
@@ -82,11 +100,20 @@ WHERE
     
     public function getSts10To15Days() {
 
-        $sql = "SELECT st.*, tienda.nombre AS nombre_tienda, tienda.foraneo AS foraneo_tienda
-        FROM st
-        INNER JOIN tienda ON st.id_tienda = tienda.id
-        WHERE (st.fecha BETWEEN DATE_ADD(CURDATE(), INTERVAL 10 DAY) AND DATE_ADD(CURDATE(), INTERVAL 14 DAY))
-        AND tienda.foraneo = 0";
+        $sql = "SELECT 
+        st.*, 
+        tienda.nombre AS nombre_tienda, 
+        tienda.foraneo AS foraneo_tienda
+    FROM 
+        st
+    INNER JOIN 
+        tienda ON st.id_tienda = tienda.id
+    WHERE 
+        (
+            st.fecha BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 21 DAY)
+        )
+        AND tienda.foraneo = 0
+        AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)";
 
         
         $result = $this->conn->query($sql);
@@ -131,11 +158,9 @@ FROM
 INNER JOIN 
     tienda ON st.id_tienda = tienda.id
 WHERE 
-    (
-        (st.fecha BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY))
-        OR (st.fecha < CURDATE() AND DATEDIFF(CURDATE(), st.fecha) <= 10)
-    )
-    AND tienda.foraneo = 1";
+    st.fecha < CURDATE()
+    AND tienda.foraneo = 1
+    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)";
 
     $result = $this->conn->query($sql);
     $sts = [];
@@ -169,11 +194,20 @@ WHERE
 
 public function getSts10To15Daysx() {
 
-    $sql = "SELECT st.*, tienda.nombre AS nombre_tienda, tienda.foraneo AS foraneo_tienda
-    FROM st
-    INNER JOIN tienda ON st.id_tienda = tienda.id
-    WHERE (st.fecha BETWEEN DATE_ADD(CURDATE(), INTERVAL 10 DAY) AND DATE_ADD(CURDATE(), INTERVAL 14 DAY))
-    AND tienda.foraneo = 1";
+    $sql = "SELECT 
+    st.*, 
+    tienda.nombre AS nombre_tienda, 
+    tienda.foraneo AS foraneo_tienda
+FROM 
+    st
+INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+WHERE 
+    (
+        st.fecha BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 21 DAY)
+    )
+    AND tienda.foraneo = 1
+    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)";
 
     
     $result = $this->conn->query($sql);
@@ -222,6 +256,77 @@ public function editarSt($id, $folio, $estado_portal, $autorizado, $trabajo_real
     return $stmt->execute();
 }
 
+
+//presaldos
+
+
+public function getPresaldos() {
+    $sql = "SELECT 
+    st.*, 
+    tienda.nombre AS nombre_tienda, 
+    tienda.foraneo AS foraneo_tienda
+FROM 
+    st
+INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+WHERE   
+     st.autorizado = true
+    AND st.estado_portal = 'ACEPTADO'
+    AND st.trabajo_realizado = true
+    AND st.archivado != true
+    "
+    ;
+    $result = $this->conn->query($sql);
+
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    return $sts;
+}  
+
+
+
+public function getArchivados() {
+    $sql = "SELECT 
+    st.*, 
+    tienda.nombre AS nombre_tienda, 
+    tienda.foraneo AS foraneo_tienda
+FROM 
+    st
+INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+WHERE   
+     st.autorizado = true
+    AND st.estado_portal = 'ACEPTADO'
+    AND st.trabajo_realizado = true
+    AND st.archivado = true
+    "
+    ;
+    $result = $this->conn->query($sql);
+
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    return $sts;
+}  
+
+
+
+
+
+
+public function archivarSt($id, $archivado ) {
+    $sql = "UPDATE st SET archivado = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ss",  $archivado, $id );
+    return $stmt->execute();
+}
+
+
 /* 
 
 
@@ -257,6 +362,67 @@ public function editarSt($id, $folio, $estado_portal, $autorizado, $trabajo_real
        
 
  */
+
+//for pizarron 
+
+public function pizarronway() {
+    $sql = "SELECT 
+    st.*, 
+    tienda.nombre AS nombre_tienda, 
+    tienda.foraneo AS foraneo_tienda,
+    tienda.id_region AS id_region_entienda
+FROM 
+    st
+INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+WHERE 
+    st.fecha <= CURDATE()
+    AND tienda.foraneo = 0
+    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)
+";
+
+    $result = $this->conn->query($sql);
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    return $sts;
+}
+   
+
+public function pizarronwayx() {
+    $sql = "SELECT 
+    st.*, 
+    tienda.nombre AS nombre_tienda, 
+    tienda.foraneo AS foraneo_tienda,
+    tienda.id_region AS id_region_entienda
+FROM 
+    st
+INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+WHERE 
+    st.fecha <= CURDATE()
+    AND tienda.foraneo = 1
+    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)
+";
+
+    $result = $this->conn->query($sql);
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    return $sts;
+}
+
+
+
+
+
+
+
+
+
 }
 ?>
- 

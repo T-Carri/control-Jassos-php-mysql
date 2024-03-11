@@ -14,6 +14,7 @@ $regiones = $regionModel->getRegiones();
 
 $tiendaModel = new TiendaModel();
 $tiendas = $tiendaModel->getTiendas();
+$tiendastotal = $tiendaModel->getTiendasTotal();
 
 
 
@@ -27,6 +28,7 @@ $tiendas = $tiendaModel->getTiendas();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -63,16 +65,68 @@ $tiendas = $tiendaModel->getTiendas();
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h1>Soluciones integrales jasso</h1>
+<div class="navbar">
       
-    </div>
- <nav class="navbar bg-body-tertiary fixed">
+      <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+     width="160"      
+     height="80"     
+     fill="#ffffff"   viewBox="0 0 300.000000 300.000000"
+   preserveAspectRatio="xMidYMid meet" 
+   >
+  
+  <g transform="translate(0.000000,300.000000) scale(0.050000,-0.050000)"
+  fill="#ffffff" stroke="none">
+  <path d="M787 5159 c-416 -74 -647 -329 -647 -710 0 -415 182 -580 793 -718
+  425 -96 534 -162 590 -357 15 -53 65 -128 136 -204 61 -66 126 -142 143 -169
+  l32 -50 27 80 c38 113 34 378 -8 503 -98 288 -285 408 -830 527 -404 88 -509
+  154 -543 340 -78 424 419 620 1028 407 77 -27 149 -57 160 -68 54 -54 72 -19
+  72 140 0 157 -1 161 -55 182 -224 85 -686 136 -898 97z"/>
+  <path d="M2540 2830 l0 -1330 240 0 240 0 0 1330 0 1330 -240 0 -240 0 0
+  -1330z"/>
+  <path d="M4194 3788 c-130 -171 -233 -321 -229 -333 7 -22 495 599 495 630 0
+  44 -51 -14 -266 -297z"/>
+  <path d="M3240 3865 c0 -23 557 -575 568 -563 11 10 -533 578 -554 578 -8 0
+  -14 -7 -14 -15z"/>
+  <path d="M140 2851 l0 -169 162 -51 c430 -136 866 -144 1173 -21 103 42 103
+  28 1 166 -47 63 -87 117 -90 122 -2 4 -52 -14 -110 -40 -234 -105 -725 -47
+  -1023 121 -110 61 -113 57 -113 -128z"/>
+  <path d="M3474 2067 c-34 -34 -5 -109 104 -277 l118 -180 -180 -6 c-218 -7
+  -216 -9 -136 104 65 90 83 177 44 216 -14 14 -64 -47 -161 -197 l-141 -217
+  372 -5 c204 -3 375 -2 380 2 11 12 -342 559 -366 567 -11 4 -27 1 -34 -7z"/>
+  <path d="M3984 1956 c-48 -48 -26 -117 66 -200 92 -84 109 -129 66 -172 -33
+  -33 -76 -30 -120 9 -20 18 -43 27 -51 18 -19 -19 69 -91 113 -91 142 0 161
+  145 32 253 -120 100 -108 225 15 149 48 -30 70 -14 35 28 -30 36 -122 40 -156
+  6z"/>
+  <path d="M4291 1949 c-49 -49 -38 -83 59 -187 128 -137 105 -256 -35 -176 -75
+  44 -92 31 -35 -26 55 -55 134 -46 185 23 48 64 28 112 -93 219 -71 64 -78 77
+  -54 105 32 39 84 43 118 9 13 -13 30 -16 39 -8 21 22 -54 72 -107 72 -25 0
+  -59 -14 -77 -31z"/>
+  <path d="M4676 1945 c-148 -91 -129 -321 33 -398 188 -90 390 113 300 303 -58
+  122 -217 168 -333 95z m251 -54 c119 -111 33 -331 -130 -331 -91 0 -177 95
+  -177 197 0 157 192 241 307 134z"/>
+  <path d="M5361 1941 c-36 -67 -23 -101 69 -185 92 -84 109 -129 66 -172 -33
+  -33 -76 -30 -120 9 -20 18 -43 27 -51 18 -19 -19 69 -91 113 -91 142 0 159
+  140 32 256 -117 106 -107 222 12 147 60 -37 88 -27 48 17 -47 52 -142 53 -169
+  1z"/>
+  <path d="M1040 1808 c-71 -50 -191 -127 -265 -171 -219 -132 -207 -137 356
+  -137 l490 0 130 107 c71 59 203 149 294 200 l165 93 -520 -1 -520 -1 -130 -90z"/>
+  <path d="M2320 1666 c-38 -73 -73 -141 -77 -150 -3 -9 30 -16 75 -16 l82 0 0
+  150 c0 181 6 180 -80 16z"/>
+  </g>
+  </svg>
+  
+          
+        
+      </div>
+    <nav class="navbar bg-body-tertiary fixed">
   <div class="container-fluid">
-    
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+  <div class="d-flex flex-row">
+    <div class="p-2"><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button></div>
+    
+</div>
+    
 
   
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -83,13 +137,16 @@ $tiendas = $tiendaModel->getTiendas();
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="dashboard.php">Home</a>
+            <a class="nav-link active" aria-current="page" href="dashboard.php"> <i class="fa-solid fa-house"></i>  DASHBOARD</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="filtros.php">Filtros</a>
+            <a class="nav-link active" href="filtros.php"><i class="fa-solid fa-list"></i>  FILTROS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="agregar.php">Agregar  +</a>
+            <a class="nav-link active" href="presaldos.php"><i class="fa-solid fa-folder-open"></i>  PRESALDOS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="agregar.php"><strong> +</strong>  AGREGAR </a>
           </li>
         </ul>
         <form class="d-flex mt-3" role="search">
@@ -151,12 +208,13 @@ $tiendas = $tiendaModel->getTiendas();
         echo '<div class="card-container">';
        
         // Muestra la lista de regiones si está presente
-        foreach ($tiendas as $tienda) {
+        foreach ($tiendastotal as $tienda) {
           echo '<div class="card" style="width: 18rem; margin: 10px;">';
           echo '<div class="card-body">';
           echo '<img src="../assets/img/descargar.png" alt="Logo tienda" style="width: 100%; height: auto; border-radius: 5px;">';
           echo '<h5 class="card-title">' . $tienda['nombre'] . '</h5>';
-          echo '<p class="card-text">Descripción u otra información relevante</p>';
+          echo '<p class="card-text">REGION:</p>';
+          echo '<p class="card-text">'.$tienda['nombre_region'].'</p>';
           echo '<button class="btn btn-primary" onclick="abrirModalEditartienda(' . $tienda['id'] . ', \'' . $tienda['nombre'] . '\')">Editar</button>';
           echo '<button class="btn btn-danger" onclick="abrirModalEliminartienda(' . $tienda['id'] . ', \'' . $tienda['nombre'] . '\')">Eliminar</button>';
           echo '</div>';

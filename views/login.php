@@ -4,19 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/login.css">
+
     <title>Iniciar Sesión</title>
 </head>
 <body>
-    <h2>Iniciar Sesión</h2>
-    <form action="../controllers/AuthController.php" method="post">
-        <label for="email">Correo electrónico:</label>
-        <input type="email" id="email" name="email" required><br>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required><br>
 
-        <button type="submit">Iniciar Sesión</button>
-    </form>
+<div class="full-screen-container">
+    <div class="login-container">
+      <h1 class="login-title">SOLUCIONES INTEGRALES JASSO</h1>
+      <form class="form" action="../controllers/AuthController.php" method="post">
+        <div class="input-group success" >
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required/>
+          <span class="msg">Valid email</span>
+        </div>
+
+        <div class="input-group error" >
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required/>
+          <span class="msg">Incorrect password</span>
+        </div>
+
+        <button type="submit" class="login-button">Login</button>
+      </form>
+    </div>
+  </div>
+
+
 </body>
 </html>
 

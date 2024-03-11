@@ -56,6 +56,23 @@ class TiendaModel {
         }    
 
 
+
+        public function getTiendasTotal() {
+            $sql = "SELECT tienda.*, region.nombre AS nombre_region
+            FROM tienda
+            INNER JOIN region ON tienda.id_region = region.id";
+            $result = $this->conn->query($sql);
+        
+            $tiendas = [];
+            while ($row = $result->fetch_assoc()) {
+                $tiendas[] = $row;
+            }
+        
+            return $tiendas;
+        }
+        
+
+
         public function insertTienda($tienda, $foraneo, $direccion, $id_region) {
             $sql = "INSERT INTO tienda (nombre, foraneo, direccion, id_region) VALUES (?, ?, ?, ?)";
             $stmt = $this->conn->prepare($sql);

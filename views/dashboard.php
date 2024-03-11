@@ -119,18 +119,117 @@ $StThirdx =  $ST->getSts15To21Daysx();
     }
 </style>
 
+<style>
+        /* Ajusta los estilos según sea necesario */
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+           
+        }
+
+        .content > div {
+            flex: 0 0 48%; /* Tamaño de cada columna en desktop (48% para dos columnas) */
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 767px) {
+            /* Cambia el diseño a bloques en pantallas más pequeñas */
+            .content {
+                flex-direction: column;
+            }
+
+            .content > div {
+                flex: 0 0 100%; /* Tamaño de cada columna en dispositivos móviles (100% para ocupar toda la pantalla) */
+            }
+        }
+    </style>
+
+<style>
+    /* Estilo para la superposición */
+    .position-relative {
+        position: relative;
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
 </head>
 <body>
     <div class="navbar">
-        <h1>Soluciones integrales jasso</h1>
+      
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+   width="160"      
+   height="80"     
+   fill="#ffffff"   viewBox="0 0 300.000000 300.000000"
+ preserveAspectRatio="xMidYMid meet" 
+ >
+
+<g transform="translate(0.000000,300.000000) scale(0.050000,-0.050000)"
+fill="#ffffff" stroke="none">
+<path d="M787 5159 c-416 -74 -647 -329 -647 -710 0 -415 182 -580 793 -718
+425 -96 534 -162 590 -357 15 -53 65 -128 136 -204 61 -66 126 -142 143 -169
+l32 -50 27 80 c38 113 34 378 -8 503 -98 288 -285 408 -830 527 -404 88 -509
+154 -543 340 -78 424 419 620 1028 407 77 -27 149 -57 160 -68 54 -54 72 -19
+72 140 0 157 -1 161 -55 182 -224 85 -686 136 -898 97z"/>
+<path d="M2540 2830 l0 -1330 240 0 240 0 0 1330 0 1330 -240 0 -240 0 0
+-1330z"/>
+<path d="M4194 3788 c-130 -171 -233 -321 -229 -333 7 -22 495 599 495 630 0
+44 -51 -14 -266 -297z"/>
+<path d="M3240 3865 c0 -23 557 -575 568 -563 11 10 -533 578 -554 578 -8 0
+-14 -7 -14 -15z"/>
+<path d="M140 2851 l0 -169 162 -51 c430 -136 866 -144 1173 -21 103 42 103
+28 1 166 -47 63 -87 117 -90 122 -2 4 -52 -14 -110 -40 -234 -105 -725 -47
+-1023 121 -110 61 -113 57 -113 -128z"/>
+<path d="M3474 2067 c-34 -34 -5 -109 104 -277 l118 -180 -180 -6 c-218 -7
+-216 -9 -136 104 65 90 83 177 44 216 -14 14 -64 -47 -161 -197 l-141 -217
+372 -5 c204 -3 375 -2 380 2 11 12 -342 559 -366 567 -11 4 -27 1 -34 -7z"/>
+<path d="M3984 1956 c-48 -48 -26 -117 66 -200 92 -84 109 -129 66 -172 -33
+-33 -76 -30 -120 9 -20 18 -43 27 -51 18 -19 -19 69 -91 113 -91 142 0 161
+145 32 253 -120 100 -108 225 15 149 48 -30 70 -14 35 28 -30 36 -122 40 -156
+6z"/>
+<path d="M4291 1949 c-49 -49 -38 -83 59 -187 128 -137 105 -256 -35 -176 -75
+44 -92 31 -35 -26 55 -55 134 -46 185 23 48 64 28 112 -93 219 -71 64 -78 77
+-54 105 32 39 84 43 118 9 13 -13 30 -16 39 -8 21 22 -54 72 -107 72 -25 0
+-59 -14 -77 -31z"/>
+<path d="M4676 1945 c-148 -91 -129 -321 33 -398 188 -90 390 113 300 303 -58
+122 -217 168 -333 95z m251 -54 c119 -111 33 -331 -130 -331 -91 0 -177 95
+-177 197 0 157 192 241 307 134z"/>
+<path d="M5361 1941 c-36 -67 -23 -101 69 -185 92 -84 109 -129 66 -172 -33
+-33 -76 -30 -120 9 -20 18 -43 27 -51 18 -19 -19 69 -91 113 -91 142 0 159
+140 32 256 -117 106 -107 222 12 147 60 -37 88 -27 48 17 -47 52 -142 53 -169
+1z"/>
+<path d="M1040 1808 c-71 -50 -191 -127 -265 -171 -219 -132 -207 -137 356
+-137 l490 0 130 107 c71 59 203 149 294 200 l165 93 -520 -1 -520 -1 -130 -90z"/>
+<path d="M2320 1666 c-38 -73 -73 -141 -77 -150 -3 -9 30 -16 75 -16 l82 0 0
+150 c0 181 6 180 -80 16z"/>
+</g>
+</svg>
+
+        
       
     </div>
     <nav class="navbar bg-body-tertiary fixed">
   <div class="container-fluid">
-    
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+  <div class="d-flex flex-row">
+    <div class="p-2"><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
+    </button></div>
+    <div class="p-2">
+      <button  class="btn btn-dark" onclick="window.location.href='agregar.php?componente=tiendas'"  type="button" >
+      <i class="fa-solid fa-store"></i> Tiendas
+    </button> 
+
+    <button  class="btn btn-dark" onclick="window.location.href='agregar.php?componente=region'"  type="button" >
+    <i class="fa-solid fa-compass"></i>  Regiones
     </button>
+  </div>
+</div>
+    
 
   
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -141,16 +240,16 @@ $StThirdx =  $ST->getSts15To21Daysx();
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">INICIO</a>
+            <a class="nav-link active" aria-current="page" href="#"> <i class="fa-solid fa-house"></i>  DASHBOARD</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="filtros.php">FILTROS</a>
+            <a class="nav-link active" href="filtros.php"><i class="fa-solid fa-list"></i>  FILTROS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="presaldos.php">PRESALDOS</a>
+            <a class="nav-link active" href="presaldos.php"><i class="fa-solid fa-folder-open"></i>  PRESALDOS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="agregar.php">AGREGAR <strong> +</strong></a>
+            <a class="nav-link active" href="agregar.php"><strong> +</strong>  AGREGAR </a>
           </li>
         </ul>
         <form class="d-flex mt-3" role="search">
@@ -161,378 +260,40 @@ $StThirdx =  $ST->getSts15To21Daysx();
     </div>
   </div>
 </nav>
+<div class="content mx-auto">
+    <div class="col-12 col-md-8 position-relative" style="background-image: url('../assets/img/d0.jpg'); background-size: cover; background-position: center; height: 30em;">
 
-
-
-
-
-
-
-
-
-
-
-    <div class="content">
-
-
-
-
-    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
- 
-    <div class="carousel-item active" data-bs-interval="10000">
-     
-
-    <div style="display: flex; flex-direction: row; align-items: center;">
-    <div style="margin-right: 10px;">
-        <h3>Region IXTAPALUCA CDMX</h3>
+        <!-- Texto en superposición -->
+        <div class="overlay-text text-white text-center">
+            <p style="font-size: 4em; ">Organizar, Agregar tiendas y regiones</p>
+        </div>
     </div>
-    <div>
-        <button class="btn btn-dark btn-sm" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+
+
+
+
+
+    <div class="col-12 col-md-4 m-4 p-2 position-relative">
+        <div class="container row" onclick="window.location.href='pizarron.php'" style="background-image: url('../assets/img/d2.jpg'); background-size: cover; background-position: center; height: 250px; width: 70vh; border-radius: 40px;">
+           
+
+            
+        </div>
+
+        <div class="row justify-content-center m-4">
+            <div class="col">
+                <button type="button" onclick="window.location.href='presaldos.php'" class="btn btn-secondary btn-lg m-3" style="height: 6em "><i class="fa-solid fa-folder-open"></i> Presaldos</button>
+                <button type="button" onclick="window.location.href='filtros.php'" class="btn btn-secondary btn-lg m-3" style="height: 6em"><i class="fa-solid fa-magnifying-glass"></i> Filtros, Búsquedas</button>
+            </div>
+        </div>
     </div>
-</div>
-
-
- 
-
-<div id="contenedor">
-    <div>
-        <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">FOLIO</th>
-      <th scope="col">TIENDA</th>
-      <th scope="col">TRABAJO A REALIZAR</th>
-      <th scope="col">FECHA</th>
-      <th scope="col">Editar</th>
-
-    </tr>
-  </thead> 
-  <tbody>
-
-
-<?php
-foreach ($Stfirst as $sts) {
-  echo '<tr>';
-  echo '<td scope="row">';
-  echo $sts['autorizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-  echo '</td>';
-  echo '<td>';
-
-  echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
-
-  echo $sts['estado_portal']=='PENDIENTE' ?  
-  '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-
-  echo $sts['estado_portal']=='REVISADO' ?  
-  '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-
-
-  echo $sts['estado_portal']=='PRESUPUESTADO' ?  
-  '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-
-  echo $sts['estado_portal']=='CANCELADO' ?  
-  '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-
-
-  echo $sts['estado_portal']=='ACEPTADO' ?  
-  '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-
-  echo '</td>';
-
-  echo '<td class="scrolling-td" >';
-  echo '<div class="single-line scrolling-text">';
-  echo $sts['trabajo_realizado'] ? 
-  '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
-  echo '</div>';
-  echo '</td>';
-  echo '<td>' . $sts['fecha'] . '</td>';
-  
-  echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-  echo '</tr>';
-}
-?>
-
-   
-  </tbody>
-</table>
-
-                                              </div>
-
-
-                                              <div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">FOLIO</th>
-      <th scope="col">TIENDA</th>
-      <th scope="col">TRABAJO A REALIZAR</th>
-      <th scope="col">FECHA</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-    <?php 
-foreach ($StSecond as $sts) {
-  echo '<tr>';
-  echo '<td scope="row">';
-  echo $sts['autorizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['nombre_tienda'] . '</td>';
-  echo '<td>';
-  echo $sts['trabajo_realizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['trabajo'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['trabajo'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['fecha'] . '</td>';
-  echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-  echo '</tr>';
-}
-?>
-    </tr>
-   
-  </tbody>
-</table>
-
-                                           </div>
-                                           <div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">FOLIO</th>
-      <th scope="col">TIENDA</th>
-      <th scope="col">TRABAJO A REALIZAR</th>
-      <th scope="col">FECHA</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-    <?php 
-foreach ($StThird as $sts) {
-  echo '<tr>';
-  echo '<td scope="row">';
-  echo $sts['autorizado'] ? 
-  '<span class="badge bg-success rounded-pill" >' . $sts['folio'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['nombre_tienda'] . '</td>';
-  echo '<td>';
-  echo $sts['trabajo_realizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['trabajo'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['trabajo'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['fecha'] . '</td>';
-  echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-  echo '</tr>';
-}
-?>
-    </tr>
-   
-  </tbody>
-</table>
-
-                                            </div>
 
 
 
-
-
-
-
-
-                                            </div>
-
-</div>
-
-
-<div class="carousel-item" data-bs-interval="10000">
-  
-    
-
-<div style="display: flex; flex-direction: row; align-items: center;">
-    <div style="margin-right: 10px;">
-    <h3>Region IXTAPALUCA FORANEOS</h3>
-    </div>
-    <div>
-        <button class="btn btn-dark btn-sm" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
-    </div>
-</div>
-
-
-
-
-   
-
-    <div id="contenedor">
-                                              <div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">FOLIO</th>
-      <th scope="col">TIENDA</th>
-      <th scope="col">TRABAJO A REALIZAR</th>
-      <th scope="col">FECHA</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php 
-    
-foreach ($Stfirstx as $sts) {
-  echo '<tr>';
-  echo '<td scope="row">';
-  echo $sts['autorizado'] ? 
-    '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-    '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['nombre_tienda'] . '</td>';
-  echo '<td>';
-  echo $sts['trabajo_realizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['trabajo'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['trabajo'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['fecha'] . '</td>';
-  echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',   \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-  echo '</tr>';
-}
-?>
-    
-   
-  </tbody>
-</table>
-
-                                              </div>
-
-
-                                              <div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">FOLIO</th>
-      <th scope="col">TIENDA</th>
-      <th scope="col">TRABAJO A REALIZAR</th>
-      <th scope="col">FECHA</th>
-    </tr>
-  </thead>
-  <tbody>
-    
-    <?php 
-foreach ($StSecondx as $sts) {
-  echo '<tr>';
-  echo '<td scope="row">';
-  echo $sts['autorizado'] ? 
-    'badge bg-success rounded-pill" >' . $sts['folio'] . '</span>' : 
-    '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['nombre_tienda'] . '</td>';
-  echo '<td>';
-  echo $sts['trabajo_realizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['trabajo'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['trabajo'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['fecha'] . '</td>';
-  echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-  echo '</tr>';
-}
-?>
-    </tr>
-   
-  </tbody>
-</table>
-
-                                           </div>
-                                           <div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">FOLIO</th>
-      <th scope="col">TIENDA</th>
-      <th scope="col">TRABAJO A REALIZAR</th>
-      <th scope="col">FECHA</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php 
-foreach ($StThirdx as $sts) {
-  echo '<tr>';
-  echo '<td scope="row">';
-  echo $sts['autorizado'] ? 
-  '<span class="badge bg-success rounded-pill" >' . $sts['folio'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['nombre_tienda'] . '</td>';
-  echo '<td>';
-  echo $sts['trabajo_realizado'] ? 
-  '<span class="badge bg-success rounded-pill"> ' . $sts['trabajo'] . '</span>' : 
-  '<span class="badge rounded-pill bg-light text-dark">' . $sts['trabajo'] . '</span>';
-  echo '</td>';
-  echo '<td>' . $sts['fecha'] . '</td>';
-  echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-  echo '</tr>';
-}
-?>
-   
-  </tbody>
-</table>
-
-                                            </div>
-
-
-
-
-
-
-
-
-                                            </div>
 
 
 </div>
 
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- una tabla usa st con menos de 10 dias, otro mayor 10 a 15 dias , otro mas de 15 a 21 dias  -->
-<!-- Contenido del dashboard   ZONA, ST, TIENDA,TRABAJO A REALIZAR, FECHA SOLICITUD, PORTAL(PENDIENTE, ACEPTADO, PEDIR PRESALDO, PEDIR CANCELADO,REVISADO), ESTADO(SE SOLICITA CANCELAR ST, TRABAJO REALIZADO-FALTA PPTO, FALTA REALIZAR TRABAJO-FALTA PPTO, FALTA REALIZAR TRABAJO, FALTA PPTO -->
-
-
-
-   
-    
- 
-      
-  
-
-    
-    <!-- <button class="btn btn-primary btn-floating" data-toggle="tooltip" data-placement="top" title="Agregar">
-    <i class="bi bi-plus-lg bi-3x "></i>
-    </button> -->
 <div class="btn-floating">
     <button class="btn-53" data-bs-toggle="modal" data-bs-target="#myModal">
   <div class="original" >+</div>
@@ -632,280 +393,13 @@ foreach ($tiendas as $tienda) {
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
 
-
-
-<script>
-    const myModal = document.getElementById('myModal')
-const myInput = document.getElementById('myInput')
-
-myModal.addEventListener('shown.bs.modal', () => {
-  myInput.focus()
-})
-</script>
-
-<script>
-
-
-const estados = [
-  { value: 'STANDBY', label: '--' },
-  { value: 'PENDIENTE', label: 'PENDIENTE' },
-  { value: 'REVISADO', label: 'REVISADO' },
-  { value: 'PRESUPUESTADO', label: 'PRESUPUESTADO' },
-  { value: 'ACEPTADO', label: 'ACEPTADO' },
-  { value: 'CANCELADO', label: 'CANCELADO' }
-];
-
-
-function abrirModal(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado ) {
-       
-       var modalContent = `    
-       <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Editar ST</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body">
-    <div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
-        <div>
-            <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
-        </div>
-    </div>
-    <div id="modalform" style="background-color:#CFD2CF;">
-
-            <div>
-                <label for="tienda">EDITAR FOLIO</label>
-                <br>
-                <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
-            </div>
-
-
-
-            <div>
-                <label for="fecha">ESTADO PORTAL:</label>
-                
-
-                <select name="estado" id="estadoedit">
-  ${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
-</select>
-            </div>
-
-            
-
-          
-
-            <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-    <div style="margin-right: 20px;">
-        <label for="tienda">FOLIO AUTORIZADO:</label>
-        <br>
-        <label class="switch">
-            <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === '1' ? 'checked' : null}>
-            <span class="slider"></span>
-        </label>
-    </div>
-
-    <div style="margin-right: 100px;">
-        <label for="tienda">TRABAJO AUTORIZADO:</label>
-        <br>
-        <label class="switch">
-            <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === '1' ? 'checked' : ''} >
-            <span class="slider"></span>
-        </label>
-    </div>
-</div>
-
-
-
-
-<div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
-
-<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-    <div style="margin-right: 20px;">
-    <p>
-
-<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
-</p>
-    </div>
-    <div style="margin: 50px, 50px;">
-
-    <p>
-
-    <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
-</p>
-    </div>
-
-    </div>
-
-
-
-    <div class="collapse" id="collapseExample">
-             <div class="card card-body"   style="background-color:#CFD2CF;">
-
-
-             <label for="fecha">EDITAR TRABAJO</label>
-<br>
-<textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
-
-
-                <br>
-
-       
-
-                <label for="fecha">EDITAR FECHA</label>
-                <br>
-        <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
-
-               
-
-            </div>
-    </div>
-</div>
-</div>
-    </div>
-
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-primary" onclick="editarSt(${stId})">Guardar cambios</button>
-</div>`;
-
-       mostrarModal(modalContent);
-   }
-
-function mostrarModal(content) {
-    var modalElement = document.getElementById('exampleModal');
-    var modalBody = modalElement.querySelector('.modal-content');
-    modalBody.innerHTML = content;
-
-    // Abre el modal
-    var modal = new bootstrap.Modal(modalElement);
-    modal.show();
-}
-
-
-
-function cerrarModal() {
-        var modalElement = document.getElementById('exampleModal');
-        var modal = bootstrap.Modal.getInstance(modalElement);
-        modal.hide();
-    }
-
-
-function editarSt(stId) {
-
-
-
-       var e1 = document.getElementById('folioedit').value;
-          var e2 = document.getElementById('estadoedit').value;
-   var e3 = document.getElementById('folioautorizadoedit').checked;
-          var e4 = document.getElementById('trabajoautorizadoedit').checked;
-        var e5 = document.getElementById('trabajoedit').value;
-         var e6 = document.getElementById('fechaedit').value;  
-
- 
-console.log(e1, e2, e3, e4, e5, e6);
-
-      $.ajax({
-    url: '../actions/update_st.php', 
-    method: 'POST',
-    data: {id:stId, Folio: e1, Estado: e2, FolioAutorizado:e3 , TrabajoAutorizado:e4, NewTrabajo: e5, NewFecha:e6 }, // Datos que se enviarán al servidor
-    success: function (response) {
-        // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
-        
-        //alert(response);
-        // Cierra el modal después de eliminar
-        cerrarModal();
-        location.reload();
-    },
-    error: function () {
-        alert('Error al eliminar la tienda');
-    }
-}); 
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-function eliminarSt(stId) {
-
-   
-$.ajax({
-url: '../actions/delete_st.php', // Ruta a tu script PHP
-method: 'POST',
-data: { stId: stId }, // Datos que se enviarán al servidor
-success: function (response) {
-  // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
-  
-
-  // Cierra el modal después de eliminar
-  cerrarModal();
-  location.reload();
-},
-error: function () {
-  alert('Error al eliminar la tienda');
-}
-});
- 
-}
-
-
-
-
-
-function permitirSoloNumeros(elemento) {
-    elemento.value = elemento.value.replace(/[^0-9]/g, '');
-}
-
-
-
-
-
-
-
-
-</script>
-
-
-
-
-
+<script src="../assets/js/dashboard.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
- 
- 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>

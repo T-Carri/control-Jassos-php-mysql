@@ -20,3 +20,22 @@ CREATE TABLE st (
     trabajo_realizado BOOLEAN,
     FOREIGN KEY (id_tienda) REFERENCES tienda(id)
 );
+
+
+
+
+ALTER TABLE st
+ADD COLUMN archivado TINYINT(1) NOT NULL DEFAULT 0;
+
+
+
+
+
+
+
+CREATE TABLE region (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(25) NOT NULL
+);
+
+//FALTA REGIONN

@@ -161,8 +161,8 @@ input, select, textarea {
 
 #contenedor > div {
     flex: 1;
-    padding: 20px;
-    border: 1px solid #ddd;
+    padding: 10px;
+    
     text-align: center;
 }
 
@@ -173,9 +173,5 @@ input, select, textarea {
   width: 100%; /* Ocupar todo el ancho disponible */
 }
 
-.container > div {
-  flex: 1; /* Distribuir el espacio disponible entre los elementos internos */
-  margin: 5px; /* Agregar margen entre los elementos */
-  border: 1px solid #ccc; /* Agregar un borde para visualización */
-}
+
 

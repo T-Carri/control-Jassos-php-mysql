@@ -18,6 +18,7 @@ class StController {
                 // Operación exitosa
                 $_SESSION['alert_message'] = 'La tienda se agregó correctamente';
                 $_SESSION['alert_type'] = 'success';
+                header('Location: ../views/dashboard.php');
             } else {
                 // Problema al agregar la región
                 $_SESSION['alert_message'] = 'Hubo un problema al agregar la tienda';
@@ -42,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $stController = new StController();
     $stController->stGo($inputst, $inputtrabajo,  $inputidtienda,  $inputfecha, $st_aceptado, $inputestado,  $trabajo_realizado );
-    header('Location: ../views/dashboard.php');
+   
     exit();
   
 }

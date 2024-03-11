@@ -16,6 +16,7 @@ class TiendaController {
             $result = $tiendaModel->insertTienda($tienda,  $foraneo, $direccion, $idregion);
             if ($result) {
                 // Operación exitosa
+                header('Location: ../views/agregar.php?componente=tiendas');
                 $_SESSION['alert_message'] = 'La tienda se agregó correctamente';
                 $_SESSION['alert_type'] = 'success';
             } else {
@@ -38,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tieController = new TiendaController();
 
     $tieController->tiendaGo($inputValueTienda, $inputValueForaneo,  $inputValueDireccionTienda,  $inputValueRegionId );
-    header('Location: ../views/agregar.php?componente=tiendas');
+   
     exit();
   
 }
