@@ -44,96 +44,18 @@ $regiones = $regionModel->getRegiones();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/pizarron.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<style>
 
-  .switch {
- --button-width: 3.5em;
- --button-height: 2em;
- --toggle-diameter: 1.5em;
- --button-toggle-offset: calc((var(--button-height) - var(--toggle-diameter)) / 2);
- --toggle-shadow-offset: 10px;
- --toggle-wider: 3em;
- --color-grey: #cccccc;
- --color-green: #8fce00;
-    }
-
-.slider {
- display: inline-block;
- width: var(--button-width);
- height: var(--button-height);
- background-color: var(--color-grey);
- border-radius: calc(var(--button-height) / 2);
- position: relative;
- transition: 0.3s all ease-in-out;
-}
-
-.slider::after {
- content: "";
- display: inline-block;
- width: var(--toggle-diameter);
- height: var(--toggle-diameter);
- background-color: #fff;
- border-radius: calc(var(--toggle-diameter) / 2);
- position: absolute;
- top: var(--button-toggle-offset);
- transform: translateX(var(--button-toggle-offset));
- box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
- transition: 0.3s all ease-in-out;
-}
-
-.switch input[type="checkbox"]:checked + .slider {
- background-color: var(--color-green);
-}
-
-.switch input[type="checkbox"]:checked + .slider::after {
- transform: translateX(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
- box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
-}
-
-.switch input[type="checkbox"] {
- display: none;
-}
-
-.switch input[type="checkbox"]:active + .slider::after {
- width: var(--toggle-wider);
-}
-
-.switch input[type="checkbox"]:checked:active + .slider::after {
- transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
-}
-
-.scrolling-text {
-        white-space: nowrap;
-        overflow: hidden;
-        width: 500px; /* Ajusta el ancho según tus necesidades */
-        animation: scrollText 15s linear infinite; /* Ajusta el tiempo según tus necesidades */
-    }
-
-    @keyframes scrollText {
-        0% {
-            transform: translateX(0);
-        }
-
-        100% {
-            transform: translateX(-100%);
-        }
-    }
-
-    .scrolling-td {
-        max-width: 200px; /* Ajusta el ancho según tus necesidades */
-        overflow: hidden;
-    }
-</style>
 
 </head>
 <body>
+
 <div class="navbar">
       
       <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -184,56 +106,21 @@ $regiones = $regionModel->getRegiones();
   </g>
   </svg>
   
-          
-        
-      </div>
-    <nav class="navbar bg-body-tertiary fixed">
-  <div class="container-fluid">
-  <div class="d-flex flex-row">
-    <div class="p-2"><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button></div>
-    <div class="p-2">
-      <button  class="btn btn-dark" onclick="window.location.href='agregar.php?componente=tiendas'"  type="button" >
-      <i class="fa-solid fa-store"></i> Tiendas
+  <div class="p-2">
+      <button  class="btn btn-dark" onclick="window.location.href='dashboard.php'"  type="button" >
+      <i class="fa-solid fa-house"></i>  Inicio
     </button> 
 
-    <button  class="btn btn-dark" onclick="window.location.href='agregar.php?componente=region'"  type="button" >
-    <i class="fa-solid fa-compass"></i>  Regiones
-    </button>
-  </div>
-</div>
-    
+    <button  id="toggleBtn" class="btn btn-dark btn-arrow" onclick="toggleNavbar()"  type="button" >
+      <i class="fa-solid fa-circle-up"></i>
+    </button> 
+  </div>  
+        
+  <button class="reset-btn" onclick="resetNavbar()"><i class="fa-solid fa-circle-down"></i></button>
+        
+      </div>
 
-  
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"> <i class="fa-solid fa-house"></i>  DASHBOARD</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="filtros.php"><i class="fa-solid fa-list"></i>  FILTROS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="presaldos.php"><i class="fa-solid fa-folder-open"></i>  PRESALDOS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="agregar.php"><strong> +</strong>  AGREGAR </a>
-          </li>
-        </ul>
-        <form class="d-flex mt-3" role="search">
-          <input class="form-control me-2" type="search" placeholder="Buscar ST" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</nav>
+
 
 
 
@@ -437,34 +324,6 @@ foreach ($regiones as $region) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- una tabla usa st con menos de 10 dias, otro mayor 10 a 15 dias , otro mas de 15 a 21 dias  -->
-<!-- Contenido del dashboard   ZONA, ST, TIENDA,TRABAJO A REALIZAR, FECHA SOLICITUD, PORTAL(PENDIENTE, ACEPTADO, PEDIR PRESALDO, PEDIR CANCELADO,REVISADO), ESTADO(SE SOLICITA CANCELAR ST, TRABAJO REALIZADO-FALTA PPTO, FALTA REALIZAR TRABAJO-FALTA PPTO, FALTA REALIZAR TRABAJO, FALTA PPTO -->
-
-
-
-   
-    
- 
-      
-  
-
-    
-    <!-- <button class="btn btn-primary btn-floating" data-toggle="tooltip" data-placement="top" title="Agregar">
-    <i class="bi bi-plus-lg bi-3x "></i>
-    </button> -->
 <div class="btn-floating">
     <button class="btn-53" data-bs-toggle="modal" data-bs-target="#myModal">
   <div class="original" >+</div>
@@ -588,251 +447,7 @@ foreach ($tiendas as $tienda) {
 
 
 
-<script>
-    const myModal = document.getElementById('myModal')
-const myInput = document.getElementById('myInput')
-
-myModal.addEventListener('shown.bs.modal', () => {
-  myInput.focus()
-})
-</script>
-
-<script>
-
-
-const estados = [
-  { value: 'STANDBY', label: '--' },
-  { value: 'PENDIENTE', label: 'PENDIENTE' },
-  { value: 'REVISADO', label: 'REVISADO' },
-  { value: 'PRESUPUESTADO', label: 'PRESUPUESTADO' },
-  { value: 'ACEPTADO', label: 'ACEPTADO' },
-  { value: 'CANCELADO', label: 'CANCELADO' }
-];
-
-
-function abrirModal(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado ) {
-       
-       var modalContent = `    
-       <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Editar ST</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body">
-    <div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
-        <div>
-            <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
-        </div>
-    </div>
-    <div id="modalform" style="background-color:#CFD2CF;">
-
-            <div>
-                <label for="tienda">EDITAR FOLIO</label>
-                <br>
-                <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
-            </div>
-
-
-
-            <div>
-                <label for="fecha">ESTADO PORTAL:</label>
-                
-
-                <select name="estado" id="estadoedit">
-  ${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
-</select>
-            </div>
-
-            
-
-          
-
-            <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-    <div style="margin-right: 20px;">
-        <label for="tienda">FOLIO AUTORIZADO:</label>
-        <br>
-        <label class="switch">
-            <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === '1' ? 'checked' : null}>
-            <span class="slider"></span>
-        </label>
-    </div>
-
-    <div style="margin-right: 100px;">
-        <label for="tienda">TRABAJO AUTORIZADO:</label>
-        <br>
-        <label class="switch">
-            <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === '1' ? 'checked' : ''} >
-            <span class="slider"></span>
-        </label>
-    </div>
-</div>
-
-
-
-
-<div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
-
-<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-    <div style="margin-right: 20px;">
-    <p>
-
-<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
-</p>
-    </div>
-    <div style="margin: 50px, 50px;">
-
-    <p>
-
-    <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
-</p>
-    </div>
-
-    </div>
-
-
-
-    <div class="collapse" id="collapseExample">
-             <div class="card card-body"   style="background-color:#CFD2CF;">
-
-
-             <label for="fecha">EDITAR TRABAJO</label>
-<br>
-<textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
-
-
-                <br>
-
-       
-
-                <label for="fecha">EDITAR FECHA</label>
-                <br>
-        <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
-
-               
-
-            </div>
-    </div>
-</div>
-</div>
-    </div>
-
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-primary" onclick="editarSt(${stId})">Guardar cambios</button>
-</div>`;
-
-       mostrarModal(modalContent);
-   }
-
-function mostrarModal(content) {
-    var modalElement = document.getElementById('exampleModal');
-    var modalBody = modalElement.querySelector('.modal-content');
-    modalBody.innerHTML = content;
-
-    // Abre el modal
-    var modal = new bootstrap.Modal(modalElement);
-    modal.show();
-}
-
-
-
-function cerrarModal() {
-        var modalElement = document.getElementById('exampleModal');
-        var modal = bootstrap.Modal.getInstance(modalElement);
-        modal.hide();
-    }
-
-
-function editarSt(stId) {
-
-
-
-       var e1 = document.getElementById('folioedit').value;
-          var e2 = document.getElementById('estadoedit').value;
-   var e3 = document.getElementById('folioautorizadoedit').checked;
-          var e4 = document.getElementById('trabajoautorizadoedit').checked;
-        var e5 = document.getElementById('trabajoedit').value;
-         var e6 = document.getElementById('fechaedit').value;  
-
- 
-console.log(e1, e2, e3, e4, e5, e6);
-
-      $.ajax({
-    url: '../actions/update_st.php', 
-    method: 'POST',
-    data: {id:stId, Folio: e1, Estado: e2, FolioAutorizado:e3 , TrabajoAutorizado:e4, NewTrabajo: e5, NewFecha:e6 }, // Datos que se enviarán al servidor
-    success: function (response) {
-        // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
-        
-        //alert(response);
-        // Cierra el modal después de eliminar
-        cerrarModal();
-        location.reload();
-    },
-    error: function () {
-        alert('Error al eliminar la tienda');
-    }
-}); 
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-function eliminarSt(stId) {
-
-   
-$.ajax({
-url: '../actions/delete_st.php', // Ruta a tu script PHP
-method: 'POST',
-data: { stId: stId }, // Datos que se enviarán al servidor
-success: function (response) {
-  // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
-  
-
-  // Cierra el modal después de eliminar
-  cerrarModal();
-  location.reload();
-},
-error: function () {
-  alert('Error al eliminar la tienda');
-}
-});
- 
-}
-
-
-
-
-
-function permitirSoloNumeros(elemento) {
-    elemento.value = elemento.value.replace(/[^0-9]/g, '');
-}
-
-
-
-
-
-
-
-
-</script>
-
-
-
-
+<script src="../assets/js/pizarron.js" ></script>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
  
@@ -841,8 +456,3 @@ function permitirSoloNumeros(elemento) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-
-
-

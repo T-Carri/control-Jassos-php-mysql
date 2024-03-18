@@ -1,0 +1,27 @@
+.content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 70px;
+    width: 70%;
+    height: 100%; /* Establecer altura al 100% */
+}
+
+   /* Agregamos estilos para los contenedores de las tarjetas */
+   .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 500px; /* Establecer la altura máxima y agregar un desplazamiento vertical */
+    overflow-y: auto; /* Agregar desplazamiento vertical */
+}
+
+.card {
+    width: 18rem;
+    margin: 10px;                                                                                                                                                                                                                                                                                                                                                                                         
+}

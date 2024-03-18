@@ -419,8 +419,134 @@ WHERE
 
 
 
+//Funciones con efecto en filtros
+
+//no 1. practicamente activos 
+
+public function filtros1($id) {
+    // Preparar la consulta con un marcador de posición
+    $sql = "SELECT 
+        st.*, 
+        tienda.nombre
+    FROM 
+        st
+        INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+   WHERE   
+        st.id_tienda = ?
+        AND st.archivado != true";
+
+    // Preparar la sentencia
+    $stmt = $this->conn->prepare($sql);
+
+    // Enlazar el valor de $id al marcador de posición
+    $stmt->bind_param("i", $id);  // "i" indica que el valor es un entero
+
+    // Ejecutar la consulta
+    $stmt->execute();
+
+    // Obtener el resultado de la consulta
+    $result = $stmt->get_result();
+
+    // Recorrer los resultados y almacenarlos en un array
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    // Cerrar la sentencia
+    $stmt->close();
+
+    return $sts;
+}
 
 
+
+
+//no 2. practicamente desactivos 
+
+public function filtros2($id) {
+    // Preparar la consulta con un marcador de posición
+    $sql = "SELECT 
+        st.*, 
+        tienda.nombre
+    FROM 
+        st
+        INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+   WHERE   
+        st.id_tienda = ?
+    AND st.autorizado = true
+    AND st.estado_portal = 'ACEPTADO'
+    AND st.trabajo_realizado = true
+    AND st.archivado != true";
+
+    // Preparar la sentencia
+    $stmt = $this->conn->prepare($sql);
+
+    // Enlazar el valor de $id al marcador de posición
+    $stmt->bind_param("i", $id);  // "i" indica que el valor es un entero
+
+    // Ejecutar la consulta
+    $stmt->execute();
+
+    // Obtener el resultado de la consulta
+    $result = $stmt->get_result();
+
+    // Recorrer los resultados y almacenarlos en un array
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    // Cerrar la sentencia
+    $stmt->close();
+
+    return $sts;
+}
+
+
+
+
+
+
+
+public function filtros3($id) {
+    // Preparar la consulta con un marcador de posición
+    $sql = "SELECT 
+        st.*, 
+        tienda.nombre
+    FROM 
+        st
+        INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+   WHERE   
+        st.id_tienda = ?
+        AND st.archivado = true";
+
+    // Preparar la sentencia
+    $stmt = $this->conn->prepare($sql);
+
+    // Enlazar el valor de $id al marcador de posición
+    $stmt->bind_param("i", $id);  // "i" indica que el valor es un entero
+
+    // Ejecutar la consulta
+    $stmt->execute();
+
+    // Obtener el resultado de la consulta
+    $result = $stmt->get_result();
+
+    // Recorrer los resultados y almacenarlos en un array
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    // Cerrar la sentencia
+    $stmt->close();
+
+    return $sts;
+}
 
 
 

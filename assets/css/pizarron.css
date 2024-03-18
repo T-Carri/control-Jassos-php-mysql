@@ -1,0 +1,277 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+ 
+.btn-floating {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    height: 5em;
+  
+} 
+.btn-53 {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    border: 5px solid;
+    border-radius: 50%; /* Hacer el botón circular */
+    box-sizing: border-box;
+    display: block;
+    font-weight: 900;
+    overflow: hidden;
+    position: relative;
+    text-transform: uppercase;
+    width: 100px; /* Ajustar el ancho para hacer el botón circular */
+    height: 100px; /* Ajustar la altura para hacer el botón circular */
+    font-size: 1.5rem; /* Ajustar el tamaño del texto para hacer el botón más grande */
+    padding: 0; /* Eliminar el padding fijo */
+  }
+  
+  .btn-53 .original {
+    background: #fff;
+    color: #000;
+    display: grid;
+    inset: 0;
+    place-content: center;
+    position: absolute;
+    transition: transform 0.2s cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  
+  .btn-53:hover .original {
+    transform: translateY(100%);
+  }
+  
+  .btn-53 .letters {
+    display: inline-flex;
+  }
+  
+  .btn-53 span {
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: transform 0.2s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.2s;
+  }
+  
+  .btn-53 span:nth-child(2n) {
+    transform: translateY(15px);
+  }
+  
+  .btn-53:hover span {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .btn-53:hover span:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  
+  .btn-53:hover span:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+  
+  .btn-53:hover span:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+  
+  .btn-53:hover span:nth-child(5) {
+    transition-delay: 0.4s;
+  }
+  
+  .btn-53:hover span:nth-child(6) {
+    transition-delay: 0.5s;
+  }
+
+
+/*   form {
+    max-width: 400px;
+    margin: 0 auto;
+} */
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    display: block; /* Acomodar como bloque */
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
+
+#enviar {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 2%;
+}
+
+#enviar:hover {
+    background-color: #45a049;
+}
+
+
+#contenedor {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#contenedor > div {
+    flex: 1;
+    padding: 10px;
+    
+    text-align: center;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%; /* Ocupar todo el ancho disponible */
+}
+
+
+
+.switch {
+    --button-width: 3.5em;
+    --button-height: 2em;
+    --toggle-diameter: 1.5em;
+    --button-toggle-offset: calc((var(--button-height) - var(--toggle-diameter)) / 2);
+    --toggle-shadow-offset: 10px;
+    --toggle-wider: 3em;
+    --color-grey: #cccccc;
+    --color-green: #8fce00;
+       }
+   
+   .slider {
+    display: inline-block;
+    width: var(--button-width);
+    height: var(--button-height);
+    background-color: var(--color-grey);
+    border-radius: calc(var(--button-height) / 2);
+    position: relative;
+    transition: 0.3s all ease-in-out;
+   }
+   
+   .slider::after {
+    content: "";
+    display: inline-block;
+    width: var(--toggle-diameter);
+    height: var(--toggle-diameter);
+    background-color: #fff;
+    border-radius: calc(var(--toggle-diameter) / 2);
+    position: absolute;
+    top: var(--button-toggle-offset);
+    transform: translateX(var(--button-toggle-offset));
+    box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
+    transition: 0.3s all ease-in-out;
+   }
+   
+   .switch input[type="checkbox"]:checked + .slider {
+    background-color: var(--color-green);
+   }
+   
+   .switch input[type="checkbox"]:checked + .slider::after {
+    transform: translateX(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
+    box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
+   }
+   
+   .switch input[type="checkbox"] {
+    display: none;
+   }
+   
+   .switch input[type="checkbox"]:active + .slider::after {
+    width: var(--toggle-wider);
+   }
+   
+   .switch input[type="checkbox"]:checked:active + .slider::after {
+    transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
+   }
+   
+   .scrolling-text {
+           white-space: nowrap;
+           overflow: hidden;
+           width: 500px; /* Ajusta el ancho según tus necesidades */
+           animation: scrollText 15s linear infinite; /* Ajusta el tiempo según tus necesidades */
+       }
+   
+       @keyframes scrollText {
+           0% {
+               transform: translateX(0);
+           }
+   
+           100% {
+               transform: translateX(-100%);
+           }
+       }
+   
+       .scrolling-td {
+           max-width: 200px; /* Ajusta el ancho según tus necesidades */
+           overflow: hidden;
+       }
+
+       .reset-btn {
+        position: relative;
+        top: 35px;
+        right: 15px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: none;
+    }
+
+    .reset-btn i {
+        margin-top: 5px;
+    }
+
+    .reset-btn:hover {
+        background-color: #333;
+    }
+    
+.navbar {
+    background-color: #000;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    transition: margin-top 0.3s; /* Añadido para suavizar la transición */
+}
+
+.navbar h1 {
+    margin: 0;
+}
+
+.navbar button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.content {
+    margin-top: 80px; /* Altura inicial del Navbar */
+    transition: margin-top 0.3s; /* Añadido para suavizar la transición */
+}
+
+.hidden {
+    display: none;
+}
+
+.content {
+    padding: 20px;
+}
+

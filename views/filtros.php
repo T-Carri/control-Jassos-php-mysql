@@ -3,27 +3,17 @@ session_start();
 include_once('../models/RegionModel.php');
 include_once('../models/TiendaModel.php');
 include_once('../models/StModel.php');
+include_once('../models/FiltrosModel.php');
 if (!isset($_SESSION['email'])) {
     header('Location: ../views/login.php'); 
     exit();
 }
-
 
 $tiendaModel = new TiendaModel();
 $tiendas = $tiendaModel->getTiendas();
 
 $ST = new StModel();
 $STS = $ST->getSts();
-$Stfirst =  $ST->getSts0To10Days();
-$StSecond =  $ST->getSts10To15Days();
-$StThird =  $ST->getSts15To21Days();
-//aqui uno
-$pizarron =  $ST->pizarronway();
-$pizarronx =  $ST->pizarronwayx();
-
-$Stfirstx =  $ST->getSts0To10Daysx();
-$StSecondx =  $ST->getSts10To15Daysx();
-$StThirdx =  $ST->getSts15To21Daysx();
 
 
 
@@ -32,7 +22,8 @@ $regiones = $regionModel->getRegiones();
 //aqui otro 
 
 
-
+$databaseConnection = new DatabaseConnection();
+$conn = $databaseConnection->getConnection();
 
 ?>
 
@@ -45,92 +36,16 @@ $regiones = $regionModel->getRegiones();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filtros</title>
     <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/filtros.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<style>
-
-  .switch {
- --button-width: 3.5em;
- --button-height: 2em;
- --toggle-diameter: 1.5em;
- --button-toggle-offset: calc((var(--button-height) - var(--toggle-diameter)) / 2);
- --toggle-shadow-offset: 10px;
- --toggle-wider: 3em;
- --color-grey: #cccccc;
- --color-green: #8fce00;
-    }
-
-.slider {
- display: inline-block;
- width: var(--button-width);
- height: var(--button-height);
- background-color: var(--color-grey);
- border-radius: calc(var(--button-height) / 2);
- position: relative;
- transition: 0.3s all ease-in-out;
-}
-
-.slider::after {
- content: "";
- display: inline-block;
- width: var(--toggle-diameter);
- height: var(--toggle-diameter);
- background-color: #fff;
- border-radius: calc(var(--toggle-diameter) / 2);
- position: absolute;
- top: var(--button-toggle-offset);
- transform: translateX(var(--button-toggle-offset));
- box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
- transition: 0.3s all ease-in-out;
-}
-
-.switch input[type="checkbox"]:checked + .slider {
- background-color: var(--color-green);
-}
-
-.switch input[type="checkbox"]:checked + .slider::after {
- transform: translateX(calc(var(--button-width) - var(--toggle-diameter) - var(--button-toggle-offset)));
- box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0, 0, 0, 0.1);
-}
-
-.switch input[type="checkbox"] {
- display: none;
-}
-
-.switch input[type="checkbox"]:active + .slider::after {
- width: var(--toggle-wider);
-}
-
-.switch input[type="checkbox"]:checked:active + .slider::after {
- transform: translateX(calc(var(--button-width) - var(--toggle-wider) - var(--button-toggle-offset)));
-}
-
-.scrolling-text {
-        white-space: nowrap;
-        overflow: hidden;
-        width: 500px; /* Ajusta el ancho según tus necesidades */
-        animation: scrollText 15s linear infinite; /* Ajusta el tiempo según tus necesidades */
-    }
-
-    @keyframes scrollText {
-        0% {
-            transform: translateX(0);
-        }
-
-        100% {
-            transform: translateX(-100%);
-        }
-    }
-
-    .scrolling-td {
-        max-width: 200px; /* Ajusta el ancho según tus necesidades */
-        overflow: hidden;
-    }
-</style>
 
 </head>
 <body>
@@ -214,7 +129,7 @@ $regiones = $regionModel->getRegiones();
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"> <i class="fa-solid fa-house"></i>  DASHBOARD</a>
+            <a class="nav-link active" aria-current="page" href="dashboard.php"> <i class="fa-solid fa-house"></i>  DASHBOARD</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="filtros.php"><i class="fa-solid fa-list"></i>  FILTROS</a>
@@ -245,226 +160,47 @@ $regiones = $regionModel->getRegiones();
 
 
 
-    <div class="content">
+<div class="d-flex" id="wrapper">
 
-    
-<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  <!-- Sidebar -->
+  <div class=" border-right" id="sidebar-wrapper " style="background: #C7C8CC;">
+  <div class="sidebar-heading text-black text-center ">
+  <h5 class="mx-auto">Consulta tienda</h5>
+</div>
+    <div class="list-group list-group-flush" style="max-height: 500px; overflow-y: auto;">
 
-  <div class="carousel-inner">
-
-<?php
- $firstRegion = true; 
-foreach ($regiones as $region) {
-    echo '<div class="carousel-item' . ($firstRegion ? ' active' : '') . '" data-bs-interval="10000">';
-    $firstRegion = false;
-    echo' <div style="display: flex; flex-direction: row; align-items: center;"> ';
-    
-  echo '  <div style="margin-right: 10px;">';
-       echo ' <h3>'.$region['nombre'].'</h3>';
-    echo '</div>';
-    
-    echo '<div>';  
-   
-      echo'<button class="btn btn-dark btn-sm" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">';
- echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-  echo '     </button>';
-    echo '   </div>';
-   echo '</div>';
-
-
-  echo  '<div id="contenedor">';
-   echo '<div>';
-
- echo '<table class="table">';
-
-  echo ' <thead>';
-   echo '<tr>';
-    echo '<th scope="col">FOLIO</th>';
-  echo '  <th scope="col">TIENDA</th>';
-  echo ' <th scope="col">TRABAJO A REALIZAR</th>';
-  echo ' <th scope="col">FECHA</th>';
-  echo ' <th scope="col">Editar</th>';
-
-  echo ' </tr>';
-  echo ' </thead> ';
-  echo '<tbody>';
-
-  $regionStfirstexample = array_filter($pizarron, function($sts) use ($region) {
-    return $sts['id_region_entienda'] == $region['id'];
-});
-
- foreach ($regionStfirstexample as $sts) {
-    echo '<tr>';
-    echo '<td scope="row">';
-    echo $sts['autorizado'] ? 
-    '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-    '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-    echo '</td>';
-    echo '<td>';
-  
-    echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
-  
-    echo $sts['estado_portal']=='PENDIENTE' ?  
-    '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-    echo $sts['estado_portal']=='REVISADO' ?  
-    '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-  
-    echo $sts['estado_portal']=='PRESUPUESTADO' ?  
-    '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-    echo $sts['estado_portal']=='CANCELADO' ?  
-    '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-  
-    echo $sts['estado_portal']=='ACEPTADO' ?  
-    '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-    echo '</td>';
-  
-    echo '<td class="scrolling-td" >';
-    echo '<div class="single-line scrolling-text">';
-    echo $sts['trabajo_realizado'] ? 
-    '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
-    '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
-    echo '</div>';
-    echo '</td>';
-    echo '<td>' . $sts['fecha'] . '</td>';
-    
-    echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-    echo '</tr>';
-  }
-  
-
-  echo ' </tbody>';
-  echo '</table>';
-  echo ' </div>';
-  echo '<div>';
-  echo '<table class="table">';
-  echo '<thead>';
-  echo '<tr>';
-  echo ' <th scope="col">FOLIO</th>';
-  echo '<th scope="col">TIENDA</th>';
-  echo '  <th scope="col">TRABAJO A REALIZAR</th>';
-  echo ' <th scope="col">FECHA</th>';
-  echo '</tr>';
-  echo '</thead>';
-
-  echo '<tbody>';
-    
-  $regionStsecondexample = array_filter($pizarronx, function($sts) use ($region) {
-    return $sts['id_region_entienda'] == $region['id'];
-});
-    foreach ($regionStsecondexample as $sts) {
-        echo '<tr>';
-        echo '<td scope="row">';
-        echo $sts['autorizado'] ? 
-        '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-        '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-        echo '</td>';
-        echo '<td>';
-      
-        echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
-      
-        echo $sts['estado_portal']=='PENDIENTE' ?  
-        '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-        echo $sts['estado_portal']=='REVISADO' ?  
-        '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-      
-        echo $sts['estado_portal']=='PRESUPUESTADO' ?  
-        '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-        echo $sts['estado_portal']=='CANCELADO' ?  
-        '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-      
-        echo $sts['estado_portal']=='ACEPTADO' ?  
-        '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-        echo '</td>';
-      
-        echo '<td class="scrolling-td" >';
-        echo '<div class="single-line scrolling-text">';
-        echo $sts['trabajo_realizado'] ? 
-        '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
-        '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
-        echo '</div>';
-        echo '</td>';
-        echo '<td>' . $sts['fecha'] . '</td>';
-        
-        echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-        echo '</tr>';
-      }
-
-
-    
-   
-      echo ' </tbody> ';
-
-      echo '</table> ';
-      echo '</div>';
-      echo '</div>';
-
-
-
-
-
-
-      echo '</div>';
-      
+    <?php 
+foreach ($tiendas as $tienda) {
+    echo '<strong>';
+    echo '<a href="filtros.php?idTienda='.$tienda['id'].'"     class="list-group-item list-group-item-action bg-white text-black tienda-link" style="font-family: Arimo, sans-serif;">'.$tienda['nombre'].'</a>';
+    echo '</strong>';
 }
-
 ?>
-</div>
 
 
-
-
-
-</div>
-
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- una tabla usa st con menos de 10 dias, otro mayor 10 a 15 dias , otro mas de 15 a 21 dias  -->
-<!-- Contenido del dashboard   ZONA, ST, TIENDA,TRABAJO A REALIZAR, FECHA SOLICITUD, PORTAL(PENDIENTE, ACEPTADO, PEDIR PRESALDO, PEDIR CANCELADO,REVISADO), ESTADO(SE SOLICITA CANCELAR ST, TRABAJO REALIZADO-FALTA PPTO, FALTA REALIZAR TRABAJO-FALTA PPTO, FALTA REALIZAR TRABAJO, FALTA PPTO -->
-
-
-
-   
-    
- 
-      
-  
 
     
-    <!-- <button class="btn btn-primary btn-floating" data-toggle="tooltip" data-placement="top" title="Agregar">
-    <i class="bi bi-plus-lg bi-3x "></i>
-    </button> -->
+
+    </div>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Contenido de la página -->
+  <div  id="page-content-wrapper" style="width:100%;">
+
+  <div class="container text-center mt-5" style="display: block;">
+    <div class="mx-auto">
+        <h2 class="text-center" style="opacity: 0.8;">Selecciona una tienda</h2>
+    </div>
+    <img src="../assets/img/f1.png" style="opacity: 0.8;" />
+</div>
+</div>
+
+
+
+
+
+
 <div class="btn-floating">
     <button class="btn-53" data-bs-toggle="modal" data-bs-target="#myModal">
   <div class="original" >+</div>
@@ -586,255 +322,225 @@ foreach ($tiendas as $tienda) {
 
 
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 
 <script>
-    const myModal = document.getElementById('myModal')
-const myInput = document.getElementById('myInput')
+$(document).ready(function() {
+    // Manejar clic en los enlaces de navegación
+   
+    const urlParams = new URLSearchParams(window.location.search);
+    const idTienda = urlParams.get('idTienda');
+   
+   console.log(idTienda)
 
-myModal.addEventListener('shown.bs.modal', () => {
-  myInput.focus()
+
+if(!idTienda){
+  console.log("go ahead")
+}else{
+  let componente='activos';
+   cargarContenedor(idTienda, componente)
+}
+
+  
 })
-</script>
-
-<script>
 
 
-const estados = [
-  { value: 'STANDBY', label: '--' },
-  { value: 'PENDIENTE', label: 'PENDIENTE' },
-  { value: 'REVISADO', label: 'REVISADO' },
-  { value: 'PRESUPUESTADO', label: 'PRESUPUESTADO' },
-  { value: 'ACEPTADO', label: 'ACEPTADO' },
-  { value: 'CANCELADO', label: 'CANCELADO' }
-];
+function cargarContenedor(idTienda, componente) {
+    // Obtener el componente del atributo data-componente del enlace
+   
+    // Construir el contenido HTML de la navegación basado en el valor del parámetro 'componente'
+    var contenidoHTML = '<ul class="nav nav-tabs">' +
+        '<li class="nav-item">' +
+        '<button id="btnActivos" class="nav-link ' + (componente === 'activos' || componente === null ? 'active' : '') + '" onClick="cargarContenidoTienda('+idTienda+',  \'activos\' )">ST Activos</button>' +
+        '</li>' +
+        '<li class="nav-item">' +
+        '<button id="btnPresaldos" class="nav-link ' + (componente === 'presaldos' ? 'active' : '') + '" onClick="cargarContenidoTienda('+idTienda+', \'presaldos\' )">ST Presaldos</button>' +
+        '</li>' +
+        '<li class="nav-item">' +
+        '<button id="btnSaldos"  class="nav-link ' + (componente === 'saldos' ? 'active' : '') + '"onClick="cargarContenidoTienda('+idTienda+', \'saldos\')">ST Saldos</button>' +
+        '</li>' +
+        '</ul>' +
+        '<h2 class="tittle_tienda"></h2>' +
+        '<table class="table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th scope="col">FOLIO</th>' +
+        '<th scope="col">TRABAJO A REALIZAR</th>' +
+        '<th scope="col">PORTAL SIM</th>' +
+        '<th scope="col">FECHA DE SOLICITUD</th>' +
+        '<th scope="col">AUTORIZADO</th>' +
+        '<th scope="col">REALIZADO</th>' +
+        '<th scope="col">PPTO</th>' +
+        '<th scope="col">FACTURA</th>' +
+        '<th scope="col">Editar</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        '</tbody>' +
+        '</table>';
 
+    $('#page-content-wrapper').html(contenidoHTML);
 
-function abrirModal(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado ) {
-       
-       var modalContent = `    
-       <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Editar ST</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body">
-    <div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
-        <div>
-            <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
-        </div>
-    </div>
-    <div id="modalform" style="background-color:#CFD2CF;">
-
-            <div>
-                <label for="tienda">EDITAR FOLIO</label>
-                <br>
-                <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
-            </div>
-
-
-
-            <div>
-                <label for="fecha">ESTADO PORTAL:</label>
-                
-
-                <select name="estado" id="estadoedit">
-  ${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
-</select>
-            </div>
-
-            
-
-          
-
-            <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-    <div style="margin-right: 20px;">
-        <label for="tienda">FOLIO AUTORIZADO:</label>
-        <br>
-        <label class="switch">
-            <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === '1' ? 'checked' : null}>
-            <span class="slider"></span>
-        </label>
-    </div>
-
-    <div style="margin-right: 100px;">
-        <label for="tienda">TRABAJO AUTORIZADO:</label>
-        <br>
-        <label class="switch">
-            <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === '1' ? 'checked' : ''} >
-            <span class="slider"></span>
-        </label>
-    </div>
-</div>
-
-
-
-
-<div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
-
-<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-    <div style="margin-right: 20px;">
-    <p>
-
-<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
-</p>
-    </div>
-    <div style="margin: 50px, 50px;">
-
-    <p>
-
-    <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
-</p>
-    </div>
-
-    </div>
-
-
-
-    <div class="collapse" id="collapseExample">
-             <div class="card card-body"   style="background-color:#CFD2CF;">
-
-
-             <label for="fecha">EDITAR TRABAJO</label>
-<br>
-<textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
-
-
-                <br>
-
-       
-
-                <label for="fecha">EDITAR FECHA</label>
-                <br>
-        <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
-
-               
-
-            </div>
-    </div>
-</div>
-</div>
-    </div>
-
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-primary" onclick="editarSt(${stId})">Guardar cambios</button>
-</div>`;
-
-       mostrarModal(modalContent);
-   }
-
-function mostrarModal(content) {
-    var modalElement = document.getElementById('exampleModal');
-    var modalBody = modalElement.querySelector('.modal-content');
-    modalBody.innerHTML = content;
-
-    // Abre el modal
-    var modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    cargarContenidoTienda(idTienda,'activos');
 }
 
 
 
-function cerrarModal() {
-        var modalElement = document.getElementById('exampleModal');
-        var modal = bootstrap.Modal.getInstance(modalElement);
-        modal.hide();
-    }
-
-
-function editarSt(stId) {
-
-
-
-       var e1 = document.getElementById('folioedit').value;
-          var e2 = document.getElementById('estadoedit').value;
-   var e3 = document.getElementById('folioautorizadoedit').checked;
-          var e4 = document.getElementById('trabajoautorizadoedit').checked;
-        var e5 = document.getElementById('trabajoedit').value;
-         var e6 = document.getElementById('fechaedit').value;  
-
+function cargarContenidoTienda(idTienda,  componente) {
+  
  
-console.log(e1, e2, e3, e4, e5, e6);
 
+  console.log(idTienda, componente)
+
+  $('#btnActivos').removeClass('active');
+  $('#btnPresaldos').removeClass('active');
+  $('#btnSaldos').removeClass('active');
+
+
+  switch(componente) {
+  case 'activos':
+    $('#btnActivos').addClass('active');
+    $.ajax({
+        url: '../actions/get_st_activos.php',
+        method: 'GET',
+        data: { idTienda: idTienda },
+        success: function(response) {
+            var responseObject = JSON.parse(response);
+            console.log(response);
+            // Limpiar el contenido del cuerpo de la tabla
+            $('.table tbody').empty();
+            responseObject.forEach(function(item) {
+                // Crear una nueva fila para cada objeto en 'response'
+                var newRow =
+                    '<tr style="font-family: Arimo, sans-serif;">' +
+                    '<td>' + item.folio + '</td>' +
+                    '<td>' + item.trabajo + '</td>' +
+                    '<td>' + item.estado_portal + '</td>' +
+                    '<td>' + item.fecha + '</td>' +
+                    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+                    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+                    '<td><button type="button" class="btn btn-success">Editar</button></td>' +
+                    '</tr>';
+
+                // Agregar la nueva fila al cuerpo de la tabla
+                $('.table tbody').append(newRow);
+            });
+
+            // Establecer el título de la tienda
+            if (responseObject.length > 0) {
+                $('.tittle_tienda').text(responseObject[0].nombre);
+            } else {
+                $('.tittle_tienda').text('No se encontró contenido para la tienda');
+            }
+        },
+        error: function() {
+            alert('Error al extraer sts');
+        }
+    });
+
+    break;
+  case 'presaldos':
+    $('#btnPresaldos').addClass('active');
+    $.ajax({
+        url: '../actions/get_st_presaldos.php',
+        method: 'GET',
+        data: { idTienda: idTienda },
+        success: function(response) {
+            var responseObject = JSON.parse(response);
+            console.log(response);
+            // Limpiar el contenido del cuerpo de la tabla
+            $('.table tbody').empty();
+            responseObject.forEach(function(item) {
+                // Crear una nueva fila para cada objeto en 'response'
+                var newRow =
+                    '<tr style="font-family: Arimo, sans-serif;">' +
+                    '<td>' + item.folio + '</td>' +
+                    '<td>' + item.trabajo + '</td>' +
+                    '<td>' + item.estado_portal + '</td>' +
+                    '<td>' + item.fecha + '</td>' +
+                    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+                    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+                    '<td><button type="button" class="btn btn-success">Editar</button></td>' +
+                    '</tr>';
+
+                // Agregar la nueva fila al cuerpo de la tabla
+                $('.table tbody').append(newRow);
+            });
+
+            // Establecer el título de la tienda
+            if (responseObject.length > 0) {
+                $('.tittle_tienda').text(responseObject[0].nombre);
+            } else {
+                $('.tittle_tienda').text('No se encontró contenido para la tienda');
+            }
+        },
+        error: function() {
+            alert('Error al extraer sts');
+        }
+    });
+    break;
+    case 'saldos':
+      $('#btnSaldos').addClass('active');
       $.ajax({
-    url: '../actions/update_st.php', 
-    method: 'POST',
-    data: {id:stId, Folio: e1, Estado: e2, FolioAutorizado:e3 , TrabajoAutorizado:e4, NewTrabajo: e5, NewFecha:e6 }, // Datos que se enviarán al servidor
-    success: function (response) {
-        // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
-        
-        //alert(response);
-        // Cierra el modal después de eliminar
-        cerrarModal();
-        location.reload();
-    },
-    error: function () {
-        alert('Error al eliminar la tienda');
-    }
-}); 
+        url: '../actions/get_st_saldos.php',
+        method: 'GET',
+        data: { idTienda: idTienda },
+        success: function(response) {
+            var responseObject = JSON.parse(response);
+            console.log(response);
+            // Limpiar el contenido del cuerpo de la tabla
+            $('.table tbody').empty();
+            responseObject.forEach(function(item) {
+                // Crear una nueva fila para cada objeto en 'response'
+                var newRow =
+                    '<tr style="font-family: Arimo, sans-serif;">' +
+                    '<td>' + item.folio + '</td>' +
+                    '<td>' + item.trabajo + '</td>' +
+                    '<td>' + item.estado_portal + '</td>' +
+                    '<td>' + item.fecha + '</td>' +
+                    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+                    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+                    '<td><button type="button" class="btn btn-success">Editar</button></td>' +
+                    '</tr>';
 
+                // Agregar la nueva fila al cuerpo de la tabla
+                $('.table tbody').append(newRow);
+            });
 
+            // Establecer el título de la tienda
+            if (responseObject.length > 0) {
+                $('.tittle_tienda').text(responseObject[0].nombre);
+            } else {
+                $('.tittle_tienda').text('No se encontró contenido para la tienda');
+            }
+        },
+        error: function() {
+            alert('Error al extraer sts');
+        }
+    });
+    break;
+  default:
+    // code block
+}
 
+}
 
-
-
-
-
-    }
-
-
-
-
-function eliminarSt(stId) {
 
    
-$.ajax({
-url: '../actions/delete_st.php', // Ruta a tu script PHP
-method: 'POST',
-data: { stId: stId }, // Datos que se enviarán al servidor
-success: function (response) {
-  // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
-  
-
-  // Cierra el modal después de eliminar
-  cerrarModal();
-  location.reload();
-},
-error: function () {
-  alert('Error al eliminar la tienda');
-}
-});
- 
-}
-
-
-
-
-
-function permitirSoloNumeros(elemento) {
-    elemento.value = elemento.value.replace(/[^0-9]/g, '');
-}
-
-
-
-
-
-
-
-
+   
 </script>
 
 
 
+<script src="../assets/js/filtros.js"></script>
 
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
  
  
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
