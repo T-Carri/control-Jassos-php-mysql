@@ -47,6 +47,9 @@ $conn = $databaseConnection->getConnection();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
+
 </head>
 <body>
 <div class="navbar">
@@ -103,21 +106,35 @@ $conn = $databaseConnection->getConnection();
         
       </div>
     <nav class="navbar bg-body-tertiary fixed">
-  <div class="container-fluid">
-  <div class="d-flex flex-row">
-    <div class="p-2"><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button></div>
-    <div class="p-2">
-      <button  class="btn btn-dark" onclick="window.location.href='agregar.php?componente=tiendas'"  type="button" >
-      <i class="fa-solid fa-store"></i> Tiendas
-    </button> 
+    <div class="container-fluid">
+  <div class="d-flex flex-row align-items-center justify-content-between"> <!-- Contenedor de botones y formulario -->
+    <div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="d-flex p-2">
+      <button class="btn btn-dark  ms-2" onclick="window.location.href='agregar.php?componente=tiendas'" type="button">
+        <i class="fa-solid fa-store"></i> Tiendas
+      </button>
 
-    <button  class="btn btn-dark" onclick="window.location.href='agregar.php?componente=region'"  type="button" >
-    <i class="fa-solid fa-compass"></i>  Regiones
-    </button>
+      <button class="btn btn-dark  ms-2" onclick="window.location.href='agregar.php?componente=region'" type="button">
+        <i class="fa-solid fa-compass"></i> Regiones
+      </button>
+
+      <button class="btn btn-dark  ms-2" type="button" data-bs-toggle="modal" data-bs-target="#myModal">
+        <i class="fa-solid fa-plus"></i> Agregar ST
+      </button>
+    </div>
+    <div class="flex-grow-1"> <!-- Ocupa el espacio restante -->
+      <form class="d-flex " role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar ST" aria-label="Search">
+        <button class="btn btn-outline-success" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"  >Buscar</button>
+      </form>
+    </div>
   </div>
 </div>
+
     
 
   
@@ -163,16 +180,35 @@ $conn = $databaseConnection->getConnection();
 <div class="d-flex" id="wrapper">
 
   <!-- Sidebar -->
-  <div class=" border-right" id="sidebar-wrapper " style="background: #C7C8CC;">
+  <div class=" border-right" id="sidebar-wrapper " >
   <div class="sidebar-heading text-black text-center ">
   <h5 class="mx-auto">Consulta tienda</h5>
 </div>
-    <div class="list-group list-group-flush" style="max-height: 500px; overflow-y: auto;">
+    <div class="list-group list-group-flush" style="max-height: 500px; overflow-y: auto; padding: 10%;">
 
     <?php 
+    require '../includes/configlite.php';
+$databaseConnection = new DatabaseConnectioni();
+$conn = $databaseConnection->getConnection();
+
 foreach ($tiendas as $tienda) {
+    // Consulta para contar el número de elementos en la tabla st para la tienda actual
+    $sql = "SELECT COUNT(*) AS num_st FROM st WHERE id_tienda = ? AND (
+      st.autorizado != true
+      OR st.trabajo_realizado != true
+  )
+  AND st.estado_portal != 'CANCELADO'
+  AND st.archivado != true";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $tienda['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $num_st = $row['num_st'];
+
+    // Mostrar el nombre de la tienda con el número de elementos de la tabla st
     echo '<strong>';
-    echo '<a href="filtros.php?idTienda='.$tienda['id'].'"     class="list-group-item list-group-item-action bg-white text-black tienda-link" style="font-family: Arimo, sans-serif;">'.$tienda['nombre'].'</a>';
+    echo '<a href="filtros.php?posComponente=activos&idTienda='.$tienda['id'].'" class="list-group-item list-group-item-action bg-white text-black tienda-link" style="font-family: Arimo, sans-serif;">'.$tienda['nombre'].'<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">'.$num_st.'<span class="visually-hidden">unread messages</span></span></a>';
     echo '</strong>';
 }
 ?>
@@ -200,19 +236,6 @@ foreach ($tiendas as $tienda) {
 
 
 
-
-<div class="btn-floating">
-    <button class="btn-53" data-bs-toggle="modal" data-bs-target="#myModal">
-  <div class="original" >+</div>
-  <div class="letters">
-    
-    <span>+</span>
-    <span>S</span>
-    <span>T</span>
-      </div>
-</button>
-
-</div>
 
 
 
@@ -324,6 +347,12 @@ foreach ($tiendas as $tienda) {
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+<script>  
+var popoverList1 = [].slice.call(document.querySelectorAll('[data-bs-toggle = "popover"]'))  
+var popoverList2 = popoverList1.map(function (popoverTriggerfun) {  
+return new bootstrap.Popover(popoverTriggerfun)  
+})  
+</script>  
 
 <script>
 $(document).ready(function() {
@@ -332,11 +361,11 @@ $(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
     const idTienda = urlParams.get('idTienda');
    
-   console.log(idTienda)
+   
 
 
 if(!idTienda){
-  console.log("go ahead")
+ 
 }else{
   let componente='activos';
    cargarContenedor(idTienda, componente)
@@ -352,13 +381,16 @@ function cargarContenedor(idTienda, componente) {
     // Construir el contenido HTML de la navegación basado en el valor del parámetro 'componente'
     var contenidoHTML = '<ul class="nav nav-tabs">' +
         '<li class="nav-item">' +
-        '<button id="btnActivos" class="nav-link ' + (componente === 'activos' || componente === null ? 'active' : '') + '" onClick="cargarContenidoTienda('+idTienda+',  \'activos\' )">ST Activos</button>' +
+        '<a id="btnActivos" href="?posComponente=activos&idTienda=' + idTienda + '"  class="nav-link" onClick="cargarContenidoTienda(' + idTienda + ', \'activos\' )">ST</a>' +
         '</li>' +
         '<li class="nav-item">' +
-        '<button id="btnPresaldos" class="nav-link ' + (componente === 'presaldos' ? 'active' : '') + '" onClick="cargarContenidoTienda('+idTienda+', \'presaldos\' )">ST Presaldos</button>' +
+        '<a id="btnCancelados" href="?posComponente=cancelados&idTienda=' + idTienda + '"  class="nav-link" onClick="cargarContenidoTienda(' + idTienda + ', \'cancelados\')">ST Cancelados</a>' +
         '</li>' +
         '<li class="nav-item">' +
-        '<button id="btnSaldos"  class="nav-link ' + (componente === 'saldos' ? 'active' : '') + '"onClick="cargarContenidoTienda('+idTienda+', \'saldos\')">ST Saldos</button>' +
+        '<a id="btnPresaldos" href="?posComponente=presaldos&idTienda=' + idTienda + '" class="nav-link" onClick="cargarContenidoTienda(' + idTienda + ', \'presaldos\' )">ST Presaldos</a>' +
+        '</li>' +
+        '<li class="nav-item">' +
+        '<a id="btnSaldos" href="?posComponente=saldos&idTienda=' + idTienda + '"   class="nav-link" onClick="cargarContenidoTienda(' + idTienda + ', \'saldos\')">ST Saldos</a>' +
         '</li>' +
         '</ul>' +
         '<h2 class="tittle_tienda"></h2>' +
@@ -391,14 +423,26 @@ function cargarContenidoTienda(idTienda,  componente) {
   
  
 
-  console.log(idTienda, componente)
+ 
 
   $('#btnActivos').removeClass('active');
   $('#btnPresaldos').removeClass('active');
   $('#btnSaldos').removeClass('active');
+  $('#btnCancelados').removeClass('active');
+  
 
 
-  switch(componente) {
+  const urlParams = new URLSearchParams(window.location.search);
+    const posComponente = urlParams.get('posComponente');
+
+
+   let componentex;
+
+if(posComponente==null){
+  componentex =  'activos';
+}else{ componentex = posComponente;}
+
+  switch(componentex) {
   case 'activos':
     $('#btnActivos').addClass('active');
     $.ajax({
@@ -406,30 +450,83 @@ function cargarContenidoTienda(idTienda,  componente) {
         method: 'GET',
         data: { idTienda: idTienda },
         success: function(response) {
-            var responseObject = JSON.parse(response);
-            console.log(response);
+         
+if(response == 'SIN STS'){
+
+  $('.table thead').empty();
+             $('.table tbody').empty();
+              console.log('IMG PARA SIN STS')
+let imgRes = '<div class="container text-center " style="display: block;">'+
+             '<div class="mx-auto">'+
+             '<h2 class="text-center" style="opacity: 0.8;">Sin STS para mostrar</h2>'+
+             '</div>'+
+             '<img src="../assets/img/f2.png" style="opacity: 0.8;" />'+
+             '</div>';
+
+
+             $('.table tbody').append(imgRes);
+             $(function () {
+      
+    });
+        
+  
+
+}else{
+  var responseObject = JSON.parse(response);
+           
             // Limpiar el contenido del cuerpo de la tabla
             $('.table tbody').empty();
             responseObject.forEach(function(item) {
+              console.log('activos:', item);
+
+
+              var backgroundColor;
+switch (item.estado_portal) {
+    case 'PENDIENTE':
+        backgroundColor = '#FCDC2A'; // Color para PENDIENTE
+        break;
+    case 'STANDBY':
+        backgroundColor = '#C7C8CC'; // Color para STANBY
+        break;
+    case 'ACEPTADO':
+        backgroundColor = '#9BCF53'; // Color para ACEPTADO
+        break;
+
+        case 'REVISADO':
+        backgroundColor = '#9195F6'; // Color para ACEPTADO
+        break;
+
+        case 'PRESUPUESTADO':
+        backgroundColor = '#387ADF'; // Color para ACEPTADO
+        break;
+
+        case 'CANCELADO':
+        backgroundColor = '#E72929'; // Color para ACEPTADO
+        break;
+    default:
+        backgroundColor = ''; // Color predeterminado
+}
                 // Crear una nueva fila para cada objeto en 'response'
                 var newRow =
-                    '<tr style="font-family: Arimo, sans-serif;">' +
-                    '<td>' + item.folio + '</td>' +
-                    '<td>' + item.trabajo + '</td>' +
-                    '<td>' + item.estado_portal + '</td>' +
-                    '<td>' + item.fecha + '</td>' +
-                    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-                    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-                    '<td><button type="button" class="btn btn-success">Editar</button></td>' +
-                    '</tr>';
+    '<tr style="font-family: Arimo, sans-serif;">' +
+    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
+    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
+    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
+    '<td>' + item.fecha + '</td>' +
+    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-success" onClick="abrirModal(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\')" >Editar</button></td>' +
+    '</tr>';
 
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
             });
+}
 
             // Establecer el título de la tienda
+
             if (responseObject.length > 0) {
                 $('.tittle_tienda').text(responseObject[0].nombre);
             } else {
@@ -449,28 +546,77 @@ function cargarContenidoTienda(idTienda,  componente) {
         method: 'GET',
         data: { idTienda: idTienda },
         success: function(response) {
-            var responseObject = JSON.parse(response);
+           
+if(response == 'SIN STS'){
+
+  $('.table thead').empty();
+             $('.table tbody').empty();
+              console.log('IMG PARA SIN STS')
+let imgRes = '<div class="container text-center " style="display: block;">'+
+             '<div class="mx-auto">'+
+             '<h2 class="text-center" style="opacity: 0.8;">Sin STS PRESALDADOS para mostrar</h2>'+
+             '</div>'+
+             '<img src="../assets/img/f2.png" style="opacity: 0.8;" />'+
+             '</div>';
+
+
+             $('.table tbody').append(imgRes);
+        
+  
+
+}else{
+  var responseObject = JSON.parse(response);
             console.log(response);
             // Limpiar el contenido del cuerpo de la tabla
             $('.table tbody').empty();
             responseObject.forEach(function(item) {
+              console.log('test:', item);
+                // Crear una nueva fila para cada objeto en 'response'
+                var backgroundColor;
+switch (item.estado_portal) {
+    case 'PENDIENTE':
+        backgroundColor = '#F9F07A'; // Color para PENDIENTE
+        break;
+    case 'STANDBY':
+        backgroundColor = '#C7C8CC'; // Color para STANBY
+        break;
+    case 'ACEPTADO':
+        backgroundColor = '#9BCF53'; // Color para ACEPTADO
+        break;
+
+        case 'REVISADO':
+        backgroundColor = '#9195F6'; // Color para ACEPTADO
+        break;
+
+        case 'PRESUPUESTADO':
+        backgroundColor = '#387ADF'; // Color para ACEPTADO
+        break;
+
+        case 'CANCELADO':
+        backgroundColor = '#E72929'; // Color para ACEPTADO
+        break;
+    default:
+        backgroundColor = ''; // Color predeterminado
+}
                 // Crear una nueva fila para cada objeto en 'response'
                 var newRow =
-                    '<tr style="font-family: Arimo, sans-serif;">' +
-                    '<td>' + item.folio + '</td>' +
-                    '<td>' + item.trabajo + '</td>' +
-                    '<td>' + item.estado_portal + '</td>' +
-                    '<td>' + item.fecha + '</td>' +
-                    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-                    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-                    '<td><button type="button" class="btn btn-success">Editar</button></td>' +
-                    '</tr>';
+    '<tr style="font-family: Arimo, sans-serif;">' +
+    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
+    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
+    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
+    '<td>' + item.fecha + '</td>' +
+    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-success" /* onClick="abrirModalPRESALDOS(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\',\'' + item.archivado + '\')" */ >Editar</button></td>' +
+    '</tr>';
 
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
             });
+}
+
 
             // Establecer el título de la tienda
             if (responseObject.length > 0) {
@@ -491,28 +637,75 @@ function cargarContenidoTienda(idTienda,  componente) {
         method: 'GET',
         data: { idTienda: idTienda },
         success: function(response) {
-            var responseObject = JSON.parse(response);
+       
+if(response == 'SIN STS'){
+             $('.table thead').empty();
+             $('.table tbody').empty();
+              console.log('IMG PARA SIN STS')
+let imgRes = '<div class="container text-center " style="display: block;">'+
+             '<div class="mx-auto">'+
+             '<h2 class="text-center" style="opacity: 0.8;">Sin STS SALDADOS para mostrar</h2>'+
+             '</div>'+
+             '<img src="../assets/img/f2.png" style="opacity: 0.8;" />'+
+             '</div>';
+
+
+             $('.table tbody').append(imgRes);
+        
+  
+
+}else{
+  var responseObject = JSON.parse(response);
             console.log(response);
             // Limpiar el contenido del cuerpo de la tabla
             $('.table tbody').empty();
             responseObject.forEach(function(item) {
+              console.log('test:', item);
+                // Crear una nueva fila para cada objeto en 'response'
+                var backgroundColor;
+switch (item.estado_portal) {
+    case 'PENDIENTE':
+        backgroundColor = '#F9F07A'; // Color para PENDIENTE
+        break;
+    case 'STANDBY':
+        backgroundColor = '#C7C8CC'; // Color para STANBY
+        break;
+    case 'ACEPTADO':
+        backgroundColor = '#9BCF53'; // Color para ACEPTADO
+        break;
+
+        case 'REVISADO':
+        backgroundColor = '#9195F6'; // Color para ACEPTADO
+        break;
+
+        case 'PRESUPUESTADO':
+        backgroundColor = '#387ADF'; // Color para ACEPTADO
+        break;
+
+        case 'CANCELADO':
+        backgroundColor = '#E72929'; // Color para ACEPTADO
+        break;
+    default:
+        backgroundColor = ''; // Color predeterminado
+}
                 // Crear una nueva fila para cada objeto en 'response'
                 var newRow =
-                    '<tr style="font-family: Arimo, sans-serif;">' +
-                    '<td>' + item.folio + '</td>' +
-                    '<td>' + item.trabajo + '</td>' +
-                    '<td>' + item.estado_portal + '</td>' +
-                    '<td>' + item.fecha + '</td>' +
-                    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-                    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-                    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-                    '<td><button type="button" class="btn btn-success">Editar</button></td>' +
-                    '</tr>';
-
+    '<tr style="font-family: Arimo, sans-serif;">' +
+    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
+    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
+    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
+    '<td>' + item.fecha + '</td>' +
+    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-success" /* onClick="abrirModalSALDOS(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',  \'' + item.fecha + '\',\'' + item.archivado + '\')" */ >Editar</button></td>' +
+    '</tr>';
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
             });
+}
+
 
             // Establecer el título de la tienda
             if (responseObject.length > 0) {
@@ -526,6 +719,101 @@ function cargarContenidoTienda(idTienda,  componente) {
         }
     });
     break;
+
+    case 'cancelados':
+    $('#btnCancelados').addClass('active');
+
+    $.ajax({
+        url: '../actions/get_st_cancelados.php',
+        method: 'GET',
+        data: { idTienda: idTienda },
+        success: function(response) {
+
+if(response == 'SIN STS'){
+
+  $('.table thead').empty();
+             $('.table tbody').empty();
+              console.log('IMG PARA SIN STS')
+let imgRes = '<div class="container text-center " style="display: block;">'+
+             '<div class="mx-auto">'+
+             '<h2 class="text-center" style="opacity: 0.8;">Sin STS CANCELADOS para mostrar</h2>'+
+             '</div>'+
+             '<img src="../assets/img/f2.png" style="opacity: 0.8;" />'+
+             '</div>';
+
+
+             $('.table tbody').append(imgRes);
+        
+  
+}else{
+  var responseObject = JSON.parse(response);
+            console.log(response);
+            // Limpiar el contenido del cuerpo de la tabla
+            $('.table tbody').empty();
+            responseObject.forEach(function(item) {
+                // Crear una nueva fila para cada objeto en 'response'
+                console.log('test:', item);
+                var backgroundColor;
+switch (item.estado_portal) {
+    case 'PENDIENTE':
+        backgroundColor = '#F9F07A'; // Color para PENDIENTE
+        break;
+    case 'STANDBY':
+        backgroundColor = '#C7C8CC'; // Color para STANBY
+        break;
+    case 'ACEPTADO':
+        backgroundColor = '#9BCF53'; // Color para ACEPTADO
+        break;
+
+        case 'REVISADO':
+        backgroundColor = '#9195F6'; // Color para ACEPTADO
+        break;
+
+        case 'PRESUPUESTADO':
+        backgroundColor = '#387ADF'; // Color para ACEPTADO
+        break;
+
+        case 'CANCELADO':
+        backgroundColor = '#E72929'; // Color para ACEPTADO
+        break;
+    default:
+        backgroundColor = ''; // Color predeterminado
+}
+                // Crear una nueva fila para cada objeto en 'response'
+                var newRow =
+    '<tr style="font-family: Arimo, sans-serif;">' +
+    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
+    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
+    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
+    '<td>' + item.fecha + '</td>' +
+    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
+    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
+    '<td><button type="button" class="btn btn-success" onClick="abrirModal(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\')" >Editar</button></td>' +
+    '</tr>';
+
+                // Agregar la nueva fila al cuerpo de la tabla
+                $('.table tbody').append(newRow);
+            });
+}
+
+          
+
+            // Establecer el título de la tienda
+            if (responseObject.length > 0) {
+                $('.tittle_tienda').text(responseObject[0].nombre);
+            } else {
+                $('.tittle_tienda').text('No se encontró contenido para la tienda');
+            }
+        },
+        error: function() {
+            alert('Error al extraer sts');
+        }
+    });
+
+    break;
+
   default:
     // code block
 }
@@ -533,15 +821,508 @@ function cargarContenidoTienda(idTienda,  componente) {
 }
 
 
-   
+
    
 </script>
 
 
 
-<script src="../assets/js/filtros.js"></script>
+<!-- <script src="../assets/js/filtros.js"></script> -->
 
  
+<script>
+const myModal = document.getElementById('myModal')
+const myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', () => {
+  myInput.focus()
+})
+
+
+
+
+const estados = [
+    { value: 'STANDBY', label: '--' },
+    { value: 'PENDIENTE', label: 'PENDIENTE' },
+    { value: 'REVISADO', label: 'REVISADO' },
+    { value: 'PRESUPUESTADO', label: 'PRESUPUESTADO' },
+    { value: 'ACEPTADO', label: 'ACEPTADO' },
+    { value: 'CANCELADO', label: 'CANCELADO' }
+  ];
+  
+  
+
+ //EDICION DE ST GENERAL 
+ function abrirModal(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado ) {
+  
+
+  var modalContent = `    
+  <div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Editar ST ${stTienda_id}</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+<div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
+   <div>
+       <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
+   </div>
+   <div>
+       <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
+   </div>
+   <div>
+       <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
+   </div>
+</div>
+<div id="modalform" style="background-color:#CFD2CF;">
+
+       <div>
+           <label for="tienda">EDITAR FOLIO</label>
+           <br>
+           <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
+       </div>
+
+
+
+       <div>
+           <label for="fecha">ESTADO PORTAL:</label>
+           
+
+           <select name="estado" id="estadoedit">
+${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
+</select>
+       </div>
+
+       
+
+     
+
+       <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
+<div style="margin-right: 20px;">
+   <label for="tienda">FOLIO AUTORIZADO:</label>
+   <br>
+   <label class="switch">
+       <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === 1 ? 'checked' : null}>
+       <span class="slider"></span>
+   </label>
+</div>
+
+<div style="margin-right: 100px;">
+   <label for="tienda">TRABAJO REALIZADO:</label>
+   <br>
+   <label class="switch">
+       <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === 1 ? 'checked' : ''} >
+       <span class="slider"></span>
+   </label>
+</div>
+
+
+</div>
+
+
+
+
+<div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
+
+<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
+<div style="margin-right: 20px;">
+<p>
+
+<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
+</p>
+</div>
+<div style="margin: 50px, 50px;">
+
+<p>
+
+<button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
+</p>
+</div>
+
+</div>
+
+
+
+<div class="collapse" id="collapseExample">
+        <div class="card card-body"   style="background-color:#CFD2CF;">
+
+
+        <label for="fecha">EDITAR TRABAJO</label>
+<br>
+<textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
+
+
+           <br>
+
+  
+
+           <label for="fecha">EDITAR FECHA</label>
+           <br>
+   <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
+
+  
+
+       </div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+<button type="button" class="btn btn-primary" onclick="editarSt(${stId})">Guardar cambios</button>
+</div>`;
+
+  mostrarModal(modalContent);
+}
+
+
+
+
+
+
+
+
+function abrirModalPRESALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado, stArchivado ) {
+        
+        var modalContent = `    
+        <div class="modal-header">
+     <h5 class="modal-title" id="exampleModalLabel">Editar ST Presaldado</h5>
+     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+     <div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
+         <div>
+             <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
+         </div>
+         <div>
+             <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
+         </div>
+         <div>
+             <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
+         </div>
+     </div>
+     <div id="modalform" style="background-color:#CFD2CF;">
+    
+             <div>
+                 <label for="tienda">EDITAR FOLIO</label>
+                 <br>
+                 <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
+             </div>
+    
+    
+    
+             <div>
+                 <label for="fecha">ESTADO PORTAL:</label>
+                 
+    
+                 <select name="estado" id="estadoedit">
+    ${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
+    </select>
+             </div>
+    
+             
+    
+           
+    
+             <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
+     <div style="margin-right: 20px;">
+         <label for="tienda">FOLIO AUTORIZADO:</label>
+         <br>
+         <label class="switch">
+             <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === 1 ? 'checked' : null}>
+             <span class="slider"></span>
+         </label>
+     </div>
+    
+     <div style="margin-right: 100px;">
+         <label for="tienda">TRABAJO REALIZADO:</label>
+         <br>
+         <label class="switch">
+             <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === 1 ? 'checked' : ''} >
+             <span class="slider"></span>
+         </label>
+     </div>
+    
+     <div style="margin-right: 100px;">
+     <label for="saldar">SALDAR:</label>
+     <br>
+     <label class="switch">
+         <input type="checkbox" name="trabajo_saldado" id="trabajosaldadoedit"  ${stArchivado === 1 ? 'checked' : ''} >
+         <span class="slider"></span>
+     </label>
+    </div>
+    </div>
+    
+    
+    
+    
+    <div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
+    
+    <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
+     <div style="margin-right: 20px;">
+     <p>
+    
+    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
+    </p>
+     </div>
+     <div style="margin: 50px, 50px;">
+    
+     <p>
+    
+     <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
+    </p>
+     </div>
+    
+     </div>
+    
+    
+    
+     <div class="collapse" id="collapseExample">
+              <div class="card card-body"   style="background-color:#CFD2CF;">
+    
+    
+              <label for="fecha">EDITAR TRABAJO</label>
+    <br>
+    <textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
+    
+    
+                 <br>
+    
+        
+    
+                 <label for="fecha">EDITAR FECHA</label>
+                 <br>
+         <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
+    
+                
+    
+             </div>
+     </div>
+    </div>
+    </div>
+     </div>
+    
+    <div class="modal-footer">
+     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+     <button type="button" class="btn btn-primary" onclick="editarStPresaldo(${stId})">Guardar cambios</button>
+    </div>`;
+    console.log('presaldos:',stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado, stArchivado)
+        mostrarModal(modalContent);
+    }
+    
+    //EDICION DE ST SALDADOS
+    //Boton para regresar a PRESALDOS
+    function abrirModalSALDOS(stId, stFolio, stTienda,  stFecha,  stArchivado ) {
+      var modalContent = `    
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Editar ST Saldado</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div id="modal_dashboard_content" class="d-flex justify-content-between text-center" style="margin: auto; width: 100%;">
+        <div>
+            <h4><span class="badge bg-secondary">${stFolio === "0000" ? 'SIN FOLIO' : stFolio}</span></h4>
+        </div>
+        <div>
+            <h4><span class="badge bg-secondary">${stTienda}</span></h4>
+        </div>
+        <div>
+            <h4><span class="badge bg-secondary">${stFecha}</span></h4>
+        </div>
+    </div>
+    <div id="modalform" style="background-color:#CFD2CF;">
+        <div class="d-flex flex-row align-items-center" style="margin-bottom: 20px;">
+            <div style="margin-right: 100px;">
+                <label for="trabajopresaldadoedit">
+                    <h4>Regresar a presaldos:</h4>
+                </label>
+                <br>
+                <label class="switch">
+                    <input type="checkbox" name="trabajo_presaldado" id="trabajopresaldadoedit" ${stArchivado === '1' ? 'checked' : ''}>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-primary" onclick="editarStSaldo(${stId})">Guardar cambios</button>
+</div>`;
+
+    
+    
+    mostrarModal(modalContent);
+    }
+    
+    
+     
+
+
+
+
+
+
+//MODALES
+
+
+
+function mostrarModal(content) {
+var modalElement = document.getElementById('exampleModal');
+var modalBody = modalElement.querySelector('.modal-content');
+modalBody.innerHTML = content;
+
+// Abre el modal
+var modal = new bootstrap.Modal(modalElement);
+modal.show();
+}
+
+
+
+function cerrarModal() {
+   var modalElement = document.getElementById('exampleModal');
+   var modal = bootstrap.Modal.getInstance(modalElement);
+   modal.hide();
+}
+
+
+function editarSt(stId) {
+
+
+
+  var e1 = document.getElementById('folioedit').value;
+     var e2 = document.getElementById('estadoedit').value;
+var e3 = document.getElementById('folioautorizadoedit').checked;
+     var e4 = document.getElementById('trabajoautorizadoedit').checked;
+   var e5 = document.getElementById('trabajoedit').value;
+    var e6 = document.getElementById('fechaedit').value;  
+
+
+
+
+ $.ajax({
+url: '../actions/update_st.php', 
+method: 'POST',
+data: {id:stId, Folio: e1, Estado: e2, FolioAutorizado:e3 , TrabajoAutorizado:e4, NewTrabajo: e5, NewFecha:e6 }, // Datos que se enviarán al servidor
+success: function (response) {
+   // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
+   
+   //alert(response);
+   // Cierra el modal después de eliminar
+   cerrarModal();
+   location.reload();
+},
+error: function () {
+   alert('Error al eliminar la tienda');
+}
+}); 
+
+}
+
+
+
+function editarStPresaldo(stId) {
+
+
+
+var e1 = document.getElementById('folioedit').value;
+   var e2 = document.getElementById('estadoedit').value;
+var e3 = document.getElementById('folioautorizadoedit').checked;
+   var e4 = document.getElementById('trabajoautorizadoedit').checked;
+   var e7 = document.getElementById('trabajosaldadoedit').checked;
+ var e5 = document.getElementById('trabajoedit').value;
+  var e6 = document.getElementById('fechaedit').value;  
+
+
+console.log(e1, e2, e3, e4, e5, e6);
+
+$.ajax({
+url: '../actions/update_st_presaldos.php', 
+method: 'POST',
+data: {id:stId, Folio: e1, Estado: e2, FolioAutorizado:e3 , TrabajoAutorizado:e4, TrabajoArchivado:e7, NewTrabajo: e5, NewFecha:e6 }, // Datos que se enviarán al servidor
+success: function (response) {
+ // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
+ 
+ //alert(response);
+ // Cierra el modal después de eliminar
+ cerrarModal();
+ location.reload();
+},
+error: function () {
+ alert('Error al eliminar la tienda');
+}
+}); 
+
+}
+
+
+function editarStSaldo(stId) {
+
+   var e7 = document.getElementById('trabajopresaldadoedit').checked;
+ 
+
+$.ajax({
+url: '../actions/update_st_saldos.php', 
+method: 'POST',
+data: {id:stId, TrabajoArchivado:e7 }, // Datos que se enviarán al servidor
+success: function (response) {
+ // Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
+ 
+ //alert(response);
+ // Cierra el modal después de eliminar
+ cerrarModal();
+ location.reload();
+},
+error: function () {
+ alert('Error al eliminar la tienda');
+}
+}); 
+
+
+
+
+
+
+
+
+}
+
+
+
+function eliminarSt(stId) {
+
+
+$.ajax({
+url: '../actions/delete_st.php', // Ruta a tu script PHP
+method: 'POST',
+data: { stId: stId }, // Datos que se enviarán al servidor
+success: function (response) {
+// Maneja la respuesta del servidor, muestra mensajes o realiza otras acciones necesarias
+
+
+// Cierra el modal después de eliminar
+cerrarModal();
+location.reload();
+},
+error: function () {
+alert('Error al eliminar la tienda');
+}
+});
+
+}
+
+
+
+
+
+function permitirSoloNumeros(elemento) {
+elemento.value = elemento.value.replace(/[^0-9]/g, '');
+}
+
+
+</script>
+
+
  
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>

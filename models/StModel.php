@@ -259,6 +259,22 @@ public function editarSt($id, $folio, $estado_portal, $autorizado, $trabajo_real
 
 //presaldos
 
+public function editarStPresaldos($id, $folio, $estado_portal, $autorizado, $trabajo_realizado, $archivado, $trabajo, $fecha ) {
+    $sql = "UPDATE st SET folio = ?, estado_portal = ?, autorizado = ?, trabajo_realizado = ?, archivado=?, trabajo = ?, fecha = ? WHERE id =? ";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ssssssss",  $folio, $estado_portal, $autorizado, $trabajo_realizado, $archivado ,$trabajo, $fecha, $id );
+    return $stmt->execute();
+}
+
+
+
+public function editarStSaldos($id, $archivado ) {
+    $sql = "UPDATE st SET  archivado=? WHERE id =? ";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ss",  $archivado,  $id );
+    return $stmt->execute();
+}
+
 
 public function getPresaldos() {
     $sql = "SELECT 
@@ -426,15 +442,20 @@ WHERE
 public function filtros1($id) {
     // Preparar la consulta con un marcador de posición
     $sql = "SELECT 
-        st.*, 
-        tienda.nombre
-    FROM 
-        st
-        INNER JOIN 
+    st.*, 
+    tienda.nombre
+FROM 
+    st
+    INNER JOIN 
     tienda ON st.id_tienda = tienda.id
-   WHERE   
-        st.id_tienda = ?
-        AND st.archivado != true";
+WHERE   
+    st.id_tienda = ?
+    AND (
+        st.autorizado != true
+        OR st.trabajo_realizado != true
+    )
+    AND st.estado_portal != 'CANCELADO'
+    AND st.archivado != true";
 
     // Preparar la sentencia
     $stmt = $this->conn->prepare($sql);
@@ -508,9 +529,6 @@ public function filtros2($id) {
 
 
 
-
-
-
 public function filtros3($id) {
     // Preparar la consulta con un marcador de posición
     $sql = "SELECT 
@@ -523,6 +541,60 @@ public function filtros3($id) {
    WHERE   
         st.id_tienda = ?
         AND st.archivado = true";
+
+    // Preparar la sentencia
+    $stmt = $this->conn->prepare($sql);
+
+    // Verificar si la preparación de la sentencia fue exitosa
+    if (!$stmt) {
+        die("Error al preparar la consulta: " . $this->conn->error);
+    }
+
+    // Enlazar el valor de $id al marcador de posición
+    $stmt->bind_param("i", $id);  // "i" indica que el valor es un entero
+
+    // Ejecutar la consulta
+    $stmt->execute();
+
+    // Verificar si la ejecución de la consulta fue exitosa
+    if (!$stmt->execute()) {
+        die("Error al ejecutar la consulta: " . $stmt->error);
+    }
+
+    // Obtener el resultado de la consulta
+    $result = $stmt->get_result();
+
+    // Verificar si se obtuvieron resultados
+    if (!$result) {
+        die("Error al obtener resultados de la consulta: " . $stmt->error);
+    }
+
+    // Recorrer los resultados y almacenarlos en un array
+    $sts = [];
+    while ($row = $result->fetch_assoc()) {
+        $sts[] = $row;
+    }
+
+    // Cerrar la sentencia
+    $stmt->close();
+
+    return $sts;
+}
+
+
+
+public function filtros4($id) {
+    // Preparar la consulta con un marcador de posición
+    $sql = "SELECT 
+        st.*, 
+        tienda.nombre
+    FROM 
+        st
+        INNER JOIN 
+    tienda ON st.id_tienda = tienda.id
+   WHERE   
+        st.id_tienda = ?
+        AND st.estado_portal = 'CANCELADO'";
 
     // Preparar la sentencia
     $stmt = $this->conn->prepare($sql);

@@ -261,13 +261,19 @@ l32 -50 27 80 c38 113 34 378 -8 503 -98 288 -285 408 -830 527 -404 88 -509
   </div>
 </nav>
 <div class="content mx-auto">
-    <div class="col-12 col-md-8 position-relative" style="background-image: url('../assets/img/d0.jpg'); background-size: cover; background-position: center; height: 30em;">
-
-        <!-- Texto en superposición -->
-        <div class="overlay-text text-white text-center">
-            <p style="font-size: 4em; ">Organizar, Agregar tiendas y regiones</p>
+<div class="col-12 col-md-8 position-relative mx-auto">
+<div  class="col-12 col-md-8 position-relative mx-auto rounded" style="background-image: url('../assets/img/analitics.png'); background-size: cover; background-position: center; height: 15em;">
+<div class="overlay-text text-black text-center">
+            <p style="font-size: 4em; ">Analitics</p>
         </div>
-    </div>
+</div>
+<div  class="col-12 col-md-8 position-relative mx-auto mt-3  rounded" style="background-image: url('../assets/img/herramientas.jpg'); background-size: cover; background-position: center; height: 15em;">
+<div class="overlay-text text-white text-center">
+            <p style="font-size: 4em; ">Bodega</p>
+        </div>
+</div>
+
+</div>
 
 
 

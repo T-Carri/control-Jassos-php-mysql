@@ -70,7 +70,7 @@ const estados = [
       </div>
   
       <div style="margin-right: 100px;">
-          <label for="tienda">TRABAJO AUTORIZADO:</label>
+          <label for="tienda">TRABAJO REALIZADO:</label>
           <br>
           <label class="switch">
               <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === '1' ? 'checked' : ''} >
