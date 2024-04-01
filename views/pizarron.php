@@ -165,14 +165,13 @@ foreach ($regiones as $region) {
  echo '<table class="table">';
 
   echo ' <thead>';
-   echo '<tr>';
-    echo '<th scope="col">FOLIO</th>';
-  echo '  <th scope="col">TIENDA</th>';
-  echo ' <th scope="col">TRABAJO A REALIZAR</th>';
-  echo ' <th scope="col">FECHA</th>';
-  echo ' <th scope="col">Editar</th>';
-
-  echo ' </tr>';
+  echo '<tr  style="background-color: black; color: white;  text-align: center;">';
+echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FOLIO</th>';
+echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TIENDA</th>';
+echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TRABAJO A REALIZAR</th>';
+echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FECHA</th>';
+echo '<th scope="col" style="background-color: black; color: white; text-align: center;">Editar</th>';
+echo '</tr>';
   echo ' </thead> ';
   echo '<tbody>';
 
@@ -230,11 +229,12 @@ foreach ($regiones as $region) {
   echo '<div>';
   echo '<table class="table">';
   echo '<thead>';
-  echo '<tr>';
-  echo ' <th scope="col">FOLIO</th>';
-  echo '<th scope="col">TIENDA</th>';
-  echo '  <th scope="col">TRABAJO A REALIZAR</th>';
-  echo ' <th scope="col">FECHA</th>';
+  echo '<tr  style="background-color: black; color: white;  text-align: center;">';
+  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FOLIO</th>';
+  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TIENDA</th>';
+  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TRABAJO A REALIZAR</th>';
+  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FECHA</th>';
+  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">Editar</th>';
   echo '</tr>';
   echo '</thead>';
 
@@ -341,12 +341,12 @@ foreach ($regiones as $region) {
 
 <!-- The Modal -->
 <div class="modal" id="myModal">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Agrega ST</h4>
+        <h4 class="modal-title  text-center">Agrega ST</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
@@ -354,30 +354,22 @@ foreach ($regiones as $region) {
       <div class="modal-body">
           <form  action="../controllers/StController.php" method="post"  >
         
+      
+      
+      
+      
+          <div style="display: flex; width: 100%;">
 
-        <label for="st">FOLIO:</label>
-        <input type="text" id="st" name="st" required>
+          <div style="width: 60%; padding: 2%;">
+    <!-- Contenido del segundo div -->
 
-        <label for="tienda">TIENDA:</label>
-        <select name="tienda_choose" id="tienda_choose">
-        <option value="null">--</option>
-        <?php 
-foreach ($tiendas as $tienda) {
-    echo '<option value="' . $tienda['id'] . '">' . $tienda['nombre'] . '</option>';
-}
-?>
+     
 
-</select>
+    <label for="trabajo"> <strong>TRABAJO A REALIZAR:</strong></label>
+        <textarea class="chamito" id="trabajo" name="trabajo" rows="4" required></textarea>
 
-       
-
-        <label for="trabajo">TRABAJO A REALIZAR:</label>
-        <textarea id="trabajo" name="trabajo" rows="4" required></textarea>
-
-        <label for="fecha">FECHA SOLICITUD:</label>
-        <input type="date" id="fecha" name="fecha" required>
-        <br>
-        <label for="fecha">ESTADO:</label>
+      
+        <label class="chamito" for="fecha"> <strong>ESTADO:</strong></label>
         <select name="estado" id="estado">
           <option value="STANDBY">--</option>
           <option value="PENDIENTE">PENDIENTE</option>
@@ -388,16 +380,53 @@ foreach ($tiendas as $tienda) {
         </select>
           
 <br>
-       <div style="display: flex; flex-direction: row; padding:3%;">
-       <div style="flex: 1; padding:3%;" >
-       <label for="st">ST ACEPTADO:</label> 
+
+<div class="container mx-auto">
+
+  <img src="../assets/img/coppel.svg"  style="width: 60%; " alt="Descripción de la imagen SVG">
+</div>
+
+  </div>
+
+
+
+  <div style="width: 40%; padding: 3%">
+    <!-- Contenido del primer div -->
+  
+    <label for="st"><strong> FOLIO:</strong></label>
+        <input class="chamito" type="text" id="st" name="st" required>
+<br>
+        <label for="tienda"><strong>TIENDA:</strong></label>
+        <select class="chamito" name="tienda_choose" id="tienda_choose">
+        <option value="null">--</option>
+        <?php 
+foreach ($tiendas as $tienda) {
+    echo '<option value="' . $tienda['id'] . '">' . $tienda['nombre'] . '</option>';
+}
+?>
+
+</select>
+<br>
+<label for="fecha"><strong>FECHA SOLICITUD:</strong></label>
+        <input class="chamito" type="date" id="fecha" name="fecha" required>
+        <br>
+  
+ 
+        
+
+        <div style="display: flex; flex-direction: row; padding:3%;">
+       <div style="flex: 1; padding:2%; margin:5%;" >
+       <label for="st"> <strong>ST ACEPTADO:</strong></label> 
+      
        <label class="switch">
        <input type="checkbox" name="st_aceptado">
        <span class="slider"></span>
        </label>
+     
       </div>
-      <div  style="flex: 2; padding:3%;">
-        <label for="st">TRABAJO REALIZADO:</label> 
+     
+      <div  style="flex: 2; padding:2%; margin:5%;">
+        <label for="st"><strong>TRABAJO REALIZADO:</strong></label> 
         <br>
         <label class="switch">
       <input type="checkbox" name="trabajo_realizado">
@@ -405,15 +434,26 @@ foreach ($tiendas as $tienda) {
       </label>
       </div>
       </div>
+
+
+      </div>
+      
+</div>
+
+
+   
+
+<div class="d-grid gap-2 col-6 mx-auto" style="display: flex; width: 100%; justify-content: center;" class="text-center">
+    <button id="enviar" class="btn btn-success btn-lg" type="submit">Agregar</button>
+</div>
+
+      
+      
         
-        <button id="enviar" class="btn btn-success" type="submit" >Enviar Solicitud</button>
     </form>
     </div>
     
     <!-- Modal footer -->
-    <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-    </div>
 
     </div>
   </div>
@@ -424,8 +464,8 @@ foreach ($tiendas as $tienda) {
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>

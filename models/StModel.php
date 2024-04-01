@@ -622,5 +622,29 @@ public function filtros4($id) {
 
 
 
+
+
+
+
+public function pathPPTO($id, $campo_bd, $ruta) {
+    $sql = "UPDATE st SET $campo_bd = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ss", $ruta, $id);
+    return $stmt->execute();
+}
+
+
+public function pathFACTURA($id, $campo_bd, $ruta) {
+    $sql = "UPDATE st SET $campo_bd = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ss", $ruta, $id);
+    return $stmt->execute();
+}
+
+ 
+
+
+
+
 }
 ?>

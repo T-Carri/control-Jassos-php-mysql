@@ -26,9 +26,6 @@ $databaseConnection = new DatabaseConnection();
 $conn = $databaseConnection->getConnection();
 
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -49,6 +46,106 @@ $conn = $databaseConnection->getConnection();
 
   <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
+
+
+<style>
+    .file-upload-container {
+        position: relative;
+        border: 2px dashed rgba(0, 0, 0, 0.5); /* Color opaco para el borde punteado */
+        padding: 10px;
+        margin-right: 5px;
+        width: 30em;
+        
+    }
+
+    .file-upload-container:hover {
+        border-color: rgba(0, 0, 0, 0.7); /* Cambia el color del borde cuando se pasa el ratón */
+    }
+
+  
+
+
+    .cookies-card {
+  width: 280px;
+  height: fit-content;
+  background-color: rgb(255, 250, 250);
+  border-radius: 10px;
+  border: 1px solid rgb(206, 206, 206);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px;
+  gap: 15px;
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.066);
+}
+
+.cookie-heading {
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+.cookie-para {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(51, 51, 51);
+}
+.button-wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.cookie-button {
+  width: 50%;
+  padding: 8px 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.accept {
+  background-color: rgb(34, 34, 34);
+  color: white;
+}
+.reject {
+  background-color: #ececec;
+  color: rgb(34, 34, 34);
+}
+.accept:hover {
+  background-color: rgb(0, 0, 0);
+}
+.reject:hover {
+  background-color: #ddd;
+}
+.exit-button {
+  position: absolute;
+  top: 17px;
+  right: 17px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.exit-button:hover {
+  background-color: #ddd;
+  color: white;
+}
+.svgIconCross {
+  height: 10px;
+}
+
+
+
+</style>
+
 
 </head>
 <body>
@@ -127,10 +224,11 @@ $conn = $databaseConnection->getConnection();
       </button>
     </div>
     <div class="flex-grow-1"> <!-- Ocupa el espacio restante -->
-      <form class="d-flex " role="search">
-        <input class="form-control me-2" type="search" placeholder="Buscar ST" aria-label="Search">
-        <button class="btn btn-outline-success" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"  >Buscar</button>
-      </form>
+    <form class="d-flex" role="search">
+    <input class="form-control me-2" type="search" placeholder="Buscar ST por folio " aria-label="Search">
+    <button class="btn btn-outline-success" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Buscar <i class="fa-solid fa-magnifying-glass"></i></button>
+</form>
+
     </div>
   </div>
 </div>
@@ -208,8 +306,8 @@ foreach ($tiendas as $tienda) {
 
     // Mostrar el nombre de la tienda con el número de elementos de la tabla st
     echo '<strong>';
-    echo '<a href="filtros.php?posComponente=activos&idTienda='.$tienda['id'].'" class="list-group-item list-group-item-action bg-white text-black tienda-link" style="font-family: Arimo, sans-serif;">'.$tienda['nombre'].'<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">'.$num_st.'<span class="visually-hidden">unread messages</span></span></a>';
-    echo '</strong>';
+    echo '<a href="filtros.php?posComponente=activos&idTienda='.$tienda['id'].'" class="list-group-item list-group-item-action bg-white text-black tienda-link" style="font-family: Arimo, sans-serif;"> <i class="fa-solid fa-store"></i> '.$tienda['nombre'].'<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-'.($num_st == 0 ? 'light' : 'danger').'">'.$num_st.'<span class="visually-hidden">unread messages</span></span></a>';
+    echo '</strong>';  
 }
 ?>
 
@@ -239,93 +337,154 @@ foreach ($tiendas as $tienda) {
 
 
 
-<!-- The Modal -->
+<!-- MODAL PARA AGREGAR ST -->
 <div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-lg ">
+  <div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Agrega ST</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+<!-- Modal Header -->
+<div class="modal-header">
+  <h4 class="modal-title  text-center">Agrega ST</h4>
+  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
 
-      <!-- Modal body -->
-      <div class="modal-body">
-          <form  action="../controllers/StController.php" method="post"  >
+<!-- Modal body -->
+<div class="modal-body">
+<form  action="../controllers/StController.php" method="post"  >
         
+      
+      
+      
+      
+        <div style="display: flex; width: 100%;">
 
-        <label for="st">FOLIO:</label>
-        <input type="text" id="st" name="st" required>
+        <div style="width: 60%; padding: 2%;">
+  <!-- Contenido del segundo div -->
 
-        <label for="tienda">TIENDA:</label>
-        <select name="tienda_choose" id="tienda_choose">
-        <option value="null">--</option>
-        <?php 
+   
+
+  <label for="trabajo"> <strong>TRABAJO A REALIZAR:</strong></label>
+      <textarea class="chamito" id="trabajo" name="trabajo" rows="4" required></textarea>
+
+    
+      <label class="chamito" for="fecha"> <strong>ESTADO:</strong></label>
+      <select name="estado" id="estado">
+        <option value="STANDBY">--</option>
+        <option value="PENDIENTE">PENDIENTE</option>
+        <option value="REVISADO">REVISADO</option>
+        <option value="PRESUPUESTADO">PRESUPUESTADO</option>
+        <option value="ACEPTADO">ACEPTADO</option>
+        <option value="CANCELADO">CANCELADO</option>
+      </select>
+        
+<br>
+
+<div class="container mx-auto">
+
+<img src="../assets/img/coppel.svg"  style="width: 60%; " alt="Descripción de la imagen SVG">
+</div>
+
+</div>
+
+
+
+<div style="width: 40%; padding: 3%">
+  <!-- Contenido del primer div -->
+
+  <label for="st"><strong> FOLIO:</strong></label>
+      <input class="chamito" type="text" id="st" name="st" required>
+<br>
+      <label for="tienda"><strong>TIENDA:</strong></label>
+      <select class="chamito" name="tienda_choose" id="tienda_choose">
+      <option value="null">--</option>
+      <?php 
 foreach ($tiendas as $tienda) {
-    echo '<option value="' . $tienda['id'] . '">' . $tienda['nombre'] . '</option>';
+  echo '<option value="' . $tienda['id'] . '">' . $tienda['nombre'] . '</option>';
 }
 ?>
 
 </select>
-
-       
-
-        <label for="trabajo">TRABAJO A REALIZAR:</label>
-        <textarea id="trabajo" name="trabajo" rows="4" required></textarea>
-
-        <label for="fecha">FECHA SOLICITUD:</label>
-        <input type="date" id="fecha" name="fecha" required>
-        <br>
-        <label for="fecha">ESTADO:</label>
-        <select name="estado" id="estado">
-          <option value="STANDBY">--</option>
-          <option value="PENDIENTE">PENDIENTE</option>
-          <option value="REVISADO">REVISADO</option>
-          <option value="PRESUPUESTADO">PRESUPUESTADO</option>
-          <option value="ACEPTADO">ACEPTADO</option>
-          <option value="CANCELADO">CANCELADO</option>
-        </select>
-          
 <br>
-       <div style="display: flex; flex-direction: row; padding:3%;">
-       <div style="flex: 1; padding:3%;" >
-       <label for="st">ST ACEPTADO:</label> 
-       <label class="switch">
-       <input type="checkbox" name="st_aceptado">
-       <span class="slider"></span>
-       </label>
-      </div>
-      <div  style="flex: 2; padding:3%;">
-        <label for="st">TRABAJO REALIZADO:</label> 
-        <br>
-        <label class="switch">
-      <input type="checkbox" name="trabajo_realizado">
-      <span class="slider"></span>
-      </label>
-      </div>
-      </div>
-        
-        <button id="enviar" class="btn btn-success" type="submit" >Enviar Solicitud</button>
-    </form>
+<label for="fecha"><strong>FECHA SOLICITUD:</strong></label>
+      <input class="chamito" type="date" id="fecha" name="fecha" required>
+      <br>
+
+
+      
+
+      <div style="display: flex; flex-direction: row; padding:3%;">
+     <div style="flex: 1; padding:2%; margin:5%;" >
+     <label for="st"> <strong>ST ACEPTADO:</strong></label> 
+    
+     <label class="switch">
+     <input type="checkbox" name="st_aceptado">
+     <span class="slider"></span>
+     </label>
+   
+    </div>
+   
+    <div  style="flex: 2; padding:2%; margin:5%;">
+      <label for="st"><strong>TRABAJO REALIZADO:</strong></label> 
+      <br>
+      <label class="switch">
+    <input type="checkbox" name="trabajo_realizado">
+    <span class="slider"></span>
+    </label>
+    </div>
+    </div>
+
+
     </div>
     
-    <!-- Modal footer -->
-    <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-    </div>
+</div>
 
+
+ 
+
+<div class="d-grid gap-2 col-6 mx-auto" style="display: flex; width: 100%; justify-content: center;" class="text-center">
+  <button id="enviar" class="btn btn-success btn-lg" type="submit">Agregar</button>
+</div>
+
+    
+    
+      
+  </form>
+</div>
+
+<!-- Modal footer -->
+
+</div>
+  </div>
+</div>
+
+<!-- FIN MODAL PARA AGREGAR ST -->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
   </div>
 </div>
 
 
 
-
-
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="exampleModali" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -347,12 +506,7 @@ foreach ($tiendas as $tienda) {
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<script>  
-var popoverList1 = [].slice.call(document.querySelectorAll('[data-bs-toggle = "popover"]'))  
-var popoverList2 = popoverList1.map(function (popoverTriggerfun) {  
-return new bootstrap.Popover(popoverTriggerfun)  
-})  
-</script>  
+
 
 <script>
 $(document).ready(function() {
@@ -393,19 +547,19 @@ function cargarContenedor(idTienda, componente) {
         '<a id="btnSaldos" href="?posComponente=saldos&idTienda=' + idTienda + '"   class="nav-link" onClick="cargarContenidoTienda(' + idTienda + ', \'saldos\')">ST Saldos</a>' +
         '</li>' +
         '</ul>' +
-        '<h2 class="tittle_tienda"></h2>' +
+        '<div  ><h2><span class="badge  text-bg-dark tittle_tienda" > </span></h2></div>' +
         '<table class="table">' +
         '<thead>' +
         '<tr>' +
-        '<th scope="col">FOLIO</th>' +
-        '<th scope="col">TRABAJO A REALIZAR</th>' +
-        '<th scope="col">PORTAL SIM</th>' +
-        '<th scope="col">FECHA DE SOLICITUD</th>' +
-        '<th scope="col">AUTORIZADO</th>' +
-        '<th scope="col">REALIZADO</th>' +
-        '<th scope="col">PPTO</th>' +
-        '<th scope="col">FACTURA</th>' +
-        '<th scope="col">Editar</th>' +
+        '<th scope="col" style="background-color: black; color: white;  text-align: center;">FOLIO <br> <i class="fa-solid fa-paperclip"></i></th>' +
+'<th scope="col" style="background-color: black; color: white; text-align: center;">OBRA <br> <i class="fa-solid fa-helmet-safety"></i></th>' +
+'<th scope="col" style="background-color: black; color: white; text-align: center;">REALIZADO <br> <i class="fa-solid fa-list-check"></i> </th>' +
+'<th scope="col" style="background-color: black; color: white;  text-align: center;">PORTAL SIM</th>' +
+'<th scope="col" style="background-color: black; color: white;  text-align: center;">FECHA DE SOLICITUD</th>' +
+
+'<th scope="col" style="background-color: black; color: white; text-align: center;">PPTO <br> <i class="fa-solid fa-file"></i></th>' +
+'<th scope="col" style="background-color: black; color: white; text-align: center;">FACTURA <br> <i class="fa-solid fa-file"></i></th>' +
+'<th scope="col" style="background-color: black; color: white; text-align: center;"> EDITAR <br> <i class="fa-solid fa-feather"></i></th>' +
         '</tr>' +
         '</thead>' +
         '<tbody>' +
@@ -489,7 +643,7 @@ switch (item.estado_portal) {
         backgroundColor = '#C7C8CC'; // Color para STANBY
         break;
     case 'ACEPTADO':
-        backgroundColor = '#9BCF53'; // Color para ACEPTADO
+        backgroundColor = '#87A922'; // Color para ACEPTADO
         break;
 
         case 'REVISADO':
@@ -508,17 +662,32 @@ switch (item.estado_portal) {
 }
                 // Crear una nueva fila para cada objeto en 'response'
                 var newRow =
-    '<tr style="font-family: Arimo, sans-serif;">' +
-    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
-    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
-    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
-    '<td>' + item.fecha + '</td>' +
-    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-success" onClick="abrirModal(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\')" >Editar</button></td>' +
-    '</tr>';
+'<tr style="font-family: Arimo, sans-serif; border: 2px ridge grey; ">' +
+'<td style="border-right: 2px dashed grey; text-align: center;">'+(item.autorizado? '<h3><span class="badge text-bg-success"> <strong>  ' + item.folio + ' </strong></span></h3>':'<h3><span class="badge text-bg-light"> <strong>  ' + item.folio + ' </strong></span></h3>')+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;' + 
+'<div class="cookies-card">'+
+'<h6 class="cookie-heading">'+ (item.trabajo_realizado ? '<span class="badge text-bg-success">'+ item.nombre+' <i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-light">' +item.nombre+' <i class="fa-solid fa-brush"></i></span>') +'</h6>'+
+'<p class="cookie-para">'+ item.trabajo + '</p>'+
+
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3>' + (item.trabajo_realizado ? '<span class="badge text-bg-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo realizado"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo sin realizar"><i class="fa-solid fa-xmark"></i></span>') + '</h3></td>' +
+'<td style="border-right: 2px dashed grey; text-align: center; background-color: ' + backgroundColor + ';" ><strong>  ' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</strong> </td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3><span class="badge text-bg-secondary"><strong> ' + item.fecha + '</strong></span><h3> </td>' +
+
+
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.pdf_generador + '\', \'' + item.pdf_plano + '\', \'' + item.pdf_ppto + '\')">' +
+        (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.xml + '\', \'' + item.pdf_factura + '\')">' +
+        (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+
+'<td style="text-align: center;"><button type="button" class="btn btn-success" onClick="abrirModal(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\')">Editar <i class="fa-solid fa-feather"></i></button></td>'+
+'</tr>';
 
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
@@ -528,7 +697,8 @@ switch (item.estado_portal) {
             // Establecer el título de la tienda
 
             if (responseObject.length > 0) {
-                $('.tittle_tienda').text(responseObject[0].nombre);
+              $('.tittle_tienda').html('<i class="fa-solid fa-store"></i> ' + responseObject[0].nombre);
+
             } else {
                 $('.tittle_tienda').text('No se encontró contenido para la tienda');
             }
@@ -543,7 +713,7 @@ switch (item.estado_portal) {
     $('#btnPresaldos').addClass('active');
     $.ajax({
         url: '../actions/get_st_presaldos.php',
-        method: 'GET',
+         method: 'GET',
         data: { idTienda: idTienda },
         success: function(response) {
            
@@ -599,18 +769,42 @@ switch (item.estado_portal) {
         backgroundColor = ''; // Color predeterminado
 }
                 // Crear una nueva fila para cada objeto en 'response'
-                var newRow =
-    '<tr style="font-family: Arimo, sans-serif;">' +
-    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
-    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
-    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
-    '<td>' + item.fecha + '</td>' +
-    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-success" /* onClick="abrirModalPRESALDOS(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\',\'' + item.archivado + '\')" */ >Editar</button></td>' +
-    '</tr>';
+     
+
+
+
+   
+
+
+var newRow =
+'<tr style="font-family: Arimo, sans-serif; border: 2px ridge grey; ">' +
+'<td style="border-right: 2px dashed grey; text-align: center;">'+(item.autorizado? '<h3><span class="badge text-bg-success"> <strong>  ' + item.folio + ' </strong></span></h3>':'<h3><span class="badge text-bg-light"> <strong>  ' + item.folio + ' </strong></span></h3>')+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;' + 
+'<div class="cookies-card">'+
+  '<h6 class="cookie-heading">'+ (item.trabajo_realizado ? '<span class="badge text-bg-success">'+ item.nombre+' <i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-light">' +item.nombre+' <i class="fa-solid fa-brush"></i></span>') +'</h6>'+
+ '<p class="cookie-para">'+ item.trabajo + '</p>'+
+
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3>' + (item.trabajo_realizado ? '<span class="badge text-bg-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo realizado"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo sin realizar"><i class="fa-solid fa-xmark"></i></span>') + '</h3></td>' +
+'<td style="border-right: 2px dashed grey; text-align: center; background-color: ' + backgroundColor + ';" ><strong>  ' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</strong> </td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3><span class="badge text-bg-secondary"><strong> ' + item.fecha + '</strong></span><h3> </td>' +
+
+
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+        (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',\'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+        (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+'<td style="text-align: center;"><button type="button" class="btn btn-success" onClick="abrirModalPRESALDOS(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\',\'' + item.archivado + '\')"  >Editar <i class="fa-solid fa-feather"></i></button></td>'+
+'</tr>'
+;
+
+
 
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
@@ -620,7 +814,7 @@ switch (item.estado_portal) {
 
             // Establecer el título de la tienda
             if (responseObject.length > 0) {
-                $('.tittle_tienda').text(responseObject[0].nombre);
+              $('.tittle_tienda').html('<i class="fa-solid fa-store"></i> ' + responseObject[0].nombre);
             } else {
                 $('.tittle_tienda').text('No se encontró contenido para la tienda');
             }
@@ -689,18 +883,43 @@ switch (item.estado_portal) {
         backgroundColor = ''; // Color predeterminado
 }
                 // Crear una nueva fila para cada objeto en 'response'
-                var newRow =
-    '<tr style="font-family: Arimo, sans-serif;">' +
-    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
-    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
-    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
-    '<td>' + item.fecha + '</td>' +
-    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-success" /* onClick="abrirModalSALDOS(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',  \'' + item.fecha + '\',\'' + item.archivado + '\')" */ >Editar</button></td>' +
-    '</tr>';
+      
+
+
+
+
+
+
+var newRow =
+'<tr style="font-family: Arimo, sans-serif; border: 2px ridge grey; ">' +
+'<td style="border-right: 2px dashed grey; text-align: center;">'+(item.autorizado? '<h3><span class="badge text-bg-success"> <strong>  ' + item.folio + ' </strong></span></h3>':'<h3><span class="badge text-bg-light"> <strong>  ' + item.folio + ' </strong></span></h3>')+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;' + 
+'<div class="cookies-card">'+
+  '<h6 class="cookie-heading">'+ (item.trabajo_realizado ? '<span class="badge text-bg-success">'+ item.nombre+' <i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-light">' +item.nombre+' <i class="fa-solid fa-brush"></i></span>') +'</h6>'+
+ '<p class="cookie-para">'+ item.trabajo + '</p>'+
+
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3>' + (item.trabajo_realizado ? '<span class="badge text-bg-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo realizado"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo sin realizar"><i class="fa-solid fa-xmark"></i></span>') + '</h3></td>' +
+'<td style="border-right: 2px dashed grey; text-align: center; background-color: ' + backgroundColor + ';" ><strong>  ' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</strong> </td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3><span class="badge text-bg-secondary"><strong> ' + item.fecha + '</strong></span><h3> </td>' +
+
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+        (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',\'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+        (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+
+'<td style="text-align: center;"><button type="button" class="btn btn-dark" onClick="abrirModalSALDOS(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\',\'' + item.archivado + '\')" >Revisar <i class="fa-solid fa-feather"></i></button></td>'+
+'</tr>'
+;
+
+
+
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
             });
@@ -709,7 +928,8 @@ switch (item.estado_portal) {
 
             // Establecer el título de la tienda
             if (responseObject.length > 0) {
-                $('.tittle_tienda').text(responseObject[0].nombre);
+              $('.tittle_tienda').html('<i class="fa-solid fa-store"></i> ' + responseObject[0].nombre);
+
             } else {
                 $('.tittle_tienda').text('No se encontró contenido para la tienda');
             }
@@ -781,18 +1001,32 @@ switch (item.estado_portal) {
 }
                 // Crear una nueva fila para cada objeto en 'response'
                 var newRow =
-    '<tr style="font-family: Arimo, sans-serif;">' +
-    '<td ' + (item.autorizado ? 'style="background-color: #9BCF53;"' : '') + '>' + item.folio + '</td>' +
-    '<td ' + (item.trabajo_realizado ? 'style="background-color: #9BCF53;"' : '') + '>     ' + item.trabajo + '</td>' +
-    '<td  style="background-color: ' + backgroundColor + ';" >' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</td>' +
-    '<td>' + item.fecha + '</td>' +
-    '<td>' + (item.autorizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td>' + (item.trabajo_realizado ? '<span class="badge text-bg-success"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger"><i class="fa-solid fa-xmark"></i></span>') + '</td>' +
-    '<td><button type="button" class="btn btn-warning" id="' + item.id + '" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And heres some amazing content. Its very engaging. Right?"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-warning"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></td>' +
-    '<td><button type="button" class="btn btn-success" onClick="abrirModal(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\')" >Editar</button></td>' +
-    '</tr>';
+                '<tr style="font-family: Arimo, sans-serif; border: 2px ridge grey; ">' +
+'<td style="border-right: 2px dashed grey; text-align: center;">'+(item.autorizado? '<h3><span class="badge text-bg-success"> <strong>  ' + item.folio + ' </strong></span></h3>':'<h3><span class="badge text-bg-light"> <strong>  ' + item.folio + ' </strong></span></h3>')+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;' + 
+'<div class="cookies-card">'+
+'<h6 class="cookie-heading">'+ (item.trabajo_realizado ? '<span class="badge text-bg-success">'+ item.nombre+' <i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-light">' +item.nombre+' <i class="fa-solid fa-brush"></i></span>') +'</h6>'+
 
+'<p class="cookie-para">'+ item.trabajo + '</p>'+
+
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3>' + (item.trabajo_realizado ? '<span class="badge text-bg-success" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo realizado"><i class="fa-solid fa-check"></i></span>' : '<span class="badge text-bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Trabajo sin realizar"><i class="fa-solid fa-xmark"></i></span>') + '</h3></td>' +
+'<td style="border-right: 2px dashed grey; text-align: center; background-color: ' + backgroundColor + ';" ><strong>  ' +( item.estado_portal=='STANDBY'?'-':item.estado_portal) + '</strong> </td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;"><h3><span class="badge text-bg-secondary"><strong> ' + item.fecha + '</strong></span><h3> </td>' +
+
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+        (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+'<td style="border-right: 2px dashed grey; text-align: center;">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',\'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+        (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
+    '</button>' +
+'</td>' +
+'<td style="text-align: center;"><button type="button" class="btn btn-success" onClick="abrirModal(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.trabajo + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', ' + item.autorizado + ', ' + item.trabajo_realizado + ', \'' + item.estado_portal + '\')">Editar <i class="fa-solid fa-feather"></i></button></td>'+
+'</tr>'
+;
                 // Agregar la nueva fila al cuerpo de la tabla
                 $('.table tbody').append(newRow);
             });
@@ -802,7 +1036,7 @@ switch (item.estado_portal) {
 
             // Establecer el título de la tienda
             if (responseObject.length > 0) {
-                $('.tittle_tienda').text(responseObject[0].nombre);
+              $('.tittle_tienda').html('<i class="fa-solid fa-store"></i> ' + responseObject[0].nombre);
             } else {
                 $('.tittle_tienda').text('No se encontró contenido para la tienda');
             }
@@ -841,6 +1075,7 @@ myModal.addEventListener('shown.bs.modal', () => {
 
 
 
+
 const estados = [
     { value: 'STANDBY', label: '--' },
     { value: 'PENDIENTE', label: 'PENDIENTE' },
@@ -858,119 +1093,145 @@ const estados = [
 
   var modalContent = `    
   <div class="modal-header">
-<h5 class="modal-title" id="exampleModalLabel">Editar ST ${stTienda_id}</h5>
-<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <h2 class="modal-title" id="exampleModalLabel"> <span class="badge bg-dark">Editar ST de la tienda <span class="badge text-bg-secondary"> ${stTienda}</span></span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  Fecha  <span class="badge bg-secondary">   ${stFecha} </span> </span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  Folio:  <span class="badge bg-${stAutorizado ? 'success' : 'secondary'}">   ${stFolio==='0000'?'Sin folio':stFolio} </span> </span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  <span class="badge bg-secondary">   ${stEstado==='STANDBY'?'Sin estado':stEstado} </span> </span></h2>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
-<div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
-   <div>
-       <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
-   </div>
-   <div>
-       <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
-   </div>
-   <div>
-       <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
-   </div>
-</div>
-<div id="modalform" style="background-color:#CFD2CF;">
-
-       <div>
-           <label for="tienda">EDITAR FOLIO</label>
-           <br>
-           <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
-       </div>
+   
 
 
 
-       <div>
-           <label for="fecha">ESTADO PORTAL:</label>
-           
 
-           <select name="estado" id="estadoedit">
-${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
-</select>
-       </div>
+    <div id="modalform" style="background-color:#CFD2CF;">
+    
+    <div>
+    
 
+
+
+
+
+<div style="display: flex; width: 100%;">
+
+<div style="width: 60%; padding: 2%;">
+
+
+
+<label for="trabajo"> <strong>TRABAJO A REALIZAR:</strong></label>
        
+    
+        <textarea class="chamito" id="trabajoedit" rows="4" name="trabajo" required>${stTrabajo}</textarea>
+<br>
+<div style=" width: 100%; ">
+    <label for="tienda"> <strong>TRABAJO REALIZADO: </strong></label>
+    <br>
+    
+    <label class="switch">
+        <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit" ${stTrabajoRealizado === 1 ? 'checked' : ''}>
+        <span class="slider"></span>
+    </label>
+  
 
+    </div>
+<div class="text-center" style="margin-right: 100px; width: 100%; ">
+
+    <img src="../assets/img/coppel.svg"  style="width: 60%; " alt="Descripción de la imagen SVG">
+    </div>
      
 
-       <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-<div style="margin-right: 20px;">
-   <label for="tienda">FOLIO AUTORIZADO:</label>
-   <br>
-   <label class="switch">
-       <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === 1 ? 'checked' : null}>
-       <span class="slider"></span>
-   </label>
-</div>
 
-<div style="margin-right: 100px;">
-   <label for="tienda">TRABAJO REALIZADO:</label>
-   <br>
-   <label class="switch">
-       <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === 1 ? 'checked' : ''} >
-       <span class="slider"></span>
-   </label>
-</div>
+
+    
+
+            <div>
+        
+        </div>
 
 
 </div>
 
+<div style="width: 40%; padding: 3%">
 
 
 
-<div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
 
-<div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-<div style="margin-right: 20px;">
-<p>
 
-<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
-</p>
+
+<div style="max-width: 300px;">
+            <label for="tienda"> <strong>EDITAR FOLIO </strong></label>
+            <br>
+            <input type="text" id="folioedit"  class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
+        </div>
+        <div style="margin-right: 20px;">
+    <label for="tienda"> <strong>FOLIO AUTORIZADO: </strong></label>
+    <br>
+    <label class="switch">
+        <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit" ${stAutorizado === 1 ? 'checked' : null}>
+        <span class="slider"></span>
+    </label>
 </div>
-<div style="margin: 50px, 50px;">
-
-<p>
-
-<button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
-</p>
-</div>
-
-</div>
 
 
 
-<div class="collapse" id="collapseExample">
-        <div class="card card-body"   style="background-color:#CFD2CF;">
+
+<label for="fecha"> <strong>EDITAR FECHA </strong></label>
+                    <br>
+                    <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
+
+                    <br>
+      <div style=" margin-bottom: 20px;">
+      <label for="fecha"> <strong>ESTADO PORTAL: </strong></label>
+            <select name="estado" id="estadoedit">
+                ${estados.map(element => `<option value="${element.value}" ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('')}
+            </select>
+           
 
 
-        <label for="fecha">EDITAR TRABAJO</label>
+
 <br>
-<textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
+<br>
 
+<div >
+                    <p>
+                        <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})">ELIMINAR ST</button>
+                    </p>
+                </div>
 
-           <br>
-
-  
-
-           <label for="fecha">EDITAR FECHA</label>
-           <br>
-   <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
-
-  
-
-       </div>
-</div>
-</div>
-</div>
 </div>
 
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+       
+    
+       
+       
+       
+     
+    </div>
+</div>
 <div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-<button type="button" class="btn btn-primary" onclick="editarSt(${stId})">Guardar cambios</button>
-</div>`;
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-primary" onclick="editarSt(${stId})">Guardar cambios</button>
+</div>
+`;
+
+console.log('activos:',stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado)
 
   mostrarModal(modalContent);
 }
@@ -985,66 +1246,56 @@ ${estados.map(element => `<option value="${element.value}"  ${element.value==stE
 function abrirModalPRESALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado, stArchivado ) {
         
         var modalContent = `    
+
         <div class="modal-header">
-     <h5 class="modal-title" id="exampleModalLabel">Editar ST Presaldado</h5>
-     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <h2 class="modal-title" id="exampleModalLabel"> <span class="badge bg-dark">Editar ST de la tienda <span class="badge text-bg-secondary"> ${stTienda}</span></span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  Fecha  <span class="badge bg-secondary">   ${stFecha} </span> </span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  Folio:  <span class="badge bg-${stAutorizado ? 'success' : 'secondary'}">   ${stFolio==='0000'?'Sin folio':stFolio} </span> </span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  <span class="badge bg-secondary">   ${stEstado==='STANDBY'?'Sin estado':stEstado} </span> </span></h2>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+   
+
+
+
+
+    <div id="modalform" style="background-color:#CFD2CF;">
+    
+    <div  >
+    
+
+
+
+
+
+<div style="display: flex; width: 100%;">
+
+<div style="width: 60%; padding: 2%;">
+
+
+
+<label for="trabajo"> <strong>OBRA:</strong></label>
+       
+    
+        <textarea class="chamito" id="trabajoedit" rows="4" name="trabajo" disabled>${stTrabajo}</textarea>
+<br>
+<div style=" width: 100%; display: flex;">
+<div style=" width: 50%; ">
+    <label for="tienda"> <strong>TRABAJO REALIZADO: </strong></label>
+    <br>
+    
+    <label class="switch">
+        <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit" ${stTrabajoRealizado === 1 ? 'checked' : ''}>
+        <span class="slider"></span>
+    </label>
+  
     </div>
-    <div class="modal-body">
-     <div id="modal_dashboard_content" style="display:flex; justify-content: space-between; text-align: center; margin: auto; width: 100%;">
-         <div>
-             <h4> <span class="badge bg-secondary"> ${stFolio === "0000" ? 'SIN FOLIO' : stFolio} </span>  </h4>
-         </div>
-         <div>
-             <h4><span class="badge bg-secondary"> ${stTienda}</span>   </h4>
-         </div>
-         <div>
-             <h4><span class="badge bg-secondary">${stFecha}</span>  </h4>
-         </div>
-     </div>
-     <div id="modalform" style="background-color:#CFD2CF;">
-    
-             <div>
-                 <label for="tienda">EDITAR FOLIO</label>
-                 <br>
-                 <input type="text" id="folioedit" class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}">
-             </div>
-    
-    
-    
-             <div>
-                 <label for="fecha">ESTADO PORTAL:</label>
-                 
-    
-                 <select name="estado" id="estadoedit">
-    ${estados.map(element => `<option value="${element.value}"  ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('') }
-    </select>
-             </div>
-    
-             
-    
-           
-    
-             <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-     <div style="margin-right: 20px;">
-         <label for="tienda">FOLIO AUTORIZADO:</label>
-         <br>
-         <label class="switch">
-             <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit"  ${stAutorizado === 1 ? 'checked' : null}>
-             <span class="slider"></span>
-         </label>
-     </div>
-    
-     <div style="margin-right: 100px;">
-         <label for="tienda">TRABAJO REALIZADO:</label>
-         <br>
-         <label class="switch">
-             <input type="checkbox" name="trabajo_realizado" id="trabajoautorizadoedit"  ${stTrabajoRealizado === 1 ? 'checked' : ''} >
-             <span class="slider"></span>
-         </label>
-     </div>
-    
-     <div style="margin-right: 100px;">
-     <label for="saldar">SALDAR:</label>
+  
+
+
+    <div style=" width: 50%; " >
+     <label for="saldar"><strong>SALDAR:</strong></label>
      <br>
      <label class="switch">
          <input type="checkbox" name="trabajo_saldado" id="trabajosaldadoedit"  ${stArchivado === 1 ? 'checked' : ''} >
@@ -1052,87 +1303,144 @@ function abrirModalPRESALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTien
      </label>
     </div>
     </div>
+
+<div class="text-center" style="margin-right: 100px; width: 100%; ">
+
+    <img src="../assets/img/coppel.svg"  style="width: 60%; " alt="Descripción de la imagen SVG">
+    </div>
+     
+
+
+
     
-    
-    
-    
-    <div   style="display:block; text-align: center; margin: auto; width: 100%;  background-color:#CFD2CF;">
-    
-    <div style="display: flex; flex-direction: row; align-items: center; margin-bottom: 20px;">
-     <div style="margin-right: 20px;">
-     <p>
-    
-    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">EDITAR ST</button>
-    </p>
-     </div>
-     <div style="margin: 50px, 50px;">
-    
-     <p>
-    
-     <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})"  >ELIMINAR ST</button>
-    </p>
-     </div>
-    
-     </div>
-    
-    
-    
-     <div class="collapse" id="collapseExample">
-              <div class="card card-body"   style="background-color:#CFD2CF;">
-    
-    
-              <label for="fecha">EDITAR TRABAJO</label>
-    <br>
-    <textarea id="trabajoedit" name="trabajo" required>${stTrabajo}</textarea>
-    
-    
-                 <br>
-    
+
+            <div>
         
-    
-                 <label for="fecha">EDITAR FECHA</label>
-                 <br>
-         <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
-    
-                
-    
-             </div>
-     </div>
+        </div>
+
+
+</div>
+
+<div style="width: 40%; padding: 3%">
+
+
+
+
+
+
+<div style="max-width: 300px;">
+            <label for="tienda"> <strong>FOLIO: </strong></label>
+            <br>
+            <input type="text" id="folioedit"  class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}" disabled>
+        </div>
+        <div style="margin-right: 20px;">
+    <label for="tienda"> <strong>FOLIO AUTORIZADO: </strong></label>
+    <br>
+    <label class="switch">
+        <input type="checkbox" name="folio_autorizado" id="folioautorizadoedit" ${stAutorizado === 1 ? 'checked' : null}>
+        <span class="slider"></span>
+    </label>
+</div>
+
+
+
+
+<label for="fecha"> <strong>EDITAR FECHA </strong></label>
+                    <br>
+                    <input type="date" id="fechaedit" value="${stFecha}" name="fecha" required>
+
+                    <br>
+      <div style=" margin-bottom: 20px;">
+      <label for="fecha"> <strong>ESTADO PORTAL: </strong></label>
+            <select name="estado" id="estadoedit">
+                ${estados.map(element => `<option value="${element.value}" ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('')}
+            </select>
+           
+
+
+
+<br>
+<br>
+
+<div >
+                    <p>
+                        <button class="btn btn-danger" type="button" onClick="eliminarSt(${stId})">ELIMINAR ST</button>
+                    </p>
+                </div>
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+     
     </div>
-    </div>
-     </div>
-    
-    <div class="modal-footer">
-     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-     <button type="button" class="btn btn-primary" onclick="editarStPresaldo(${stId})">Guardar cambios</button>
-    </div>`;
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-primary" onclick="editarStPresaldo(${stId})">Guardar cambios</button>
+</div>
+
+`;
     console.log('presaldos:',stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado, stArchivado)
         mostrarModal(modalContent);
     }
     
     //EDICION DE ST SALDADOS
     //Boton para regresar a PRESALDOS
-    function abrirModalSALDOS(stId, stFolio, stTienda,  stFecha,  stArchivado ) {
+    function abrirModalSALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTienda_id, stAutorizado, stTrabajoRealizado, stEstado, stArchivado  ) {
       var modalContent = `    
-<div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Editar ST Saldado</h5>
+
+
+      <div class="modal-header">
+    <h2 class="modal-title" id="exampleModalLabel"> <span class="badge bg-dark">Editar ST de la tienda <span class="badge text-bg-secondary"> ${stTienda}</span></span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  Fecha  <span class="badge bg-secondary">   ${stFecha} </span> </span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  Folio:  <span class="badge bg-${stAutorizado ? 'success' : 'secondary'}">   ${stFolio==='0000'?'Sin folio':stFolio} </span> </span></h2>
+    <h2 class="modal-title"  id="exampleModalLabel"><span class="badge bg-dark">  <span class="badge bg-secondary">   ${stEstado==='STANDBY'?'Sin estado':stEstado} </span> </span></h2>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
-    <div id="modal_dashboard_content" class="d-flex justify-content-between text-center" style="margin: auto; width: 100%;">
-        <div>
-            <h4><span class="badge bg-secondary">${stFolio === "0000" ? 'SIN FOLIO' : stFolio}</span></h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary">${stTienda}</span></h4>
-        </div>
-        <div>
-            <h4><span class="badge bg-secondary">${stFecha}</span></h4>
-        </div>
-    </div>
+   
+
+
+
+
     <div id="modalform" style="background-color:#CFD2CF;">
-        <div class="d-flex flex-row align-items-center" style="margin-bottom: 20px;">
-            <div style="margin-right: 100px;">
+    
+    <div>
+    
+
+
+<div style="display: flex; width: 100%;">
+
+<div style="width: 60%; padding: 2%;">
+
+
+
+<label for="trabajo"> <strong>TRABAJO A REALIZAR:</strong></label>
+       
+    
+        <textarea class="chamito" id="trabajoedit" rows="4" name="trabajo" disabled>${stTrabajo}</textarea>
+<br>
+<div style=" width: 100%; display: flex;">
+<div style=" width: 50%; ">
+    <label for="tienda"> <strong>TRABAJO REALIZADO: </strong></label>
+    <br>
+    
+    <h2>${stTrabajoRealizado ? '<span class="badge bg-dark"><i class="fa-solid fa-check"></i></span>' : '<span class="badge bg-danger"><i class="fa-solid fa-xmark"></i></span>'}</h2>
+
+
+
+    </div>
+    <div style=" width: 50%; ">
                 <label for="trabajopresaldadoedit">
                     <h4>Regresar a presaldos:</h4>
                 </label>
@@ -1142,12 +1450,90 @@ function abrirModalPRESALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTien
                     <span class="slider"></span>
                 </label>
             </div>
+            </div>
+
+<div class="text-center" style="margin-right: 100px; width: 100%; ">
+
+    <img src="../assets/img/coppel.svg"  style="width: 60%; " alt="Descripción de la imagen SVG">
+    </div>
+     
+
+
+
+    
+
+            <div>
+        
         </div>
+
+
+</div>
+
+<div style="width: 40%; padding: 3%">
+
+
+
+
+
+
+<div style="max-width: 300px;">
+            <label for="tienda"> <strong>EDITAR FOLIO </strong></label>
+            <br>
+            <input type="text" id="folioedit"  class="form-control" oninput="permitirSoloNumeros(this)" value="${stFolio}" disabled>
+        </div>
+        <div style="margin-right: 20px;">
+    <label for="tienda"> <strong>FOLIO AUTORIZADO: </strong></label>
+    <br>
+
+    <h2>${stAutorizado ? '<span class="badge bg-dark"><i class="fa-solid fa-check"></i></span>' : '<span class="badge bg-danger"><i class="fa-solid fa-xmark"></i></span>'}</h2>
+
+
+   
+</div>
+
+
+
+
+<label for="fecha"> <strong>EDITAR FECHA </strong></label>
+                    <br>
+                    <input type="date" id="fechaedit" value="${stFecha}" name="fecha" disabled>
+
+                    <br>
+      <div style=" margin-bottom: 20px;">
+      <label for="fecha"> <strong>ESTADO PORTAL: </strong></label>
+            <select name="estado" id="estadoedit" disabled>
+                ${estados.map(element => `<option value="${element.value}" ${element.value==stEstado?'selected':null}>${element.label}</option>`).join('')}
+            </select>
+           
+
+
+
+<br>
+<br>
+
+<div >
+                 
+                </div>
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+ 
+     
     </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-primary" onclick="editarStSaldo(${stId})">Guardar cambios</button>
+    <button type="button" class="btn btn-primary"onclick="editarStSaldo(${stId})">Guardar cambios</button>
 </div>`;
 
     
@@ -1160,6 +1546,116 @@ function abrirModalPRESALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTien
 
 
 
+
+
+
+//modal ppto pdf 
+
+
+function abrirModalPPTOPDF(stId, stFolio, stTienda,  stFecha, id_tienda, pdf_generador, pdf_plano, pdf_ppto ) {
+  var modalContent = `    
+    <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Subir archivos presupuesto de ST ${stTienda} con folio ${stFolio}</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+    <div class="d-flex justify-content-between">
+            ${pdf_generador!='null' ? `
+            <div class="file-upload-container text-center">
+                <h5>PDF generador:</h5>
+                <embed src="${pdf_generador}" type="application/pdf" width="100%" height="300px" />
+            </div>` : 
+            `
+                <div class="file-upload-container text-center">
+                    <div class="d-block" style="opacity: 0.8; margin:6%;">
+                        <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px; margin-bottom:10%;"></i><br>
+                        <label for="pdfGenerador">Subir archivo PDF generador:</label><br>
+                    </div>
+                    <input type="file" id="pdfGenerador" name="pdfGenerador" accept=".pdf">
+                
+            </div>`
+            }
+            ${pdf_plano !='null' ? `
+            <div class="file-upload-container text-center">
+                <h5>PDF plano:  </h5>
+                <embed src="${pdf_plano}" type="application/pdf" width="100%" height="300px" />
+            </div>` : 
+            `
+                <div class="file-upload-container text-center">
+                    <div class="d-block" style="opacity: 0.8; margin:20%;">
+                        <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px; margin-bottom:10%;"></i><br>
+                        <label for="pdfPlano">Subir archivo PDF plano:</label><br>
+                    </div>
+                    <input type="file" id="pdfPlano" name="pdfPlano" accept=".pdf">
+                
+            </div>`
+            }
+            ${pdf_ppto !='null' ? `
+            <div class="file-upload-container text-center">
+                <h5>PDF presupuesto: ${pdf_ppto}</h5>
+                <embed src="${pdf_ppto}" type="application/pdf" width="100%" height="300px" />
+            </div>` : 
+            `
+                <div class="file-upload-container text-center">
+                    <div class="d-block" style="opacity: 0.8; margin:6%;">
+                        <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px; margin-bottom:10%;"></i><br>
+                        <label for="pdfPpto">Subir archivo PDF presupuesto:</label><br>
+                    </div>
+                    <input type="file" id="pdfPpto" name="pdfPpto" accept=".pdf">
+                </div>
+           `
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" onclick="subirArchivosPPTO(${stId}, ${id_tienda})">Subir</button>
+    </div>`;
+
+
+
+  mostrarModali(modalContent);
+}
+
+
+
+function abrirModalFACTURAPDF(stId, stFolio, stTienda,  stFecha, id_tienda, xml, pdf_factura ) {
+  var modalContent = `    
+  <div class="modal-header">
+    <h3 class="modal-title" id="exampleModalLabel">Subir archivos factura  de ST ${stTienda} con folio ${stFolio}</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="d-flex justify-content-between">
+        <div class="file-upload-container text-center">
+            <div class="d-block" style="opacity: 0.8; margin:6%;">
+                <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px;"></i><br>
+                <label for="xmlFile">Subir archivo XML:</label><br>
+            </div>
+            <input type="file" id="xmlFile" name="xmlFile" accept=".xml">
+        </div>
+        <div class="file-upload-container text-center">
+            <div class="d-block" style="opacity: 0.8; margin:6%;">
+                <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px;"></i><br>
+                <label for="pdfFile">Subir archivo PDF factura:</label><br>
+                <p>${pdf_factura}</p>
+                <p>${xml}</p>
+               
+            </div>
+            <input type="file" id="pdfFile" name="pdfFile" accept=".pdf">
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btn btn-success" onclick="subirArchivosFACTURA(${stId}, ${id_tienda})">Subir</button>
+</div>
+
+`;
+
+
+  mostrarModali(modalContent);
+}
 
 
 
@@ -1185,6 +1681,26 @@ function cerrarModal() {
    modal.hide();
 }
 
+
+
+
+function mostrarModali(content) {
+var modalElement = document.getElementById('exampleModali');
+var modalBody = modalElement.querySelector('.modal-content');
+modalBody.innerHTML = content;
+
+// Abre el modal
+var modal = new bootstrap.Modal(modalElement);
+modal.show();
+}
+
+
+
+function cerrarModali() {
+   var modalElement = document.getElementById('exampleModali');
+   var modal = bootstrap.Modal.getInstance(modalElement);
+   modal.hide();
+}
 
 function editarSt(stId) {
 
@@ -1280,11 +1796,6 @@ error: function () {
 
 
 
-
-
-
-
-
 }
 
 
@@ -1315,6 +1826,67 @@ alert('Error al eliminar la tienda');
 
 
 
+function subirArchivosPPTO(stId, id_tienda) {
+    var formData = new FormData();
+    formData.append('id', stId); // Agrega el id al FormData
+    formData.append('id_tienda', id_tienda); // Agrega el id al FormData
+
+    formData.append('pdf_generador', document.getElementById('pdfGenerador').files[0]);
+formData.append('pdf_plano', document.getElementById('pdfPlano').files[0]);
+formData.append('pdf_ppto', document.getElementById('pdfPpto').files[0]);
+
+    $.ajax({
+        url: '../actions/upload_ppto.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            // Aquí puedes manejar la respuesta del servidor
+            console.log('test:', response);
+            cerrarModali();
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            // Manejar errores
+            console.error(error);
+        }
+    });
+}
+
+
+
+
+function subirArchivosFACTURA(stId, id_tienda) {
+    var formData = new FormData();
+    formData.append('id', stId); // Agrega el id al FormData
+    formData.append('id_tienda', id_tienda); // Agrega el id al FormData
+
+    formData.append('pdf_factura', document.getElementById('pdfFile').files[0]);
+formData.append('xml', document.getElementById('xmlFile').files[0]);
+
+
+    $.ajax({
+        url: '../actions/upload_facturas.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            // Aquí puedes manejar la respuesta del servidor
+            console.log('test:', response);
+            cerrarModali();
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            // Manejar errores
+            console.error(error);
+        }
+    });
+}
+
+
+
 function permitirSoloNumeros(elemento) {
 elemento.value = elemento.value.replace(/[^0-9]/g, '');
 }
@@ -1328,8 +1900,3 @@ elemento.value = elemento.value.replace(/[^0-9]/g, '');
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
-
-
-
