@@ -645,6 +645,45 @@ public function pathFACTURA($id, $campo_bd, $ruta) {
 
 
 
+public function consulta_a_la_bd_para_obtener_ruta($id, $campo) {
+    $sql = "SELECT $campo FROM st WHERE id = ?";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        return $row[$campo]; // Devolver el valor específico del campo
+    } else {
+        return null;
+    }
+}
+
+
+
+
+
+
+
+public function actualizar_campo_a_null($id, $campo) {
+    // Preparar la consulta SQL para actualizar el campo a NULL
+    $sql = "UPDATE st SET $campo = NULL WHERE id = ?";
+    
+    // Preparar la declaración y ejecutar la consulta
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("i", $id); // Suponiendo que $id es un entero, cambiar "i" según corresponda
+    $stmt->execute();
+
+    // Verificar si la consulta se ejecutó correctamente
+    if ($stmt->affected_rows > 0) {
+        // La actualización se realizó con éxito
+        return true;
+    } else {
+        // Ocurrió un error al ejecutar la consulta
+        return false;
+    }
+}
 
 }
 ?>

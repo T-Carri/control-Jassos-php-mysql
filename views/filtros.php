@@ -43,6 +43,7 @@ $conn = $databaseConnection->getConnection();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/@floating-ui/core@1.6.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3"></script>
@@ -504,6 +505,42 @@ foreach ($tiendas as $tienda) {
 
 
 
+
+
+
+<!--Modalx-->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog  modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Show a second modal and hide this one with the button below.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-body">
+      <embed  type="application/pdf" width="100%" height="700px" />
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Volver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 
@@ -791,12 +828,12 @@ var newRow =
 
 
 '<td style="border-right: 2px dashed grey; text-align: center;">' +
-    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.pdf_generador + '\', \'' + item.pdf_plano + '\', \'' + item.pdf_ppto + '\')">' +
         (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
     '</button>' +
 '</td>' +
 '<td style="border-right: 2px dashed grey; text-align: center;">' +
-    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',\'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.xml + '\', \'' + item.pdf_factura + '\')">' +
         (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
     '</button>' +
 '</td>' +
@@ -904,12 +941,12 @@ var newRow =
 '<td style="border-right: 2px dashed grey; text-align: center;"><h3><span class="badge text-bg-secondary"><strong> ' + item.fecha + '</strong></span><h3> </td>' +
 
 '<td style="border-right: 2px dashed grey; text-align: center;">' +
-    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.pdf_generador + '\', \'' + item.pdf_plano + '\', \'' + item.pdf_ppto + '\')">' +
         (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
     '</button>' +
 '</td>' +
 '<td style="border-right: 2px dashed grey; text-align: center;">' +
-    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',\'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.xml + '\', \'' + item.pdf_factura + '\')">' +
         (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
     '</button>' +
 '</td>' +
@@ -1015,12 +1052,12 @@ switch (item.estado_portal) {
 '<td style="border-right: 2px dashed grey; text-align: center;"><h3><span class="badge text-bg-secondary"><strong> ' + item.fecha + '</strong></span><h3> </td>' +
 
 '<td style="border-right: 2px dashed grey; text-align: center;">' +
-    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+    '<button type="button" class="btn btn-' + (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalPPTOPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.pdf_generador + '\', \'' + item.pdf_plano + '\', \'' + item.pdf_ppto + '\')">' +
         (item.pdf_generador || item.pdf_plano || item.pdf_ppto ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
     '</button>' +
 '</td>' +
 '<td style="border-right: 2px dashed grey; text-align: center;">' +
-    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\',\'' + item.fecha + '\', ' + item.id_tienda + ')">' +
+    '<button type="button" class="btn btn-' + (item.xml || item.pdf_factura ? 'dark' : 'warning') + '" id="' + item.id + '" onClick="abrirModalFACTURAPDF(' + item.id + ', \'' + item.folio + '\', \'' + item.nombre + '\', \'' + item.fecha + '\', ' + item.id_tienda + ', \'' + item.xml + '\', \'' + item.pdf_factura + '\')">' +
         (item.xml || item.pdf_factura ? '<i class="fa-solid fa-eye"></i> ' : '<i class="fa-solid fa-arrow-up-from-bracket"></i>') +
     '</button>' +
 '</td>' +
@@ -1060,6 +1097,27 @@ switch (item.estado_portal) {
 </script>
 
 
+<script>
+  function renderizarMiniaturaPDF(pdfURL, canvasID) {
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+    var canvas = document.getElementById(canvasID);
+    var context = canvas.getContext('2d');
+
+    pdfjsLib.getDocument(pdfURL).promise.then(function(pdf) {
+      return pdf.getPage(1);
+    }).then(function(page) {
+      var viewport = page.getViewport({ scale: 0.5 }); // Escala de la miniatura
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      page.render({
+        canvasContext: context,
+        viewport: viewport
+      });
+    });
+  }
+</script>
 
 <!-- <script src="../assets/js/filtros.js"></script> -->
 
@@ -1553,8 +1611,12 @@ function abrirModalPRESALDOS(stId, stFolio, stTienda, stTrabajo, stFecha, stTien
 
 
 function abrirModalPPTOPDF(stId, stFolio, stTienda,  stFecha, id_tienda, pdf_generador, pdf_plano, pdf_ppto ) {
+  var randomParam = Math.random(); // Genera un número aleatorio para evitar la caché
+
+  
+
   var modalContent = `    
-    <div class="modal-header">
+  <div class="modal-header">
         <h3 class="modal-title" id="exampleModalLabel">Subir archivos presupuesto de ST ${stTienda} con folio ${stFolio}</h3>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -1562,12 +1624,14 @@ function abrirModalPPTOPDF(stId, stFolio, stTienda,  stFecha, id_tienda, pdf_gen
     <div class="d-flex justify-content-between">
             ${pdf_generador!='null' ? `
             <div class="file-upload-container text-center">
-                <h5>PDF generador:</h5>
-                <embed src="${pdf_generador}" type="application/pdf" width="100%" height="300px" />
+                <h5>PDF generador:  </h5>
+                <embed src="${pdf_generador}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
+                <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_generador')" >Eliminar</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" onClick="vistaprevia('${pdf_generador}')"  ><i class="fa-solid fa-eye"></i>  Vista previa</button>
             </div>` : 
             `
                 <div class="file-upload-container text-center">
-                    <div class="d-block" style="opacity: 0.8; margin:6%;">
+                    <div class="d-block" style="opacity: 0.8; margin:20%;">
                         <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px; margin-bottom:10%;"></i><br>
                         <label for="pdfGenerador">Subir archivo PDF generador:</label><br>
                     </div>
@@ -1577,8 +1641,14 @@ function abrirModalPPTOPDF(stId, stFolio, stTienda,  stFecha, id_tienda, pdf_gen
             }
             ${pdf_plano !='null' ? `
             <div class="file-upload-container text-center">
-                <h5>PDF plano:  </h5>
-                <embed src="${pdf_plano}" type="application/pdf" width="100%" height="300px" />
+                <h5>PDF plano: </h5>
+                <embed src="${pdf_plano}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
+                <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}',  'pdf_plano')" >Eliminar</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" onClick="vistaprevia('${pdf_plano}')"  ><i class="fa-solid fa-eye"></i>  Vista previa</button>
+
+                
+
+
             </div>` : 
             `
                 <div class="file-upload-container text-center">
@@ -1592,12 +1662,14 @@ function abrirModalPPTOPDF(stId, stFolio, stTienda,  stFecha, id_tienda, pdf_gen
             }
             ${pdf_ppto !='null' ? `
             <div class="file-upload-container text-center">
-                <h5>PDF presupuesto: ${pdf_ppto}</h5>
-                <embed src="${pdf_ppto}" type="application/pdf" width="100%" height="300px" />
+                <h5>PDF presupuesto: </h5>
+                <embed src="${pdf_ppto}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
+                <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_ppto')" >Eliminar</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" onClick="vistaprevia('${pdf_ppto}')"  > <i class="fa-solid fa-eye"></i>  Vista previa</button>
             </div>` : 
             `
                 <div class="file-upload-container text-center">
-                    <div class="d-block" style="opacity: 0.8; margin:6%;">
+                    <div class="d-block" style="opacity: 0.8; margin:20%;">
                         <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px; margin-bottom:10%;"></i><br>
                         <label for="pdfPpto">Subir archivo PDF presupuesto:</label><br>
                     </div>
@@ -1609,17 +1681,19 @@ function abrirModalPPTOPDF(stId, stFolio, stTienda,  stFecha, id_tienda, pdf_gen
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-success" onclick="subirArchivosPPTO(${stId}, ${id_tienda})">Subir</button>
+        <button type="button" class="btn btn-success" onclick="subirArchivosPPTO('${stId}', '${id_tienda}')">Subir</button>
     </div>`;
 
 
 
-  mostrarModali(modalContent);
+  mostrarModalx(modalContent);
 }
 
 
 
 function abrirModalFACTURAPDF(stId, stFolio, stTienda,  stFecha, id_tienda, xml, pdf_factura ) {
+  var randomParam = Math.random(); // Genera un número aleatorio para evitar la caché
+
   var modalContent = `    
   <div class="modal-header">
     <h3 class="modal-title" id="exampleModalLabel">Subir archivos factura  de ST ${stTienda} con folio ${stFolio}</h3>
@@ -1627,35 +1701,61 @@ function abrirModalFACTURAPDF(stId, stFolio, stTienda,  stFecha, id_tienda, xml,
 </div>
 <div class="modal-body">
     <div class="d-flex justify-content-between">
-        <div class="file-upload-container text-center">
-            <div class="d-block" style="opacity: 0.8; margin:6%;">
+
+    
+${
+  xml!='null'? ` <div class="file-upload-container text-center">
+                <h5>XML:</h5>
+                <a href="${xml}?random=${randomParam}" download="${stFolio}.xml">Descargar XML con folio: ${stFolio} </a>
+                <br>
+                <br>
+
+                <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'xml')" >Eliminar</button>
+                
+            </div> `  : ` <div class="file-upload-container text-center">
+            <div class="d-block" style="opacity: 0.8; margin:20%;">
                 <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px;"></i><br>
                 <label for="xmlFile">Subir archivo XML:</label><br>
             </div>
             <input type="file" id="xmlFile" name="xmlFile" accept=".xml">
-        </div>
-        <div class="file-upload-container text-center">
-            <div class="d-block" style="opacity: 0.8; margin:6%;">
+        </div> `  
+}
+
+${
+  pdf_factura!='null'? ` <div class="file-upload-container text-center">
+                <h5>PDF factura:</h5>
+                <embed src="${pdf_factura}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
+                <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_factura')" >Eliminar</button>
+                <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"  onClick="vistaprevia('${pdf_factura}')" > <i class="fa-solid fa-eye"></i>  Vista previa</button>
+            </div> `  : ` <div class="file-upload-container text-center">
+            <div class="d-block" style="opacity: 0.8; margin:20%;">
                 <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 40px;"></i><br>
                 <label for="pdfFile">Subir archivo PDF factura:</label><br>
-                <p>${pdf_factura}</p>
-                <p>${xml}</p>
+              
                
             </div>
             <input type="file" id="pdfFile" name="pdfFile" accept=".pdf">
-        </div>
+        </div> `  
+}
+
+        
+        
     </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-success" onclick="subirArchivosFACTURA(${stId}, ${id_tienda})">Subir</button>
+    <button type="button" class="btn btn-success" onclick="subirArchivosFACTURA('${stId}', '${id_tienda}')">Subir</button>
 </div>
 
 `;
 
 
-  mostrarModali(modalContent);
+  mostrarModalx(modalContent);
 }
+
+
+
+
 
 
 
@@ -1702,6 +1802,46 @@ function cerrarModali() {
    modal.hide();
 }
 
+
+
+
+
+
+function mostrarModalx(content, src) {
+var modalElement = document.getElementById('exampleModalToggle');
+var modalBody = modalElement.querySelector('.modal-content');
+modalBody.innerHTML = content;
+
+// Abre el modal
+var modal = new bootstrap.Modal(modalElement);
+modal.show();
+
+
+}
+
+
+function vistaprevia(src){
+  var modalElement2 = document.getElementById('exampleModalToggle2');
+  var embedElement = modalElement2.querySelector('embed');
+
+  // Establecer el atributo src del elemento embed con el valor pasado
+  embedElement.setAttribute('src', src);
+}
+
+
+
+function cerrarModalx() {
+   var modalElement = document.getElementById('exampleModalToggle');
+   var modal = bootstrap.Modal.getInstance(modalElement);
+   modal.hide();
+}
+
+
+
+
+
+
+
 function editarSt(stId) {
 
 
@@ -1727,6 +1867,7 @@ success: function (response) {
    // Cierra el modal después de eliminar
    cerrarModal();
    location.reload();
+
 },
 error: function () {
    alert('Error al eliminar la tienda');
@@ -1794,9 +1935,9 @@ error: function () {
 }
 }); 
 
-
-
 }
+
+
 
 
 
@@ -1814,6 +1955,8 @@ success: function (response) {
 // Cierra el modal después de eliminar
 cerrarModal();
 location.reload();
+
+
 },
 error: function () {
 alert('Error al eliminar la tienda');
@@ -1824,18 +1967,91 @@ alert('Error al eliminar la tienda');
 
 
 
+function eliminarArchivo(stId,  campo) {
+    $.ajax({
+        url: '../actions/delete_archivo.php', // URL para eliminar el archivo en el servidor
+        type: 'POST', // O el método HTTP que corresponda
+        data: { id: stId, campo: campo }, // Datos que deseas enviar al servidor, como el ID del archivo a eliminar
+    }).then(function(response) {
+        // Si la eliminación del archivo es exitosa, puedes realizar otra petición AJAX para actualizar el campo en la tabla
+        console.log(response);
+       location.reload();
+    }).then(function() {
+        // Después de recargar la página, abrir el modal nuevamente
+      //  abrirModalPPTOPDF(stId, stFolio, stTienda, stFecha, id_tienda, pdf_generador, pdf_plano, pdf_ppto);
+    }).catch(function(error) {
+        // Aquí puedes manejar cualquier error que ocurra durante la eliminación del archivo
+        console.error("Error al eliminar el archivo:", error);
+    });
+}
+
+  
+
 
 
 function subirArchivosPPTO(stId, id_tienda) {
-    var formData = new FormData();
+  var formData = new FormData();
     formData.append('id', stId); // Agrega el id al FormData
     formData.append('id_tienda', id_tienda); // Agrega el id al FormData
 
-    formData.append('pdf_generador', document.getElementById('pdfGenerador').files[0]);
-formData.append('pdf_plano', document.getElementById('pdfPlano').files[0]);
-formData.append('pdf_ppto', document.getElementById('pdfPpto').files[0]);
+  
+  var pdfGeneradorElement = document.getElementById('pdfGenerador');
+var pdfGenerador = pdfGeneradorElement ? pdfGeneradorElement.files[0] : null;
 
-    $.ajax({
+
+
+var pdfPlanoElement = document.getElementById('pdfPlano');
+var pdfPlano = pdfPlanoElement ? pdfPlanoElement.files[0] : null;
+
+
+
+var pdfPptoElement = document.getElementById('pdfPpto');
+var pdfPpto = pdfPptoElement ? pdfPptoElement.files[0] : null;
+
+
+
+
+ 
+
+
+     if (pdfGenerador) {
+    console.log('pdfGenerador:', pdfGenerador);
+    // Realizar acción aquí, por ejemplo, agregar a formData
+        formData.append('pdf_generador', pdfGenerador);
+
+  }else {
+  // Aquí puedes continuar con tu lógica sabiendo que pdfGenerador está definido.
+  console.log('no file');
+  // Realizar acción aquí, por ejemplo, agregar a formData
+}
+
+
+  if (pdfPlano) {
+    console.log('pdfPlano:', pdfPlano);
+    // Realizar acción aquí, por ejemplo, agregar a formData
+
+        formData.append('pdf_plano', pdfPlano);
+
+  } else {
+  // Aquí puedes continuar con tu lógica sabiendo que pdfGenerador está definido.
+  console.log('no file');
+  // Realizar acción aquí, por ejemplo, agregar a formData
+}
+
+  if (pdfPpto) {
+    console.log('pdfPpto:', pdfPpto);
+    // Realizar acción aquí, por ejemplo, agregar a formData
+        formData.append('pdf_ppto', pdfPpto);
+
+  }else {
+  // Aquí puedes continuar con tu lógica sabiendo que pdfGenerador está definido.
+  console.log('no file');
+  // Realizar acción aquí, por ejemplo, agregar a formData
+}
+
+
+ 
+$.ajax({
         url: '../actions/upload_ppto.php',
         type: 'POST',
         data: formData,
@@ -1844,7 +2060,7 @@ formData.append('pdf_ppto', document.getElementById('pdfPpto').files[0]);
         success: function(response) {
             // Aquí puedes manejar la respuesta del servidor
             console.log('test:', response);
-            cerrarModali();
+            cerrarModalx();
             location.reload();
         },
         error: function(xhr, status, error) {
@@ -1852,7 +2068,33 @@ formData.append('pdf_ppto', document.getElementById('pdfPpto').files[0]);
             console.error(error);
         }
     });
+
+  
+/* 
+
+    if (pdfGenerador === undefined) {
+        //formData.append('pdf_generador', pdfGenerador);
+        console.log(document.getElementById('pdfGenerador').files[0]);
+    }
+    else if (pdfPlano === undefined) {
+        //formData.append('pdf_plano', pdfPlano);
+        console.log(document.getElementById('pdfPlano').files[0]);
+    }
+    else if (pdfPpto === undefined) {
+        //formData.append('pdf_ppto', pdfPpto);
+        console.log(document.getElementById('pdfPpto').files[0]);
+    }else{
+      console.log('no file');
+
+    } */
+
+ 
 }
+
+
+
+
+
 
 
 
@@ -1862,9 +2104,64 @@ function subirArchivosFACTURA(stId, id_tienda) {
     formData.append('id', stId); // Agrega el id al FormData
     formData.append('id_tienda', id_tienda); // Agrega el id al FormData
 
-    formData.append('pdf_factura', document.getElementById('pdfFile').files[0]);
-formData.append('xml', document.getElementById('xmlFile').files[0]);
 
+
+
+    var pdfFileElement = document.getElementById('pdfFile');
+var pdfFile = pdfFileElement ? pdfFileElement.files[0] : null;
+
+
+
+
+var xmlElement = document.getElementById('xmlFile');
+var xmlFile = xmlElement ? xmlElement.files[0] : null;
+
+
+
+
+
+if (pdfFile) {
+    console.log('pdfFile:', pdfFile);
+    // Realizar acción aquí, por ejemplo, agregar a formData
+       // formData.append('pdf_generador', pdfGenerador);
+        formData.append('pdf_factura', pdfFile);
+
+  }else {
+  // Aquí puedes continuar con tu lógica sabiendo que pdfGenerador está definido.
+  console.log('no file');
+  // Realizar acción aquí, por ejemplo, agregar a formData
+}
+
+
+if (xmlFile) {
+    console.log('xmlFile:', xmlFile);
+    // Realizar acción aquí, por ejemplo, agregar a formData
+       // formData.append('pdf_generador', pdfGenerador);
+        formData.append('xml', xmlFile);
+
+  }else {
+  // Aquí puedes continuar con tu lógica sabiendo que pdfGenerador está definido.
+  console.log('no file');
+  // Realizar acción aquí, por ejemplo, agregar a formData
+}
+
+
+
+
+
+
+
+  /*   var pdfFile = document.getElementById('pdfFile').files[0];
+    var xmlFile = document.getElementById('xmlFile').files[0];
+
+    if (pdfFile == undefined) {
+        formData.append('pdf_factura', pdfFile);
+    }
+    else if (xmlFile == undefined) {
+        formData.append('xml', xmlFile);
+    }
+
+ */
 
     $.ajax({
         url: '../actions/upload_facturas.php',
@@ -1875,7 +2172,7 @@ formData.append('xml', document.getElementById('xmlFile').files[0]);
         success: function(response) {
             // Aquí puedes manejar la respuesta del servidor
             console.log('test:', response);
-            cerrarModali();
+            cerrarModalx();
             location.reload();
         },
         error: function(xhr, status, error) {
