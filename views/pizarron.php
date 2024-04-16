@@ -14,16 +14,15 @@ $tiendas = $tiendaModel->getTiendas();
 
 $ST = new StModel();
 $STS = $ST->getSts();
-$Stfirst =  $ST->getSts0To10Days();
-$StSecond =  $ST->getSts10To15Days();
-$StThird =  $ST->getSts15To21Days();
-//aqui uno
-$pizarron =  $ST->pizarronway();
-$pizarronx =  $ST->pizarronwayx();
 
-$Stfirstx =  $ST->getSts0To10Daysx();
-$StSecondx =  $ST->getSts10To15Daysx();
-$StThirdx =  $ST->getSts15To21Daysx();
+
+
+ 
+
+//aqui uno
+$last =  $ST->last();
+$new =  $ST->new();
+
 
 
 
@@ -63,6 +62,7 @@ $regiones = $regionModel->getRegiones();
      height="80"     
      fill="#ffffff"   viewBox="0 0 300.000000 300.000000"
    preserveAspectRatio="xMidYMid meet" 
+   onclick="window.location.href = 'dashboard.php';"
    >
   
   <g transform="translate(0.000000,300.000000) scale(0.050000,-0.050000)"
@@ -135,182 +135,168 @@ $regiones = $regionModel->getRegiones();
     <div class="content">
 
     
-<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 
-  <div class="carousel-inner">
+<div class="carousel-inner">
 
 <?php
- $firstRegion = true; 
+$firstRegion = true; 
 foreach ($regiones as $region) {
-    echo '<div class="carousel-item' . ($firstRegion ? ' active' : '') . '" data-bs-interval="10000">';
-    $firstRegion = false;
-    echo' <div style="display: flex; flex-direction: row; align-items: center;"> ';
-    
-  echo '  <div style="margin-right: 10px;">';
-       echo ' <h3>'.$region['nombre'].'</h3>';
-    echo '</div>';
-    
-    echo '<div>';  
-   
-      echo'<button class="btn btn-dark btn-sm" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">';
- echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-  echo '     </button>';
-    echo '   </div>';
-   echo '</div>';
+  // Filtrar los elementos de la primera tabla
+  $regionStfirstexample = array_filter($last, function($sts) use ($region) {
+      return $sts['id_region_entienda'] == $region['id'];
+  });
 
+  // Filtrar los elementos de la segunda tabla 
+  $regionStsecondexample = array_filter($new, function($sts) use ($region) {
+      return $sts['id_region_entienda'] == $region['id'];
+  });
 
-  echo  '<div id="contenedor">';
-   echo '<div>';
-
- echo '<table class="table">';
-
-  echo ' <thead>';
-  echo '<tr  style="background-color: black; color: white;  text-align: center;">';
-echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FOLIO</th>';
-echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TIENDA</th>';
-echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TRABAJO A REALIZAR</th>';
-echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FECHA</th>';
-echo '<th scope="col" style="background-color: black; color: white; text-align: center;">Editar</th>';
-echo '</tr>';
-  echo ' </thead> ';
-  echo '<tbody>';
-
-  $regionStfirstexample = array_filter($pizarron, function($sts) use ($region) {
-    return $sts['id_region_entienda'] == $region['id'];
-});
-
- foreach ($regionStfirstexample as $sts) {
-    echo '<tr>';
-    echo '<td scope="row">';
-    echo $sts['autorizado'] ? 
-    '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-    '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-    echo '</td>';
-    echo '<td>';
-  
-    echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
-  
-    echo $sts['estado_portal']=='PENDIENTE' ?  
-    '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-    echo $sts['estado_portal']=='REVISADO' ?  
-    '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-  
-    echo $sts['estado_portal']=='PRESUPUESTADO' ?  
-    '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-    echo $sts['estado_portal']=='CANCELADO' ?  
-    '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-  
-    echo $sts['estado_portal']=='ACEPTADO' ?  
-    '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-  
-    echo '</td>';
-  
-    echo '<td class="scrolling-td" >';
-    echo '<div class="single-line scrolling-text">';
-    echo $sts['trabajo_realizado'] ? 
-    '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
-    '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
-    echo '</div>';
-    echo '</td>';
-    echo '<td>' . $sts['fecha'] . '</td>';
-    
-    echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-    echo '</tr>';
-  }
-  
-
-  echo ' </tbody>';
-  echo '</table>';
-  echo ' </div>';
-  echo '<div>';
-  echo '<table class="table">';
-  echo '<thead>';
-  echo '<tr  style="background-color: black; color: white;  text-align: center;">';
-  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FOLIO</th>';
-  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TIENDA</th>';
-  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">TRABAJO A REALIZAR</th>';
-  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">FECHA</th>';
-  echo '<th scope="col" style="background-color: black; color: white; text-align: center;">Editar</th>';
-  echo '</tr>';
-  echo '</thead>';
-
-  echo '<tbody>';
-    
-  $regionStsecondexample = array_filter($pizarronx, function($sts) use ($region) {
-    return $sts['id_region_entienda'] == $region['id'];
-});
-    foreach ($regionStsecondexample as $sts) {
-        echo '<tr>';
-        echo '<td scope="row">';
-        echo $sts['autorizado'] ? 
-        '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
-        '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
-        echo '</td>';
-        echo '<td>';
+  // Verificar si hay datos en alguna de las tablas
+  if (!empty($regionStfirstexample) || !empty($regionStsecondexample)) {
+      echo '<div class="carousel-item' . ($firstRegion ? ' active' : '') . '" data-bs-interval="10000">';
+      $firstRegion = false;
+      echo '<div style="display: flex; flex-direction: row; align-items: center;"> ';
+      echo '  <div style="margin-right: 10px;">';
+      echo ' <h2><span class="badge text-bg-dark"><i class="fa-solid fa-compass"></i> '.$region['nombre'].'</span></h2>';
+      echo '</div>';
+      echo '<div>';  
+      echo '<button class="btn btn-dark btn-sm" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">';
+      echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
+      echo '</button>';
+      echo '</div>';
+      echo '</div>';
+      echo '<div id="contenedor">';
+      echo '<div>';
+      echo '<table class="table">';
+      echo '<thead>';
+      echo '<tr  style="background-color: black; color: white;  text-align: center;">';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;"><i class="fa-solid fa-paperclip"></i> FOLIO</th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;"> <i class="fa-solid fa-store"></i></th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;">OBRA</th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;"><i class="fa-solid fa-calendar-days"></i></th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;">Editar</th>';
+      echo '</tr>';
+      echo ' </thead> ';
+      echo '<tbody>';
       
-        echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
-      
-        echo $sts['estado_portal']=='PENDIENTE' ?  
-        '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-        echo $sts['estado_portal']=='REVISADO' ?  
-        '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-      
-        echo $sts['estado_portal']=='PRESUPUESTADO' ?  
-        '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-        echo $sts['estado_portal']=='CANCELADO' ?  
-        '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-      
-        echo $sts['estado_portal']=='ACEPTADO' ?  
-        '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
-      
-        echo '</td>';
-      
-        echo '<td class="scrolling-td" >';
-        echo '<div class="single-line scrolling-text">';
-        echo $sts['trabajo_realizado'] ? 
-        '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
-        '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
-        echo '</div>';
-        echo '</td>';
-        echo '<td>' . $sts['fecha'] . '</td>';
+      // Mostrar datos de la primera tabla si existen
+      foreach ($regionStfirstexample as $sts) {
+          // Código para mostrar los datos de la primera tabla
+          echo '<tr>';
+          echo '<td scope="row">';
+          echo $sts['autorizado'] ? 
+          '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
+          '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
+          echo '</td>';
+          echo '<td>';
         
-        echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
-        echo '</tr>';
+          echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
+        
+          echo $sts['estado_portal']=='PENDIENTE' ?  
+          '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+        
+          echo $sts['estado_portal']=='REVISADO' ?  
+          '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+        
+        
+          echo $sts['estado_portal']=='PRESUPUESTADO' ?  
+          '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+        
+          echo $sts['estado_portal']=='CANCELADO' ?  
+          '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+        
+        
+          echo $sts['estado_portal']=='ACEPTADO' ?  
+          '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+        
+          echo '</td>';
+        
+          echo '<td class="scrolling-td" >';
+          echo '<div class="single-line scrolling-text">';
+          echo $sts['trabajo_realizado'] ? 
+          '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
+          '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
+          echo '</div>';
+          echo '</td>';
+          echo '<td>' . $sts['fecha'] . '</td>';
+          
+          echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
+          echo '</tr>';
       }
 
+      
+      echo ' </tbody>';
+      echo '</table>';
+      echo ' </div>';
+      echo '<div>';
+      echo '<table class="table">';
+      echo '<thead>';
+      echo '<tr  style="background-color: black; color: white;  text-align: center;">';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;"> <i class="fa-solid fa-paperclip"></i> FOLIO </th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;"> <i class="fa-solid fa-store"></i></th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;">OBRA</th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;"><i class="fa-solid fa-calendar-days"></i></th>';
+      echo '<th scope="col" style="background-color: black; color: white; text-align: center;">Editar</th>';
+      echo '</tr>';
+      echo '</thead>';
+      echo '<tbody>';
+      
+      // Mostrar datos de la segunda tabla si existen
+      foreach ($regionStsecondexample as $sts) {
+          // Código para mostrar los datos de la segunda tabla
+           // Código para mostrar los datos de la segunda tabla
+           echo '<tr>';
+           echo '<td scope="row">';
+           echo $sts['autorizado'] ? 
+           '<span class="badge bg-success rounded-pill"> ' . $sts['folio'] . '</span>' : 
+           '<span class="badge rounded-pill bg-light text-dark">' . $sts['folio'] . '</span>';
+           echo '</td>';
+           echo '<td>';
+         
+           echo $sts['estado_portal']=='STANDBY' ?   $sts['nombre_tienda']   : null;
+         
+           echo $sts['estado_portal']=='PENDIENTE' ?  
+           '<span class="badge bg-warning text-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+         
+           echo $sts['estado_portal']=='REVISADO' ?  
+           '<span class="badge bg-dark rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+         
+         
+           echo $sts['estado_portal']=='PRESUPUESTADO' ?  
+           '<span class="badge bg-primary rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+         
+           echo $sts['estado_portal']=='CANCELADO' ?  
+           '<span class="badge bg-danger rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+         
+         
+           echo $sts['estado_portal']=='ACEPTADO' ?  
+           '<span class="badge bg-success rounded-pill "> '. $sts['nombre_tienda'] .  '</span>' : null;
+         
+           echo '</td>';
+         
+           echo '<td class="scrolling-td" >';
+           echo '<div class="single-line scrolling-text">';
+           echo $sts['trabajo_realizado'] ? 
+           '<span class="badge bg-success rounded-pill "> ' . $sts['trabajo'] . '</span>' : 
+           '<span class="badge rounded-pill bg-light text-dark ">' . $sts['trabajo'] . '</span>';
+           echo '</div>';
+           echo '</td>';
+           echo '<td>' . $sts['fecha'] . '</td>';
+           
+           echo '<td> <button type="button" class="btn btn-warning" onclick="abrirModal(' . $sts['id'] . ', \'' . $sts['folio'] . '\', \'' . $sts['nombre_tienda'] . '\', \'' . $sts['trabajo'] . '\', \'' . $sts['fecha'] . '\',   \'' . $sts['id_tienda'] . '\',   \'' . $sts['autorizado'] . '\',   \'' . $sts['trabajo_realizado'] . '\',  \'' . $sts['estado_portal'] . '\')"><i class="fa-solid fa-pen"></i></button></td>';
+           echo '</tr>';
+      }
 
-    
-   
       echo ' </tbody> ';
-
       echo '</table> ';
       echo '</div>';
       echo '</div>';
-
-
-
-
-
-
       echo '</div>';
-      
+  }
 }
-
 ?>
 </div>
-
-
-
-
-
 </div>
 
 
@@ -323,17 +309,6 @@ echo '</tr>';
 </div>
 
 
-
-<div class="btn-floating">
-    <button class="btn-53" data-bs-toggle="modal" data-bs-target="#myModal">
-  <div class="original" >+</div>
-  <div class="letters">
-    
-    <span>+</span>
-    <span>S</span>
-    <span>T</span>
-      </div>
-</button>
 
 </div>
 

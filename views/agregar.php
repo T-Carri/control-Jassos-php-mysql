@@ -45,6 +45,7 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
      height="80"     
      fill="#ffffff"   viewBox="0 0 300.000000 300.000000"
    preserveAspectRatio="xMidYMid meet" 
+   onclick="window.location.href = 'dashboard.php';"
    >
   
   <g transform="translate(0.000000,300.000000) scale(0.050000,-0.050000)"
@@ -97,9 +98,24 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
     <div class="p-2"><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button></div>
-    
+    <div class="d-flex p-2">
+    <button class="btn btn-dark  ms-2" onclick="window.location.href='filtros.php'"  type="button">
+      <i class="fa-solid fa-magnifying-glass"></i> Filtros, Búsquedas
+      </button>
+      </div>
+
+      <div class="flex-grow-1 position-relative"> <!-- Ocupa el espacio restante -->
+      <form class="d-flex" role="search">
+          <input class="form-control me-2" id="search" type="search" placeholder="Buscar ST por folio" aria-label="Search" autocomplete="off">
+          <button class="btn btn-outline-success" data-bs-toggle="popover" data-bs-title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Buscar <i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+  <div id="result" class="position-absolute bg-white   text-black rounded-3" style=" width: calc(100% - 10px); top: 100%; left: 0; z-index: 999;">
+
+    </div>
+  </div>
+
 </div>
-    
+
 
   
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -111,6 +127,9 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="dashboard.php"> <i class="fa-solid fa-house"></i>  DASHBOARD</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="pizarron.php"><i class="fa-solid fa-chalkboard"></i>  PIZARRÓN</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="filtros.php"><i class="fa-solid fa-list"></i>  FILTROS</a>
@@ -156,6 +175,8 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
         echo '<form action="../controllers/TiendaController.php" method="post">';
         echo '<label for="nombre_tienda">Nombre de la Tienda:</label>';
         echo '<input type="text" id="nombre_tienda" name="nombre_tienda" oninput="convertirAMayusculas(this)"  required>';
+       echo '<div class="alert alert-danger" style="display: none;" role="alert" id="folio-error"></div>';
+        
         echo '<br>';
         echo '<label for="tipo_foraneo">Selecciona Region:</label>';
         echo '<select id="select_categoria" name="select_categoria" required>';
@@ -174,7 +195,7 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
         echo '<label for="direccion_tienda">Dirección:</label>';
         echo '<textarea id="direccion_tienda" oninput="convertirAMayusculas(this)"  name="direccion_tienda" rows="4" cols="50" required></textarea>';
         echo '<br>';
-        echo '<input type="submit" value="Agregar Tienda">';
+        echo '<input type="submit" id="enviar" value="Agregar Tienda">';
         echo '</form>';
         echo '</div>';
 
@@ -203,10 +224,10 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
         echo '<div class="form-container">';
         echo '<form id="miFormulario" action="../controllers/RegionController.php" method="post">';
         echo '<label for="nombre_tienda">Region:</label>';
-        echo '<input type="text" id="nombre_region" name="nombre_region" oninput="convertirAMayusculas(this)"  required>';
-       
+        echo '<input type="text" id="nombre_region" name="nombre_region" oninput="convertirAMayusculas(this)" required>';
+       echo '<div class="alert alert-danger" style="display: none;" role="alert" id="folio-error"></div>';
         echo '<br>';
-        echo '<input type="submit" value="Agregar region" onClick="submitForm()">';
+        echo '<input type="submit" id="enviar" value="Agregar region"  >';
         echo '</form>';
         echo '</div>';
         
@@ -215,13 +236,15 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
        
         // Muestra la lista de regiones si está presente
         foreach ($regiones as $region) {
-          echo '<div class="card" style="width: 18rem; margin: 10px;">';
-          echo '<div class="card-body">';
-          echo '<h5 class="card-title">' . $region['nombre'] . '</h5>';
-          echo '<p class="card-text">Descripción u otra información relevante</p>';
-          echo '<button class="btn btn-primary" onclick="abrirModalEditar(' . $region['id'] . ', \'' . $region['nombre'] . '\')">Editar</button>';
-          echo '<button class="btn btn-danger" onclick="abrirModalEliminar(' . $region['id'] . ', \'' . $region['nombre'] . '\')">Eliminar</button>';
-          echo '</div>';
+          echo '<div class="card text-center" style="width: 18rem; margin: 10px; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">';
+          echo '  <div class="card-body">';
+          echo '    <i class="fas fa-map-marker-alt fa-3x mb-3"></i>'; // Icono representativo
+          echo '    <h5 class="card-title">' . $region['nombre'] . '</h5>'; // Nombre de la región centrado
+          echo '    <div class="d-flex justify-content-center">'; // Botones centrados
+          echo '      <button class="btn btn-primary mx-2" onclick="abrirModalEditar(' . $region['id'] . ', \'' . $region['nombre'] . '\')">Editar</button>';
+          echo '      <button class="btn btn-danger mx-2" onclick="abrirModalEliminar(' . $region['id'] . ', \'' . $region['nombre'] . '\')">Eliminar</button>';
+          echo '    </div>';
+          echo '  </div>';
           echo '</div>';
       }
         echo '</div>';
@@ -263,6 +286,146 @@ $tiendastotal = $tiendaModel->getTiendasTotal();
 <script src="../assets/js/agregar.js">
     
 </script>
+
+
+<script>
+
+document.getElementById('nombre_tienda').addEventListener('input', function() {
+      var tienda = this.value.trim();
+      
+        $.ajax({
+          url: '../actions/check_tienda.php',
+          type: 'GET',
+          data: { tienda: tienda },
+          success: function(response) {
+            console.log(response)
+            if (response == 'mr tienda') {
+              document.getElementById('folio-error').style.display = 'none'; // Ocultar el mensaje de error
+              document.getElementById('enviar').disabled = false;
+            } else {
+              document.getElementById('folio-error').innerHTML = 'Esta tienda ya existe';
+              document.getElementById('folio-error').style.display = 'block'; // Mostrar el mensaje de error
+              document.getElementById('enviar').disabled = true;
+            }
+          }
+        });
+      
+    });
+
+
+
+
+
+   
+
+
+</script>
+
+<script>
+   document.getElementById('nombre_region').addEventListener('input', function() {
+    var region = this.value.trim();
+    console.log(region);
+    $.ajax({
+        url: '../actions/check_region.php',
+        type: 'GET',
+        data: { region: region },
+        success: function(response) {
+            console.log('REGION:', response);
+            if (response == 'mr region') {
+                document.getElementById('folio-error').style.display = 'none'; // Ocultar el mensaje de error
+                document.getElementById('enviar').disabled = false;
+            } else {
+                document.getElementById('folio-error').innerHTML = 'Esta región ya existe';
+                document.getElementById('folio-error').style.display = 'block'; // Mostrar el mensaje de error
+                document.getElementById('enviar').disabled = true;
+            }
+        }
+    });
+});
+</script>
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
+<script>
+$(document).ready(function(){
+    $('#search').focus()
+
+    $('#search').on('keyup', function(){
+        var search = $(this).val();
+        $.ajax({
+            type: 'POST',
+            url: '../actions/search.php',
+            data: {'search': search},
+            beforeSend: function(){
+                $('#result').html('<img src="img/pacman.gif">');
+            }
+        })
+        .done(function(resultado){
+            $('#result').html(resultado);
+        })
+        .fail(function(){
+            alert('Hubo un error');
+        });
+    });
+
+    var blurTimeout;
+    $('#search').on('blur', function(){
+        blurTimeout = setTimeout(function() {
+            $('#result').empty(); // Vaciamos el contenido de los resultados
+        }, 200); // Retrasamos la ejecución del evento blur durante 200 milisegundos
+    });
+
+    // Cancelar la ejecución del evento blur si se hace clic en un enlace dentro de los resultados
+    $('#result').on('click', 'a', function() {
+        clearTimeout(blurTimeout);
+    });
+});
+
+
+
+
+
+  document.getElementById('st').addEventListener('blur', function() {
+    var folio = this.value.trim();
+    if (folio !== '0000') {
+      $.ajax({
+        url: '../actions/check_folio.php',
+        type: 'GET',
+        data: { folio: folio },
+        success: function(response) {
+          console.log(response)
+          if (response == 'mr hoo') {
+            document.getElementById('folio-error').style.display = 'none'; // Ocultar el mensaje de error
+            document.getElementById('enviar').disabled = false;
+          } else {
+            document.getElementById('folio-error').innerHTML = 'El folio ya existe';
+            document.getElementById('folio-error').style.display = 'block'; // Mostrar el mensaje de error
+            document.getElementById('enviar').disabled = true;
+          }
+        }
+      });
+    } else {
+      // Si el folio es '0000', limpiar el mensaje de error y habilitar el botón de enviar
+      document.getElementById('folio-error').innerHTML = '';
+      document.getElementById('folio-error').style.display = 'none'; // Ocultar el mensaje de error
+      document.getElementById('enviar').disabled = false;
+    }
+  });
+
+
+
+
+  function permitirSoloNumeros(elemento) {
+elemento.value = elemento.value.replace(/[^0-9]/g, '');
+}
+
+</script>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
  

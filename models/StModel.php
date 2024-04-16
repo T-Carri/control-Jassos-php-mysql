@@ -12,6 +12,7 @@ class StModel {
         }
     }
         
+
   /* INSERT INTO st (folio, trabajo, id_tienda, fecha, autorizado, estado_portal, trabajo_realizado)
 VALUES (12345, 'Trabajo de ejemplo', 1, '2024-01-19', true, 'En proceso', false);
  */
@@ -284,6 +285,7 @@ public function getPresaldos() {
 FROM 
     st
 INNER JOIN 
+
     tienda ON st.id_tienda = tienda.id
 WHERE   
      st.autorizado = true
@@ -380,8 +382,20 @@ public function archivarSt($id, $archivado ) {
  */
 
 //for pizarron 
+public function last() {
+    // Calcular la fecha hace 21 días hábiles
+    $fecha_actual = date('Y-m-d');
+    $dias_habiles = 21;
+    $fecha_inicio = $fecha_actual;
+    $dias_restantes = $dias_habiles;
+    while ($dias_restantes > 0) {
+        $fecha_inicio = date('Y-m-d', strtotime($fecha_inicio . ' -1 day'));
+        $dia_semana = date('N', strtotime($fecha_inicio));
+        if ($dia_semana < 8) { // Si es un día de la semana (lunes a viernes)
+            $dias_restantes--;
+        }
+    }
 
-public function pizarronway() {
     $sql = "SELECT 
     st.*, 
     tienda.nombre AS nombre_tienda, 
@@ -392,10 +406,15 @@ FROM
 INNER JOIN 
     tienda ON st.id_tienda = tienda.id
 WHERE 
-    st.fecha <= CURDATE()
-    AND tienda.foraneo = 0
-    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)
-";
+(
+        (st.autorizado = true AND st.trabajo_realizado = true AND st.estado_portal != 'ACEPTADO')
+        OR (st.autorizado != true AND st.trabajo_realizado = true)
+        OR (st.autorizado = true AND st.trabajo_realizado != true)
+        OR (st.autorizado != true AND st.trabajo_realizado != true)
+    )
+    AND st.estado_portal != 'CANCELADO'
+    AND st.archivado != true
+    AND st.fecha < '$fecha_inicio'"; // Agregar esta condición para filtrar por fecha
 
     $result = $this->conn->query($sql);
     $sts = [];
@@ -406,8 +425,20 @@ WHERE
     return $sts;
 }
    
+public function new() {
+    // Calcular la fecha hace 0 días hábiles
+    $fecha_actual = date('Y-m-d');
+    $dias_habiles = 21;
+    $fecha_inicio = $fecha_actual;
+    $dias_restantes = $dias_habiles;
+    while ($dias_restantes > 0) {
+        $fecha_inicio = date('Y-m-d', strtotime($fecha_inicio . ' -1 day'));
+        $dia_semana = date('N', strtotime($fecha_inicio));
+        if ($dia_semana < 8) { // Si es un día de la semana (lunes a viernes)
+            $dias_restantes--;
+        }
+    }
 
-public function pizarronwayx() {
     $sql = "SELECT 
     st.*, 
     tienda.nombre AS nombre_tienda, 
@@ -418,10 +449,15 @@ FROM
 INNER JOIN 
     tienda ON st.id_tienda = tienda.id
 WHERE 
-    st.fecha <= CURDATE()
-    AND tienda.foraneo = 1
-    AND (st.autorizado != true OR st.estado_portal != 'ACEPTADO' OR st.trabajo_realizado != true)
-";
+(
+        (st.autorizado = true AND st.trabajo_realizado = true AND st.estado_portal != 'ACEPTADO')
+        OR (st.autorizado != true AND st.trabajo_realizado = true)
+        OR (st.autorizado = true AND st.trabajo_realizado != true)
+        OR (st.autorizado != true AND st.trabajo_realizado != true)
+    )
+    AND st.estado_portal != 'CANCELADO'
+    AND st.archivado != true
+    AND st.fecha >= '$fecha_inicio'"; // Agregar esta condición para filtrar por fecha
 
     $result = $this->conn->query($sql);
     $sts = [];
@@ -446,13 +482,15 @@ public function filtros1($id) {
     tienda.nombre
 FROM 
     st
-    INNER JOIN 
+INNER JOIN 
     tienda ON st.id_tienda = tienda.id
 WHERE   
     st.id_tienda = ?
     AND (
-        st.autorizado != true
-        OR st.trabajo_realizado != true
+        (st.autorizado = true AND st.trabajo_realizado = true AND st.estado_portal != 'ACEPTADO')
+        OR (st.autorizado != true AND st.trabajo_realizado = true)
+        OR (st.autorizado = true AND st.trabajo_realizado != true)
+        OR (st.autorizado != true AND st.trabajo_realizado != true)
     )
     AND st.estado_portal != 'CANCELADO'
     AND st.archivado != true";

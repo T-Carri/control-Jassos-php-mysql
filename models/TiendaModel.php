@@ -44,7 +44,13 @@ class TiendaModel {
     }
 
         public function getTiendas() {
-            $sql = "SELECT * FROM tienda";
+            $sql = "SELECT 
+            t.*, 
+            r.nombre AS nombre_region
+        FROM 
+            tienda t
+        INNER JOIN 
+            region r ON t.id_region = r.id";
             $result = $this->conn->query($sql);
         
             $tiendas = [];
