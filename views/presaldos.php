@@ -13,9 +13,6 @@ $PRESALDOS = $ST->getPresaldos();
 $ARCHIVADOS = $ST->getArchivados();
 
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>

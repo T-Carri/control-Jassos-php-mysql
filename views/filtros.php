@@ -1,4 +1,4 @@
-  <?php
+<?php
   session_start();
   include_once('../models/RegionModel.php');
   include_once('../models/TiendaModel.php');
@@ -1681,7 +1681,12 @@
               <div class="file-upload-container text-center">
                   <h5>PDF generador:  </h5>
                   <embed src="${pdf_generador}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
-                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_generador')" >Eliminar</button>
+                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_generador')" >
+                  <div id="cargando2" style="display: none;">
+    <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>Eliminar</button>
                   <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" onClick="vistaprevia('${pdf_generador}')"  ><i class="fa-solid fa-eye"></i>  Vista previa</button>
               </div>` : 
               `
@@ -1698,7 +1703,12 @@
               <div class="file-upload-container text-center">
                   <h5>PDF plano: </h5>
                   <embed src="${pdf_plano}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
-                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}',  'pdf_plano')" >Eliminar</button>
+                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}',  'pdf_plano')" >
+                  <div id="cargando2" style="display: none;">
+    <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>Eliminar</button>
                   <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" onClick="vistaprevia('${pdf_plano}')"  ><i class="fa-solid fa-eye"></i>  Vista previa</button>
 
                   
@@ -1719,7 +1729,12 @@
               <div class="file-upload-container text-center">
                   <h5>PDF presupuesto: </h5>
                   <embed src="${pdf_ppto}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
-                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_ppto')" >Eliminar</button>
+                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_ppto')" >
+                  <div id="cargando2" style="display: none;">
+    <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>Eliminar</button>
                   <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" onClick="vistaprevia('${pdf_ppto}')"  > <i class="fa-solid fa-eye"></i>  Vista previa</button>
               </div>` : 
               `
@@ -1736,7 +1751,7 @@
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success" onclick="subirArchivosPPTO('${stId}', '${id_tienda}')">Subir</button>
+          <button type="button" id="subiendo" class="btn btn-success" onclick="subirArchivosPPTO('${stId}', '${id_tienda}')">Subir</button>
       </div>`;
 
 
@@ -1765,7 +1780,13 @@
                   <br>
                   <br>
 
-                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'xml')" >Eliminar</button>
+                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'xml')" >
+                  <div id="cargando2" style="display: none;">
+    <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+                  Eliminar</button>
                   
               </div> `  : ` <div class="file-upload-container text-center">
               <div class="d-block" style="opacity: 0.8; margin:20%;">
@@ -1780,7 +1801,12 @@
     pdf_factura!='null'? ` <div class="file-upload-container text-center">
                   <h5>PDF factura:</h5>
                   <embed src="${pdf_factura}?random=${randomParam}" type="application/pdf" width="100%" height="300px" />
-                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_factura')" >Eliminar</button>
+                  <button type="button" class="btn btn-danger" onClick="eliminarArchivo('${stId}', 'pdf_factura')" >
+                  <div id="cargando2" style="display: none;">
+    <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>Eliminar</button>
                   <button type="button" class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"  onClick="vistaprevia('${pdf_factura}')" > <i class="fa-solid fa-eye"></i>  Vista previa</button>
               </div> `  : ` <div class="file-upload-container text-center">
               <div class="d-block" style="opacity: 0.8; margin:20%;">
@@ -1799,7 +1825,11 @@
   </div>
   <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-      <button type="button" class="btn btn-success" onclick="subirArchivosFACTURA('${stId}', '${id_tienda}')">Subir</button>
+      <button type="button" class="btn btn-success" onclick="subirArchivosFACTURA('${stId}', '${id_tienda}')"> <div id="cargando" style="display: none;">
+    <div class="spinner-border text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>Subir</button>
   </div>
 
   `;
@@ -2027,7 +2057,15 @@
           url: '../actions/delete_archivo.php', // URL para eliminar el archivo en el servidor
           type: 'POST', // O el método HTTP que corresponda
           data: { id: stId, campo: campo }, // Datos que deseas enviar al servidor, como el ID del archivo a eliminar
-      }).then(function(response) {
+          beforeSend: function() {
+        // Mostrar el indicador de carga antes de enviar la solicitud AJAX
+        $('#cargando2').show();
+    },    
+    complete: function() {
+        // Ocultar el indicador de carga después de completar la solicitud AJAX
+        $('#cargando2').hide();
+    }
+        }).then(function(response) {
           // Si la eliminación del archivo es exitosa, puedes realizar otra petición AJAX para actualizar el campo en la tabla
           console.log(response);
         location.reload();
@@ -2105,25 +2143,31 @@
   }
 
 
-  
   $.ajax({
-          url: '../actions/upload_ppto.php',
-          type: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(response) {
-              // Aquí puedes manejar la respuesta del servidor
-              console.log('test:', response);
-              cerrarModalx();
-              location.reload();
-          },
-          error: function(xhr, status, error) {
-              // Manejar errores
-              console.error(error);
-          }
-      });
-
+    url: '../actions/upload_archivo.php',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        // Mostrar el indicador de carga antes de enviar la solicitud AJAX
+        $('#cargando').show();
+    },
+    success: function(response) {
+        // Aquí puedes manejar la respuesta del servidor
+        console.log('test:', response);
+        cerrarModalx();
+        location.reload();
+    },
+    error: function(xhr, status, error) {
+        // Manejar errores
+        console.error(error);
+    },
+    complete: function() {
+        // Ocultar el indicador de carga después de completar la solicitud AJAX
+        $('#cargando').hide();
+    }
+});
     
   
 
@@ -2202,23 +2246,31 @@
 
   */
 
-      $.ajax({
-          url: '../actions/upload_facturas.php',
-          type: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(response) {
-              // Aquí puedes manejar la respuesta del servidor
-              console.log('test:', response);
-              cerrarModalx();
-              location.reload();
-          },
-          error: function(xhr, status, error) {
-              // Manejar errores
-              console.error(error);
-          }
-      });
+  $.ajax({
+    url: '../actions/upload_archivo.php',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        // Mostrar el indicador de carga antes de enviar la solicitud AJAX
+        $('#cargando').show();
+    },
+    success: function(response) {
+        // Aquí puedes manejar la respuesta del servidor
+        console.log('test:', response);
+        cerrarModalx();
+        location.reload();
+    },
+    error: function(xhr, status, error) {
+        // Manejar errores
+        console.error(error);
+    },
+    complete: function() {
+        // Ocultar el indicador de carga después de completar la solicitud AJAX
+        $('#cargando').hide();
+    }
+});
   }
 
 

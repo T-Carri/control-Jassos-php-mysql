@@ -18,7 +18,8 @@ class StController {
                 // Operación exitosa
                 $_SESSION['alert_message'] = 'La tienda se agregó correctamente';
                 $_SESSION['alert_type'] = 'success';
-                header("Location: ../views/filtros.php?posComponente=activos&idTienda=${id_tienda}");
+              header("Location: ../views/filtros.php?posComponente=activos&idTienda={$id_tienda}");
+
             } else {
                 // Problema al agregar la región
                 $_SESSION['alert_message'] = 'Hubo un problema al agregar la tienda';

@@ -47,6 +47,4 @@ function actualizar_campo_a_null($id, $campo) {
     $stModel->actualizar_campo_a_null($id, $campo);
 }
 
-
-
 ?>

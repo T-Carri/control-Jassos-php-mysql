@@ -26,6 +26,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Método de solicitud no permitido.";
 }
 
-
-
 ?>

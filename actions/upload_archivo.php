@@ -38,7 +38,48 @@ foreach ($_FILES as $nombre_campo => $archivo) {
 
         if ($extension == 'pdf' && $archivo['size'] <= $tamanio_maximo) {
             // Mover el archivo al destino
+            
+            echo "Carpeta destino: $carpeta_destino<br>";
+echo "Nombre archivo: $nombre_archivo<br>";
+echo "Ruta completa: $ruta_archivo<br>";
+            
             if (move_uploaded_file($nombre_temporal, $ruta_archivo)) {
+                
+                
+                    if ($_FILES[$nombre_campo]['error'] !== UPLOAD_ERR_OK) {
+        // Manejar el error según el código de error
+        switch ($_FILES[$nombre_campo]['error']) {
+            case UPLOAD_ERR_INI_SIZE:
+                echo 'Error: El archivo excede la directiva upload_max_filesize en php.ini.';
+                break;
+            case UPLOAD_ERR_FORM_SIZE:
+                echo 'Error: El archivo excede el tamaño máximo permitido por el formulario.';
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                echo 'Error: El archivo no se ha subido completamente.';
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                echo 'Error: No se ha seleccionado ningún archivo para subir.';
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                echo 'Error: Falta el directorio temporal.';
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                echo 'Error: Error al escribir el archivo en el disco.';
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                echo 'Error: Una extensión PHP detuvo la subida del archivo.';
+                break;
+            default:
+                echo 'Error desconocido al subir el archivo.';
+                break;
+        }
+        // Terminar la ejecución del script si hay un error
+        return;
+    }
+
+                
+                
                 $ST = new StModel();
                
                 // Aquí debes insertar la ruta del archivo en tu base de datos utilizando MySQL

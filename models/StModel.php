@@ -414,7 +414,8 @@ WHERE
     )
     AND st.estado_portal != 'CANCELADO'
     AND st.archivado != true
-    AND st.fecha < '$fecha_inicio'"; // Agregar esta condición para filtrar por fecha
+    AND st.fecha < '$fecha_inicio' 
+    ORDER BY DATEDIFF('$fecha_inicio', st.fecha) ASC"; // Ordenar por la diferencia de días disponibles en orden ascendente
 
     $result = $this->conn->query($sql);
     $sts = [];
@@ -424,7 +425,8 @@ WHERE
 
     return $sts;
 }
-   
+
+
 public function new() {
     // Calcular la fecha hace 0 días hábiles
     $fecha_actual = date('Y-m-d');
@@ -443,7 +445,8 @@ public function new() {
     st.*, 
     tienda.nombre AS nombre_tienda, 
     tienda.foraneo AS foraneo_tienda,
-    tienda.id_region AS id_region_entienda
+    tienda.id_region AS id_region_entienda,
+    DATEDIFF('$fecha_actual', st.fecha) AS dias_disponibles
 FROM 
     st
 INNER JOIN 
@@ -457,7 +460,8 @@ WHERE
     )
     AND st.estado_portal != 'CANCELADO'
     AND st.archivado != true
-    AND st.fecha >= '$fecha_inicio'"; // Agregar esta condición para filtrar por fecha
+    AND st.fecha >= '$fecha_inicio'
+    ORDER BY dias_disponibles DESC"; // Ordenar por la diferencia de días disponibles
 
     $result = $this->conn->query($sql);
     $sts = [];

@@ -36,6 +36,4 @@ $trabajoautorizado = $_POST["TrabajoAutorizado"] === "true" ? 1 : 0;
     echo "Método de solicitud no permitido.";
 }
 
-
-
 ?>

@@ -234,5 +234,5 @@ class BusquedasModel {
         
         return $resultados;
     }
-
-}?>
+}
+?>

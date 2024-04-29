@@ -15,5 +15,4 @@ class DatabaseConnection {
         return $this->conn;
     }
 }
-
 ?>

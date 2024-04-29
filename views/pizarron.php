@@ -30,13 +30,7 @@ $regionModel = new RegionModel();
 $regiones = $regionModel->getRegiones();
 //aqui otro 
 
-
-
-
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -51,6 +45,7 @@ $regiones = $regionModel->getRegiones();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <meta http-equiv="refresh" content="60">
 
 </head>
 <body>

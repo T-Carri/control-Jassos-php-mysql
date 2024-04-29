@@ -1,20 +1,16 @@
 <?php
 
-$envFile = __DIR__ . '../../.env';
 
-if (file_exists($envFile)) {
-    $envVars = parse_ini_file($envFile);
+
 
     // Configuración de la base de datos
-    define('DB_HOSTi', $envVars['DB_HOST_1']);
-    define('DB_USERi', $envVars['DB_USER_1']);
-    define('DB_PASSWORDi', $envVars['DB_PASSWORD_1'] );
-    define('DB_NAMEi', $envVars['DB_NAME_1'] ?? 'sij_localhost');
+    define('DB_HOSTi', '198.59.144.15');
+    define('DB_USERi', 'jassosmx_darkNight');
+    define('DB_PASSWORDi', 'Fs)Fx%-y1kmD' );
+    define('DB_NAMEi', 'jassosmx_sij');
     // Otras configuraciones globales, si es necesario
-    define('SITE_NAMEi', $envVars['SITE_NAME_1']);
-} else {
-    die('.env file not found. Please create one.');
-}
+    define('SITE_NAMEi', 'panel.jassosmx.mx' );
+
 
 class DatabaseConnectioni {
     private $conn;

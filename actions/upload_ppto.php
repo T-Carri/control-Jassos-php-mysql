@@ -59,7 +59,7 @@ foreach ($_FILES as $nombre_campo => $archivo) {
 
                 echo 'Archivo ' . $nombre_archivo . ' subido correctamente, al id:'.$id.'y path:'. $ruta_archivo_bd.'.<br>';
             } else {
-                echo 'Error al subir el archivo ' . $nombre_archivo . '<br>';
+                echo 'Error al subir el archivo ' . $nombre_archivo . ' , al id:'.$id.'y path:'. $ruta_archivo_bd.'.<br>';
             }
         } else {
             echo 'Error: El archivo ' . $nombre_archivo . ' no es un PDF válido o excede el tamaño máximo permitido.<br>';

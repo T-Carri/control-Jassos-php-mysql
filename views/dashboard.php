@@ -1,4 +1,4 @@
-  <?php
+<?php
   session_start();
   include_once('../models/TiendaModel.php');
   include_once('../models/StModel.php');
@@ -20,11 +20,7 @@
   $Stfirstx =  $ST->getSts0To10Daysx();
   $StSecondx =  $ST->getSts10To15Daysx();
   $StThirdx =  $ST->getSts15To21Daysx();
-
   ?>
-
-
-
   <!DOCTYPE html>
   <html lang="es">
   <head>
@@ -391,8 +387,7 @@
     echo '<option value="' . $tienda['id'] . '">' . $tienda['nombre'] . '</option>';
   }
   ?>
-
-  </select>
+ </select>
   <br>
   <label for="fecha"><strong>FECHA SOLICITUD:</strong></label>
         <input class="chamito" type="date" id="fecha" name="fecha" required>
@@ -535,8 +530,3 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
   </body>
   </html>
-
-
-
-
-
